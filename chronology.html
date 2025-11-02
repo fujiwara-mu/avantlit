@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前衛小説関連年表 | 前衛小説ガイドブック</title>
+    <link rel="icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3e%3cpath%20fill='%232c3e50'%20d='M410.3%20231l11.3-11.3-33.9-33.9-62.1-62.1L291.7%2089.8l-11.3%2011.3-22.6%2022.6L58.6%20322.9c-10.4%2010.4-18%2023.3-22.2%2037.4L1%20480.7c-2.5%208.4-.2%2017.5%206.1%2023.7s15.3%208.5%2023.7%206.1l120.3-35.4c14.1-4.2%2027-11.8%2037.4-22.2L387.7%20253.7%20410.3%20231zM160%20399.4l-9.1%2022.7c-4%203.1-8.5%205.4-13.3%206.9L59.4%20452l23-78.1c1.4-4.9%203.8-9.4%206.9-13.3l22.7-9.1v32c0%208.8%207.2%2016%2016%2016h32zM362.7%2018.7L348.3%2033.2%20325.7%2055.8%20314.3%2067.1l33.9%2033.9%2062.1%2062.1%2033.9%2033.9%2011.3-11.3%2022.6-22.6L494.9%2052.6c11.3-11.3%2011.3-29.5%200-40.8L403.5%201.2c-11.3-11.3-29.5-11.3-40.8%200z'/%3e%3c/svg%3e">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 進捗インジケーター -->
+    <div class="progress-indicator">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-book-open"></i>
+                前衛小説ガイドブック
+            </a>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+                <span class="menu-toggle-text">メニュー</span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-home"></i> ホーム
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part1.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-history"></i> 歴史
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part1.html#prehistory" class="dropdown-item"><i class="fas fa-seedling"></i> 前史</a>
+                        <a href="part1.html#modernism" class="dropdown-item"><i class="fas fa-landmark"></i> モダニズムの胎動</a>
+                        <a href="part1.html#dada" class="dropdown-item"><i class="fas fa-bomb"></i> ダダ・シュルレアリスム</a>
+                        <a href="part1.html#postwar" class="dropdown-item"><i class="fas fa-globe"></i> 戦後の展開</a>
+                        <a href="part1.html#postmodernism" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> ポストモダニズム</a>
+                        <a href="part1.html#japan" class="dropdown-item"><i class="fas fa-torii-gate"></i> 日本の前衛小説</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part2.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-tools"></i> 特徴
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part2.html#narrative" class="dropdown-item"><i class="fas fa-project-diagram"></i> 物語性の解体</a>
+                        <a href="part2.html#consciousness" class="dropdown-item"><i class="fas fa-water"></i> 意識の流れ</a>
+                        <a href="part2.html#absurd" class="dropdown-item"><i class="fas fa-question-circle"></i> 不条理とグロテスク</a>
+                        <a href="part2.html#fragmentation" class="dropdown-item"><i class="fas fa-cut"></i> 断片化とコラージュ</a>
+                        <a href="part2.html#metafiction" class="dropdown-item"><i class="fas fa-layer-group"></i> メタフィクション</a>
+                        <a href="part2.html#unreliable" class="dropdown-item"><i class="fas fa-user-secret"></i> 信頼できない語り</a>
+                        <a href="part2.html#language" class="dropdown-item"><i class="fas fa-language"></i> 言語の実験</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown dropdown-mega">
+                    <a href="part3.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-user-tie"></i> 巨匠
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part3.html#gogol" class="dropdown-item"><i class="fas fa-mask"></i> ニコライ・ゴーゴリ</a>
+                        <a href="part3.html#proust" class="dropdown-item"><i class="fas fa-cookie-bite"></i> マルセル・プルースト</a>
+                        <a href="part3.html#bely" class="dropdown-item"><i class="fas fa-cube"></i> アンドレイ・ベールイ</a>
+                        <a href="part3.html#joyce" class="dropdown-item"><i class="fas fa-map-signs"></i> ジェイムズ・ジョイス</a>
+                        <a href="part3.html#woolf" class="dropdown-item"><i class="fas fa-water"></i> ヴァージニア・ウルフ</a>
+                        <a href="part3.html#kafka" class="dropdown-item"><i class="fas fa-bug"></i> フランツ・カフカ</a>
+                        <a href="part3.html#faulkner" class="dropdown-item"><i class="fas fa-clock"></i> ウィリアム・フォークナー</a>
+                        <a href="part3.html#borges" class="dropdown-item"><i class="fas fa-infinity"></i> ホルヘ・ルイス・ボルヘス</a>
+                        <a href="part3.html#beckett" class="dropdown-item"><i class="fas fa-tree"></i> サミュエル・ベケット</a>
+                        <a href="part3.html#burroughs" class="dropdown-item"><i class="fas fa-cut"></i> ウィリアム・S・バロウズ</a>
+                        <a href="part3.html#sarraute" class="dropdown-item"><i class="fas fa-microscope"></i> ナタリー・サロート</a>
+                        <a href="part3.html#nakamura" class="dropdown-item"><i class="fas fa-yin-yang"></i> 中村真一郎</a>
+                        <a href="part3.html#robbe-grillet" class="dropdown-item"><i class="fas fa-camera"></i> アラン・ロブ＝グリエ</a>
+                        <a href="part3.html#duras" class="dropdown-item"><i class="fas fa-film"></i> マルグリット・デュラス</a>
+                        <a href="part3.html#calvino" class="dropdown-item"><i class="fas fa-chess-knight"></i> イタロ・カルヴィーノ</a>
+                        <a href="part3.html#abe" class="dropdown-item"><i class="fas fa-box"></i> 安部公房</a>
+                        <a href="part3.html#marquez" class="dropdown-item"><i class="fas fa-leaf"></i> G・ガルシア＝マルケス</a>
+                        <a href="part3.html#oe" class="dropdown-item"><i class="fas fa-child"></i> 大江健三郎</a>
+                        <a href="part3.html#pynchon" class="dropdown-item"><i class="fas fa-rocket"></i> トマス・ピンチョン</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part4.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-wave-square"></i> 動向
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part4.html#modernism" class="dropdown-item"><i class="fas fa-brain"></i> モダニズム文学</a>
+                        <a href="part4.html#futurism-it" class="dropdown-item"><i class="fas fa-industry"></i> イタリア未来派</a>
+                        <a href="part4.html#surrealism" class="dropdown-item"><i class="fas fa-moon"></i> ダダ・シュルレアリスム</a>
+                        <a href="part4.html#futurism-ru" class="dropdown-item"><i class="fas fa-rocket"></i> ロシア未来派</a>
+                        <a href="part4.html#absurdism" class="dropdown-item"><i class="fas fa-theater-masks"></i> 不条理文学</a>
+                        <a href="part4.html#nouveau" class="dropdown-item"><i class="fas fa-camera"></i> ヌーヴォー・ロマン</a>
+                        <a href="part4.html#beat" class="dropdown-item"><i class="fas fa-drum"></i> ビート・ジェネレーション</a>
+                        <a href="part4.html#oulipo" class="dropdown-item"><i class="fas fa-chess-knight"></i> ウリポ</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part5.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-lightbulb"></i> テーマ
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part5.html#alienation" class="dropdown-item"><i class="fas fa-user-slash"></i> 疎外とアイデンティティ</a>
+                        <a href="part5.html#city-machine" class="dropdown-item"><i class="fas fa-city"></i> 都市と機械</a>
+                        <a href="part5.html#reality" class="dropdown-item"><i class="fas fa-eye"></i> 現実と意識</a>
+                        <a href="part5.html#language-doubt" class="dropdown-item"><i class="fas fa-comment-slash"></i> 言語への懐疑</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part6.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-gift"></i> 遺産
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part6.html#postmodern-inheritance" class="dropdown-item"><i class="fas fa-forward"></i> ポストモダンへの継承</a>
+                        <a href="part6.html#mainstream-influence" class="dropdown-item"><i class="fas fa-film"></i> 主流と他メディアへの影響</a>
+                        <a href="part6.html#contemporary-relevance" class="dropdown-item"><i class="fas fa-globe-americas"></i> 現代的意義</a>
+                <li class="nav-item">
+                    <a href="chronology.html" class="nav-link active">
+                        <i class="fas fa-calendar-alt"></i> 年表
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="glossary.html" class="nav-link">
+                        <i class="fas fa-book-medical"></i> 用語集
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="references.html" class="nav-link">
+                        <i class="fas fa-book"></i> 参考文献
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav><div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
+            <span class="breadcrumb-separator">/</span>
+            <span>第7部：年表</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-wrapper fade-in">
+            <h1 class="page-title"><i class="fas fa-calendar-alt"></i> 第7部：前衛小説関連年表</h1>
+
+            <p>19世紀末から2020年代までの前衛小説に関する重要な出来事を時系列で整理しました。世界の思想や歴史的背景と合わせて、前衛小説の流れを一覧できます。</p>
+
+
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 12%;">年代</th>
+                            <th style="width: 25%;">世界の出来事・思想</th>
+                            <th style="width: 33%;">文学の出来事（海外）</th>
+                            <th style="width: 30%;">文学の出来事（日本）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1880年代</strong></td>
+                            <td>帝国主義の拡大、産業革命の進展、社会ダーウィニズムの流行</td>
+                            <td></td>
+                            <td>坪内逍遥『小説神髄』、二葉亭四迷『浮雲』など、近代日本文学が成立</td>
+                        </tr>
+                        <tr>
+                            <td>1882</td>
+                            <td>独・墺・伊が三国同盟を締結</td>
+                            <td>ジェイムズ・ジョイス誕生<br>ヴァージニア・ウルフ誕生</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1883</td>
+                            <td>パリで工業所有権保護に関する条約が結ばれる。オリエント急行開通</td>
+                            <td>フランツ・カフカ誕生</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>1890年代</strong></td>
+                            <td>ニーチェ「神の死」、フロイト精神分析の創始</td>
+                            <td></td>
+                            <td>『文学界』を拠点にロマン主義が隆盛。泉鏡花が幻想文学で頭角を現す</td>
+                        </tr>
+                        <tr>
+                            <td>1897</td>
+                            <td>第1回シオニスト会議開催、ディーゼルエンジン発明</td>
+                            <td>ウィリアム・フォークナー誕生</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1899</td>
+                            <td>米、中国に対し門戸開放宣言。日本電気が設立</td>
+                            <td>ホルヘ・ルイス・ボルヘス誕生</td>
+                            <td>川端康成誕生</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1900年代</strong></td>
+                            <td>アインシュタインが特殊相対性理論を発表(1905)</td>
+                            <td></td>
+                            <td>自然主義文学が隆盛。田山花袋『蒲団』が私小説の流れを決定づける</td>
+                        </tr>
+                        <tr>
+                            <td>1906</td>
+                            <td>サンフランシスコ大地震。SOSが国際遭難信号に採択</td>
+                            <td>サミュエル・ベケット誕生</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>1910年代</strong></td>
+                            <td>第一次世界大戦 (1914-1918)</td>
+                            <td>マルセル・プルースト『失われた時を求めて』第1篇刊行 (1913)</td>
+                            <td>反自然主義の動きが活発化。耽美派（谷崎潤一郎など）、白樺派（武者小路実篤、志賀直哉など）が登場</td>
+                        </tr>
+                        <tr>
+                            <td>1914</td>
+                            <td>サラエボ事件をきっかけに第一次世界大戦が勃発</td>
+                            <td>ウィリアム・S・バロウズ誕生</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1915</td>
+                            <td>独、無制限潜水艦作戦を開始。史上初の毒ガス兵器使用</td>
+                            <td>フランツ・カフカ『変身』刊行</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1916</td>
+                            <td>チューリッヒでダダイズム運動が始まる</td>
+                            <td></td>
+                            <td>芥川龍之介が『鼻』で文壇に登場。新理知派の代表となる</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1920年代</strong></td>
+                            <td>「狂騒の20年代」（ジャズ・エイジ）、大衆文化の開花、ファシズムの台頭</td>
+                            <td></td>
+                            <td>ダダ、未来派など欧州の前衛芸術運動が本格的に紹介され、新感覚派やプロレタリア文学など多様な文学運動が勃興</td>
+                        </tr>
+                        <tr>
+                            <td>1922</td>
+                            <td>ソビエト連邦成立。ムッソリーニがローマ進軍、伊首相に。ツタンカーメン王墓発見</td>
+                            <td>ジェイムズ・ジョイス『ユリシーズ』刊行<br>アラン・ロブ＝グリエ誕生<br>マルセル・プルースト死去</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1924</td>
+                            <td>フランスで初の冬季五輪開催。米国で排日移民法成立</td>
+                            <td>アンドレ・ブルトン『シュルレアリスム宣言』発表<br>フランツ・カフカ死去</td>
+                            <td>横光利一、川端康成らが『文藝時代』を創刊（新感覚派）<br>安部公房誕生</td>
+                        </tr>
+                        <tr>
+                            <td>1925</td>
+                            <td>中国で五・三〇事件（反帝国主義運動）発生。日本で普通選挙法・治安維持法成立、ラジオ放送開始</td>
+                            <td>ヴァージニア・ウルフ『ダロウェイ夫人』刊行<br>カフカ『審判』刊行（遺稿）</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1926</td>
+                            <td>蔣介石が北伐を開始。ダイムラー・ベンツ社設立。日本では昭和に改元</td>
+                            <td>カフカ『城』刊行（遺稿）</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1927</td>
+                            <td>リンドバーグが大西洋単独無着陸飛行に成功。世界初のトーキー映画公開。日本では昭和金融恐慌、初の地下鉄開通</td>
+                            <td>V・ウルフ『灯台へ』刊行</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1928</td>
+                            <td>パリ不戦条約締結。フレミングがペニシリン発見。ミッキーマウスが『蒸気船ウィリー』でデビュー</td>
+                            <td></td>
+                            <td>横光利一『機械』刊行</td>
+                        </tr>
+                        <tr>
+                            <td>1929</td>
+                            <td>世界恐慌</td>
+                            <td>ウィリアム・フォークナー『響きと怒り』刊行</td>
+                            <td>小林秀雄が『様々なる意匠』で文壇に登場、近代文芸評論を確立</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1930年代</strong></td>
+                            <td>世界恐慌の深刻化、全体主義（ファシズム、ナチズム）の台頭</td>
+                            <td></td>
+                            <td>新興芸術派、新心理主義（伊藤整など）といったモダニズム文学が隆盛。「意識の流れ」の手法などが試みられる</td>
+                        </tr>
+                        <tr>
+                            <td>1935</td>
+                            <td>独、ヴェルサイユ条約を破棄し再軍備宣言。伊、エチオピア侵攻。独でニュルンベルク法（ユダヤ人市民権剥奪）成立</td>
+                            <td></td>
+                            <td>大江健三郎誕生</td>
+                        </tr>
+                        <tr>
+                            <td>1936</td>
+                            <td>スペイン内戦勃発。ベルリン五輪開催。日独防共協定締結</td>
+                            <td>W・フォークナー『アブサロム、アブサロム！』刊行</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1939</td>
+                            <td>第二次世界大戦勃発</td>
+                            <td>J・ジョイス『フィネガンズ・ウェイク』刊行<br>ナタリー・サロート『トロピスム』刊行</td>
+                            <td>中島敦が『山月記』の原型を執筆。独自の文体で近代人の自我を描く</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1940年代</strong></td>
+                            <td>第二次世界大戦終結 (1945)</td>
+                            <td></td>
+                            <td>戦時下の統制を経て、戦後は無頼派（坂口安吾、太宰治など）が登場。埴谷雄高が『死霊』の連載を開始</td>
+                        </tr>
+                        <tr>
+                            <td>1941</td>
+                            <td>独ソ戦開始。大西洋憲章発表。日本の真珠湾攻撃により太平洋戦争勃発</td>
+                            <td>J・ジョイス死去<br>V・ウルフ死去</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1944</td>
+                            <td>連合国軍がノルマンディー上陸作戦を敢行。ブレトンウッズ会議でIMF・世界銀行の設立が決定</td>
+                            <td>H・L・ボルヘス『伝奇集』刊行</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1948</td>
+                            <td>イスラエル独立宣言、第一次中東戦争勃発。世界保健機関（WHO）設立。ガンディー暗殺</td>
+                            <td>ジャック・ケルアックが「ビート」という言葉を使用<br>サロート『ある無名氏の肖像』刊行</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>1950年代</strong></td>
+                            <td>冷戦構造の深化</td>
+                            <td></td>
+                            <td>安部公房、三島由紀夫ら戦後文学が成熟。吉行淳之介、安岡章太郎ら「第三の新人」が登場</td>
+                        </tr>
+                        <tr>
+                            <td>1950</td>
+                            <td>朝鮮戦争勃発。世界初のクレジットカード「ダイナースクラブ」登場</td>
+                            <td>ケルアック『町と都市』刊行</td>
+                            <td>三島由紀夫『青の時代』発表</td>
+                        </tr>
+                        <tr>
+                            <td>1951</td>
+                            <td>サンフランシスコ平和条約・日米安全保障条約調印</td>
+                            <td>サミュエル・ベケット『モロイ』刊行（三部作の第1作）</td>
+                            <td>安部公房『壁』で芥川賞受賞</td>
+                        </tr>
+                        <tr>
+                            <td>1952</td>
+                            <td>英国でエリザベス2世即位。米国が初の水爆実験。日本ではサンフランシスコ講和条約が発効し主権回復</td>
+                            <td>ジョン・クレロン・ホームズ「これがビート・ジェネレーションだ」発表<br>ベケット『マロウン死す』刊行（三部作の第2作）</td>
+                            <td>野間宏が『真空地帯』を発表</td>
+                        </tr>
+                        <tr>
+                            <td>1953</td>
+                            <td>スターリン死去。朝鮮戦争休戦。DNAの二重らせん構造解明。エベレスト初登頂</td>
+                            <td>アラン・ロブ＝グリエ『消しゴム』刊行<br>W・S・バロウズ『ジャンキー』刊行<br>ベケット『名づけえぬもの』刊行（三部作の第3作）</td>
+                            <td>安岡章太郎が『悪い仲間・陰気な愉しみ』で芥川賞受賞</td>
+                        </tr>
+                        <tr>
+                            <td>1955</td>
+                            <td>ワルシャワ条約機構発足。アジア・アフリカ会議（バンドン会議）開催。カリフォルニアにディズニーランド開園</td>
+                            <td>アレン・ギンズバーグ「吠える」朗読会（10月7日、サンフランシスコ・シックス・ギャラリー）<br>ケルアック『メキシコシティ・ブルース』完成</td>
+                            <td>石原慎太郎が『太陽の季節』を発表、「太陽族」が流行語となる</td>
+                        </tr>
+                        <tr>
+                            <td>1956</td>
+                            <td>フルシチョフがスターリン批判。ハンガリー動乱、第二次中東戦争（スエズ危機）勃発。日本が国連に加盟</td>
+                            <td>ギンズバーグ『吠える その他の詩』シティ・ライツ書店から出版</td>
+                            <td>三島由紀夫が『金閣寺』を発表</td>
+                        </tr>
+                        <tr>
+                            <td>1957</td>
+                            <td>ソ連が世界初の人工衛星スプートニク1号打上げ成功。欧州経済共同体（EEC）設立</td>
+                            <td>ジャック・ケルアック『路上』刊行<br>アラン・ロブ＝グリエ『嫉妬』刊行<br>ミシェル・ビュトール『心変わり』刊行<br>サロート『プラネタリウム』刊行<br>エミール・アンリオが「ヌーヴォー・ロマン」という言葉を造語（5月22日）<br>『吠える』と『裸のランチ』の猥褻裁判始まる</td>
+                            <td>大江健三郎が『奇妙な仕事』でデビュー、翌年『飼育』で芥川賞を最年少受賞</td>
+                        </tr>
+                        <tr>
+                            <td>1958</td>
+                            <td>米、初の人工衛星打上げ。欧州経済共同体（EEC）発足。日本では東京タワー完成、チキンラーメン発売</td>
+                            <td>マルグリット・デュラス『モデラート・カンタービレ』刊行<br>ケルアック『ダルマ・バムズ』刊行</td>
+                            <td>深沢七郎『楢山節考』が映画化され、大きな衝撃を与える</td>
+                        </tr>
+                        <tr>
+                            <td>1959</td>
+                            <td>キューバ革命成功。ソ連の探査機が初の月面到達。南極条約調印。東京五輪開催決定</td>
+                            <td>W・S・バロウズ『裸のランチ』刊行<br>ギュンター・グラス『ブリキの太鼓』刊行</td>
+                            <td>三島由紀夫が『鏡子の家』を発表し、論争を呼ぶ。『S-Fマガジン』が創刊</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1960年代</strong></td>
+                            <td>学生運動、カウンターカルチャーの隆盛</td>
+                            <td></td>
+                            <td>安部公房、大江健三郎が次々と代表作を発表し、国際的評価を高める。「内向の世代」が登場</td>
+                        </tr>
+                        <tr>
+                            <td>1961</td>
+                            <td>ソ連のガガーリンが人類初の有人宇宙飛行に成功。ベルリンの壁建設</td>
+                            <td>ジャン・リカルドゥー『カンヌの展望台』刊行</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1962</td>
+                            <td>キューバ危機</td>
+                            <td>W・フォークナー死去</td>
+                            <td>安部公房『砂の女』刊行</td>
+                        </tr>
+                        <tr>
+                            <td>1964</td>
+                            <td>中国が初の核実験成功。米で公民権法成立。日本では東京五輪開催、東海道新幹線開業</td>
+                            <td></td>
+                            <td>大江健三郎『個人的な体験』刊行<br>安部公房『他人の顔』刊行</td>
+                        </tr>
+                        <tr>
+                            <td>1965</td>
+                            <td>米、ベトナム北爆開始。ソ連、人類初の宇宙遊泳成功。日本ではいざなぎ景気開始</td>
+                            <td>リカルドゥー『コンスタンティノープルの攻略』刊行</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1967</td>
+                            <td>第三次中東戦争勃発。中国が初の水爆実験成功。欧州共同体（EC）発足。ビートルズ『サージェント・ペパーズ』発売</td>
+                            <td>ガブリエル・ガルシア・マルケス『百年の孤独』刊行</td>
+                            <td>大江健三郎『万延元年のフットボール』刊行</td>
+                        </tr>
+                        <tr>
+                            <td>1968</td>
+                            <td>フランス五月革命<br>プラハの春</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1969</td>
+                            <td>アポロ11号、人類初の月面着陸成功。ウッドストック・フェスティバル開催。ベトナム反戦運動が激化</td>
+                            <td>リカルドゥー『名所』刊行<br>ケルアック死去</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>1970年代</strong></td>
+                            <td>ポスト構造主義思想の隆盛<br>ロラン・バルト「作者の死」(1967)<br>ジャック・デリダ脱構築理論</td>
+                            <td></td>
+                            <td>中上健次『岬』、村上龍『限りなく透明に近いブルー』が芥川賞受賞。新たな文学の潮流を生む</td>
+                        </tr>
+                        <tr>
+                            <td>1973</td>
+                            <td>ベトナム和平協定調印。第四次中東戦争勃発、第一次石油危機（オイルショック）</td>
+                            <td>トマス・ピンチョン『重力の虹』刊行</td>
+                            <td>安部公房『箱男』刊行</td>
+                        </tr>
+                        <tr>
+                            <td>1979</td>
+                            <td>イラン革命。米中国交正常化。ソ連、アフガニスタン侵攻。スリーマイル島原発事故。ソニーがウォークマン発売</td>
+                            <td>イタロ・カルヴィーノ『冬の夜ひとりの旅人が』刊行</td>
+                            <td>村上春樹『風の歌を聴け』で群像新人文学賞受賞</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1980年代</strong></td>
+                            <td>新自由主義の台頭（米・レーガン、英・サッチャー）、冷戦の終結へ、ポストモダン思想の流行</td>
+                            <td>ポストモダニズム文学の隆盛（ウンベルト・エーコ『薔薇の名前』など）。マジックリアリズムが世界的に注目される（サルマン・ラシュディ『真夜中の子供たち』など）</td>
+                            <td>「ニューアカデミズム」のブーム、ポストモダン思想が流行。村上春樹が新たな国民作家に</td>
+                        </tr>
+                        <tr>
+                            <td>1985</td>
+                            <td>ソ連でゴルバチョフ書記長就任。米ソ首脳会談開催。ライブエイド開催。日本では男女雇用機会均等法成立</td>
+                            <td>カルヴィーノ死去</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1986</td>
+                            <td>チャレンジャー号爆発事故。チェルノブイリ原発事故。フィリピンでピープルパワー革命</td>
+                            <td>H・L・ボルヘス死去</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1987</td>
+                            <td>米ソが中距離核戦力（INF）全廃条約に調印。世界的な株価大暴落（ブラックマンデー）。日本では国鉄が分割民営化</td>
+                            <td>トニ・モリスンが『ビラヴド』を発表</td>
+                            <td>村上春樹『ノルウェイの森』刊行（大ベストセラー）</td>
+                        </tr>
+                        <tr>
+                            <td>1989</td>
+                            <td>ベルリンの壁崩壊<br>冷戦終結</td>
+                            <td>S・ベケット死去</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>1990年代</strong></td>
+                            <td>冷戦終結、ソ連崩壊、湾岸戦争、日本のバブル経済崩壊、フランシス・フクヤマ『歴史の終わり』</td>
+                            <td>ポストコロニアリズム文学、多文化主義文学が隆盛。マイノリティの視点からの作品が多数発表される</td>
+                            <td>「J文学」の登場（町田康、阿部和重など）。小川洋子、川上弘美ら女性作家も活躍</td>
+                        </tr>
+                        <tr>
+                            <td>1993</td>
+                            <td>欧州連合（EU）発足。イスラエルとPLOが相互承認。日本ではJリーグ開幕</td>
+                            <td>トニ・モリスンがアフリカ系アメリカ人女性として初のノーベル文学賞受賞</td>
+                            <td>安部公房死去</td>
+                        </tr>
+                        <tr>
+                            <td>1994</td>
+                            <td>南アでアパルトヘイトが終結、マンデラ大統領就任。ルワンダで大虐殺。英仏海峡トンネル開通。Amazon、Yahoo!設立</td>
+                            <td>村上春樹が『ねじまき鳥クロニクル』を発表、海外でも高く評価される</td>
+                            <td>大江健三郎がノーベル文学賞を受賞</td>
+                        </tr>
+                        <tr>
+                            <td>1997</td>
+                            <td>香港が中国に返還。京都議定書採択。世界初のクローン羊「ドリー」誕生</td>
+                            <td>W・S・バロウズ死去</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>2000年代</strong></td>
+                            <td>インターネット時代の本格化</td>
+                            <td>9.11同時多発テロを受け、「ポスト9.11文学」が大きな潮流に。オートフィクション（自己小説）が世界的に広まる</td>
+                            <td>「ケータイ小説」が大ブームに。金原ひとみ、綿矢りさが芥川賞を受賞し、若い才能が注目される</td>
+                        </tr>
+                        <tr>
+                            <td>2006</td>
+                            <td>北朝鮮が初の核実験実施。フセイン元大統領処刑。冥王星が惑星から除外される</td>
+                            <td>コーマック・マッカーシーが『ザ・ロード』を発表</td>
+                            <td>川端康成死去</td>
+                        </tr>
+                        <tr>
+                            <td>2008</td>
+                            <td>リーマン・ショック、世界金融危機。米国でオバマが初のアフリカ系大統領に当選。北京五輪開催</td>
+                            <td>A・ロブ＝グリエ死去</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><strong>2010年代</strong></td>
+                            <td>SNSの普及、アラブの春、ポピュリズムの台頭</td>
+                            <td>SNSの普及を背景に、オートフィクションが世界的な潮流に。SNS上で作品を発表する「インスタ詩人」なども登場</td>
+                            <td>SNSの普及を背景にウェブ小説が隆盛。「異世界転生」ものがブームに</td>
+                        </tr>
+                        <tr>
+<td>2016</td>
+                            <td>英国が国民投票でEU離脱（ブレグジット）を決定。米国でトランプ大統領誕生。ポケモンGOが世界的大ヒット</td>
+                            <td>ボブ・ディランがミュージシャンとして初のノーベル文学賞受賞</td>
+                            <td>村田沙耶香『コンビニ人間』が芥川賞を受賞</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2020年代</strong></td>
+                            <td>新型コロナウイルスのパンデミック、ロシアのウクライナ侵攻、生成AIの急速な進化</td>
+                            <td>新型コロナウイルスのパンデミックを受け、「パンデミック文学」が生まれる。気候変動をテーマにした「クライメート・フィクション」も大きな潮流に</td>
+                            <td>宇佐見りん『推し、燃ゆ』が芥川賞を受賞</td>
+                        </tr>
+                        <tr>
+                            <td>2023</td>
+                            <td>WHOがコロナ緊急事態宣言を終了。イスラエル・ハマス紛争勃発。生成AIが急速に普及</td>
+                            <td>ヨン・フォッセがノーベル文学賞を受賞</td>
+                            <td>大江健三郎死去</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="deep-dive mt-3">
+                <h4><i class="fas fa-lightbulb"></i> この年表について</h4>
+                <p>この年表は、前衛小説の発展を理解するための主要な出来事をまとめたものです。作品の刊行年、作家の生没年、重要な文学運動の開始時期、そして時代背景となる歴史的出来事を含んでいます。</p>
+                <p>特に1950年代は、ヌーヴォー・ロマンとビート・ジェネレーションという二つの重要な前衛運動が同時期に展開された、前衛小説史において極めて重要な時期です。</p>
+            </div>
+
+            <div class="pagination">
+                <a href="part6.html" class="prev"><i class="fas fa-arrow-left"></i> 第6部：遺産</a>
+                <div class="page-info">第7部 / 全9部</div>
+                <a href="references.html" class="next">参考文献 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+
+    <footer>
+        <p>&copy; 2025 前衛小説ガイドブック | 20世紀文学の革新と実験の記録. All Rights Reserved. | Planning & Direction: Fujiwara Mu</p>
+        <p class="ai-disclaimer">※このページはAIによって生成されたものであり、内容にはハルシネーション（AIの誤情報生成）が含まれる可能性があります。情報の正確性については、必ずご自身でご確認ください。</p>
+        <p><a href="index.html">トップページ</a> | <a href="chronology.html">年表</a> | <a href="references.html">参考文献</a> | <a href="about.html">このサイトについて</a></p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // メニュートグル
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // ドロップダウン（モバイル対応）
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            toggle.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    dropdown.classList.toggle('active');
+                }
+            });
+        });
+
+        // スムーズスクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // スクロールトップボタン
+        const scrollTop = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+
+            // 進捗インジケーター
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.pageYOffset;
+            const progress = (scrolled / documentHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        scrollTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // メニューの外側クリックで閉じる
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-container')) {
+                navMenu.classList.remove('active');
+                document.querySelectorAll('.dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

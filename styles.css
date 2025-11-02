@@ -1,0 +1,1110 @@
+/* ==========================================
+   前衛小説報告書 - 共通スタイルシート
+   ========================================== */
+
+/* リセットと基本設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #e74c3c;
+    --text-color: #333;
+    --light-bg: #ecf0f1;
+    --white: #ffffff;
+    --border-color: #bdc3c7;
+    --highlight: #3498db;
+    --gradient-start: #667eea;
+    --gradient-end: #764ba2;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    font-family: 'Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', sans-serif;
+    line-height: 1.8;
+    color: var(--text-color);
+    background: var(--light-bg);
+    min-height: 100vh;
+}
+
+/* ==========================================
+   ナビゲーションバー
+   ========================================== */
+
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.nav-logo {
+    color: var(--white);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.3s ease;
+    white-space: nowrap; /* ロゴテキストの改行を防ぐ */
+}
+
+.nav-logo:hover {
+    opacity: 0.8;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    color: var(--white);
+    text-decoration: none;
+    padding: 1.2rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-bottom: 3px solid var(--accent-color);
+}
+
+/* ドロップダウンメニュー */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+.dropdown-toggle::after {
+    content: '▼';
+    font-size: 0.7rem;
+    margin-left: 0.3rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-toggle::after {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    min-width: 250px;
+    display: none;
+    flex-direction: column;
+    padding: 0.5rem 0;
+    animation: fadeIn 0.3s ease;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-item {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: background 0.2s ease;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .nav-menu.active {
+        max-height: calc(100vh - 70px); /* 画面の高さからヘッダーの高さを引いた分を最大値に */
+        overflow-y: auto; /* コンテンツがはみ出たらメニュー全体をスクロール */
+    }
+
+    .pagination {
+        flex-direction: column; /* 縦に並べる */
+        align-items: center; /* 中央揃え */
+        gap: 1.5rem; /* 縦の隙間を調整 */
+    }
+
+    .pagination a {
+        width: 80%; /* ボタンの幅を広げてタップしやすくする */
+        max-width: 300px;
+    }
+}
+
+
+.dropdown-item:hover {
+    background: var(--light-bg);
+    color: var(--accent-color);
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+    color: var(--highlight);
+}
+
+/* 複数列ドロップダウン */
+.dropdown-mega:hover .dropdown-menu {
+    display: block; /* flexを上書きしてcolumn-countを有効化 */
+    width: 500px;
+    column-count: 2;
+    column-gap: 1rem;
+    padding: 1rem;
+}
+
+
+/* モバイルメニュートグル */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    line-height: 1;
+}
+
+.menu-toggle-text {
+    font-size: 0.6rem;
+    font-weight: 500;
+    display: block;
+}
+
+/* ==========================================
+   ヒーローセクション（トップページ用）
+   ========================================== */
+
+.hero {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: var(--white);
+    padding: 6rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="rgba(255,255,255,0.05)" d="M0,0 Q300,60 600,30 T1200,0 L1200,120 L0,120 Z"/></svg>') repeat-x bottom;
+    background-size: 100% 120px;
+}
+
+.hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero .subtitle {
+    font-size: 1.5rem;
+    opacity: 0.95;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--white);
+    color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+}
+
+.btn-outline:hover {
+    background: var(--white);
+    color: var(--primary-color);
+}
+
+/* ==========================================
+   パンくずリスト
+   ========================================== */
+
+.breadcrumb {
+    background: var(--white);
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow);
+}
+
+.breadcrumb-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.breadcrumb a {
+    color: var(--highlight);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--accent-color);
+}
+
+.breadcrumb span {
+    color: var(--text-color);
+}
+
+.breadcrumb-separator {
+    color: var(--border-color);
+    margin: 0 0.5rem;
+}
+
+/* ==========================================
+   メインコンテンツ
+   ========================================== */
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.content-wrapper {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--accent-color);
+    position: relative;
+}
+
+.page-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 80px;
+    height: 3px;
+    background: var(--highlight);
+}
+
+/* 見出し */
+h2 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin: 2.5rem 0 1rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--accent-color);
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap; /* 画面が狭い場合に折り返す */
+}
+
+h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 60px;
+    height: 3px;
+    background: var(--highlight);
+}
+
+h2 small {
+    display: inline-flex; /* Flexアイテムとして振る舞う */
+    align-items: baseline; /* ベースラインで揃える */
+    margin-left: 1em; /* タイトルとの距離を固定 */
+    font-size: 1.1rem; /* フォントサイズを調整 */
+    color: #7f8c8d; /* Muted gray */
+    font-weight: 400;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-style: italic;
+    letter-spacing: 0.05em; /* 文字間隔を少し広げる */
+}
+
+h2 small::before {
+    content: '— '; /* 前にダッシュとスペース */
+    color: var(--border-color);
+    font-weight: 300;
+    font-size: 1.1rem; /* 副題のフォントサイズに合わせる */
+}
+
+h2 small::after {
+    content: ' —'; /* 後ろにスペースとダッシュ */
+    color: var(--border-color);
+    font-weight: 300;
+    font-size: 1.1rem; /* 副題のフォントサイズに合わせる */
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin: 2rem 0 1rem 0;
+    padding-left: 1rem;
+    border-left: 4px solid var(--accent-color);
+}
+
+h2, h3 {
+    border-bottom: 2px solid #f39c12;
+    padding-bottom: 10px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+h2[id], h3[id], dt[id] {
+    scroll-margin-top: 100px; /* スティッキーヘッダーの高さを考慮 */
+}
+
+/* .glossary dt から scroll-margin-top を削除 */
+.glossary dt {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 0.3rem;
+}
+
+/* ==========================================
+   深掘り分析ボックス
+   ========================================== */
+
+.deep-dive {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border-left: 4px solid var(--highlight);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.deep-dive h4 {
+    color: var(--highlight);
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ==========================================
+   テーブル
+   ========================================== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+}
+
+th {
+    background: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+tr:nth-child(even) {
+    background: var(--light-bg);
+}
+
+tr:hover {
+    background: #e8f4f8;
+}
+
+/* 年表用のテーブルラッパー */
+.table-wrapper {
+    position: relative;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin: 2rem 0;
+}
+
+.table-wrapper table {
+    margin: 0;
+    box-shadow: none;
+}
+
+/* ==========================================
+   参考文献
+   ========================================== */
+
+.references {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.references h2 {
+    border-bottom-color: var(--primary-color);
+}
+
+.references h3 {
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    border-left-color: var(--highlight);
+}
+
+.references ul {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.references li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.references li::before {
+    content: '📚';
+    position: absolute;
+    left: 0;
+}
+
+.references li:last-child {
+    border-bottom: none;
+}
+
+/* ==========================================
+   ページネーション
+   ========================================== */
+
+.pagination {
+    display: flex;
+    justify-content: center; /* 中央揃え */
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+    gap: 1rem;
+    flex-wrap: wrap; /* 画面が狭い場合に折り返す */
+}
+
+.pagination a {
+    text-decoration: none;
+    color: var(--white);
+    background: var(--primary-color);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    flex: 0 0 auto; /* 幅をコンテンツに合わせ、伸縮させない */
+    justify-content: center;
+}
+
+.pagination a:hover {
+    background: var(--highlight);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.pagination a.prev {
+    justify-content: flex-start;
+}
+
+.pagination a.next {
+    justify-content: flex-end;
+}
+
+.pagination .page-info {
+    text-align: center;
+    color: var(--primary-color); /* メインカラーに合わせる */
+    font-size: 1.1rem; /* フォントサイズを大きく */
+    font-weight: 600; /* 太字に */
+    padding: 0.5rem 1rem; /* 余白を追加 */
+    background: var(--white); /* 背景色 */
+    border: 1px solid var(--border-color); /* 枠線 */
+    border-radius: 50px; /* 角を丸く */
+    min-width: 120px; /* 最小幅を設定 */
+    margin: 0 1rem; /* 左右のボタンとの間隔 */
+    flex: 0 0 auto;
+}
+
+/* ==========================================
+   進捗インジケーター
+   ========================================== */
+
+.progress-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--accent-color);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* ==========================================
+   サイドバー目次（オプション）
+   ========================================== */
+
+.sidebar-toc {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    max-width: 250px;
+    max-height: 70vh;
+    overflow-y: auto;
+    display: none;
+}
+
+.sidebar-toc.active {
+    display: block;
+}
+
+.sidebar-toc h4 {
+    margin-top: 0;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.sidebar-toc ul {
+    list-style: none;
+    margin: 0;
+}
+
+.sidebar-toc li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-toc a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+    display: block;
+    padding: 0.3rem 0;
+}
+
+.sidebar-toc a:hover {
+    color: var(--accent-color);
+}
+
+.sidebar-toc a.active {
+    color: var(--highlight);
+    font-weight: 600;
+}
+
+/* ==========================================
+   スクロールトップボタン
+   ========================================== */
+
+.scroll-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--accent-color);
+    color: var(--white);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.scroll-top:hover {
+    background: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.scroll-top.show {
+    display: flex;
+}
+
+/* ==========================================
+   フッター
+   ========================================== */
+
+footer {
+    background: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+footer a {
+    color: var(--highlight);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.ai-disclaimer {
+    font-size: 0.8em;
+    color: #ccc;
+}
+
+/* ==========================================
+   アニメーション
+   ========================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease;
+}
+
+/* ==========================================
+   レスポンシブデザイン
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .sidebar-toc {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--primary-color);
+        box-shadow: var(--shadow-lg);
+        gap: 0;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: 1rem 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: none;
+    }
+
+    .dropdown.active .dropdown-menu {
+        display: flex;
+    }
+
+    .dropdown-menu .dropdown-item {
+        color: var(--white);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+    }
+
+    .content-wrapper {
+        padding: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 0.5rem;
+    }
+
+    .pagination {
+        flex-direction: column;
+    }
+
+    .pagination a {
+        width: 100%;
+    }
+
+    .scroll-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* ==========================================
+   印刷用スタイル
+   ========================================== */
+
+@media print {
+    .navbar,
+    .breadcrumb,
+    .pagination,
+    .scroll-top,
+    .sidebar-toc,
+    .progress-indicator,
+    footer {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    .content-wrapper {
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .hero {
+        background: none;
+        color: black;
+        padding: 2rem 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+        color: black;
+    }
+
+    table, figure, img {
+        page-break-inside: avoid;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .deep-dive {
+        border: 1px solid #ccc;
+        background: #f5f5f5;
+    }
+}
+
+/* ==========================================
+   用語集
+   ========================================== */
+.glossary dl {
+    margin-bottom: 2rem;
+}
+
+.glossary dt {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 0.3rem;
+}
+
+.glossary dd {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.glossary dd a {
+    color: var(--highlight);
+    text-decoration: none;
+}
+
+.glossary dd a:hover {
+    text-decoration: underline;
+}
+
+.glossary h3 {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mt-3 { margin-top: 3rem; }
+
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.mb-3 { margin-bottom: 3rem; }
+
+.hidden {
+    display: none;
+}
+
+/* ==========================================
+   ハイセンスなリンクスタイル
+   ========================================== */
+.content-wrapper a {
+    color: var(--highlight);
+    text-decoration: none;
+    position: relative;
+    background-image: linear-gradient(var(--highlight), var(--highlight));
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+}
+
+.content-wrapper a:hover,
+.content-wrapper a:focus {
+    background-size: 100% 2px;
+}
+
+/* ==========================================
+   Bookstore Dropdown
+   ========================================== */
+.book-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.book-title {
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+
+.bookstore-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.bookstore-trigger {
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.bookstore-trigger:hover {
+    background: var(--highlight);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.bookstore-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    min-width: 200px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+}
+
+.bookstore-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s;
+}
+
+.bookstore-menu .store-link {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: background 0.2s ease, color 0.2s ease;
+    font-size: 0.95rem;
+    background-image: none; /* Reset */
+}
+
+.bookstore-menu .store-link:hover {
+    background: var(--light-bg);
+    color: var(--accent-color);
+    background-size: 0; /* Reset */
+}
+
+.bookstore-menu .store-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.bookstore-menu .store-link.amazon i { color: #FF9900; }
+.bookstore-menu .store-link.rakuten i { color: #BF0000; }
+.bookstore-menu .store-link.kinokuniya i { color: #2E7D32; }

@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第3部：前衛小説の巨匠たちとその作品 | 前衛小説ガイドブック</title>
+    <link rel="icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3e%3cpath%20fill='%232c3e50'%20d='M410.3%20231l11.3-11.3-33.9-33.9-62.1-62.1L291.7%2089.8l-11.3%2011.3-22.6%2022.6L58.6%20322.9c-10.4%2010.4-18%2023.3-22.2%2037.4L1%20480.7c-2.5%208.4-.2%2017.5%206.1%2023.7s15.3%208.5%2023.7%206.1l120.3-35.4c14.1-4.2%2027-11.8%2037.4-22.2L387.7%20253.7%20410.3%20231zM160%20399.4l-9.1%2022.7c-4%203.1-8.5%205.4-13.3%206.9L59.4%20452l23-78.1c1.4-4.9%203.8-9.4%206.9-13.3l22.7-9.1v32c0%208.8%207.2%2016%2016%2016h32zM362.7%2018.7L348.3%2033.2%20325.7%2055.8%20314.3%2067.1l33.9%2033.9%2062.1%2062.1%2033.9%2033.9%2011.3-11.3%2022.6-22.6L494.9%2052.6c11.3-11.3%2011.3-29.5%200-40.8L403.5%201.2c-11.3-11.3-29.5-11.3-40.8%200z'/%3e%3c/svg%3e">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 進捗インジケーター -->
+    <div class="progress-indicator">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- ナビゲーションバー -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-book-open"></i>
+                前衛小説ガイドブック
+            </a>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+                <span class="menu-toggle-text">メニュー</span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-home"></i> ホーム
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part1.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-history"></i> 歴史
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part1.html#prehistory" class="dropdown-item"><i class="fas fa-seedling"></i> 前史</a>
+                        <a href="part1.html#modernism" class="dropdown-item"><i class="fas fa-landmark"></i> モダニズムの胎動</a>
+                        <a href="part1.html#dada" class="dropdown-item"><i class="fas fa-bomb"></i> ダダ・シュルレアリスム</a>
+                        <a href="part1.html#postwar" class="dropdown-item"><i class="fas fa-globe"></i> 戦後の展開</a>
+                        <a href="part1.html#postmodernism" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> ポストモダニズム</a>
+                        <a href="part1.html#japan" class="dropdown-item"><i class="fas fa-torii-gate"></i> 日本の前衛小説</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part2.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-tools"></i> 特徴
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part2.html#narrative" class="dropdown-item"><i class="fas fa-project-diagram"></i> 物語性の解体</a>
+                        <a href="part2.html#consciousness" class="dropdown-item"><i class="fas fa-water"></i> 意識の流れ</a>
+                        <a href="part2.html#absurd" class="dropdown-item"><i class="fas fa-question-circle"></i> 不条理とグロテスク</a>
+                        <a href="part2.html#fragmentation" class="dropdown-item"><i class="fas fa-cut"></i> 断片化とコラージュ</a>
+                        <a href="part2.html#metafiction" class="dropdown-item"><i class="fas fa-layer-group"></i> メタフィクション</a>
+                        <a href="part2.html#unreliable" class="dropdown-item"><i class="fas fa-user-secret"></i> 信頼できない語り</a>
+                        <a href="part2.html#language" class="dropdown-item"><i class="fas fa-language"></i> 言語の実験</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown dropdown-mega">
+                    <a href="part3.html" class="nav-link active dropdown-toggle">
+                        <i class="fas fa-user-tie"></i> 巨匠
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part3.html#gogol" class="dropdown-item"><i class="fas fa-mask"></i> ニコライ・ゴーゴリ</a>
+                        <a href="part3.html#proust" class="dropdown-item"><i class="fas fa-cookie-bite"></i> マルセル・プルースト</a>
+                        <a href="part3.html#bely" class="dropdown-item"><i class="fas fa-cube"></i> アンドレイ・ベールイ</a>
+                        <a href="part3.html#joyce" class="dropdown-item"><i class="fas fa-map-signs"></i> ジェイムズ・ジョイス</a>
+                        <a href="part3.html#woolf" class="dropdown-item"><i class="fas fa-water"></i> ヴァージニア・ウルフ</a>
+                        <a href="part3.html#kafka" class="dropdown-item"><i class="fas fa-bug"></i> フランツ・カフカ</a>
+                        <a href="part3.html#faulkner" class="dropdown-item"><i class="fas fa-clock"></i> ウィリアム・フォークナー</a>
+                        <a href="part3.html#borges" class="dropdown-item"><i class="fas fa-infinity"></i> ホルヘ・ルイス・ボルヘス</a>
+                        <a href="part3.html#beckett" class="dropdown-item"><i class="fas fa-tree"></i> サミュエル・ベケット</a>
+                        <a href="part3.html#burroughs" class="dropdown-item"><i class="fas fa-cut"></i> ウィリアム・S・バロウズ</a>
+                        <a href="part3.html#sarraute" class="dropdown-item"><i class="fas fa-microscope"></i> ナタリー・サロート</a>
+                        <a href="part3.html#nakamura" class="dropdown-item"><i class="fas fa-yin-yang"></i> 中村真一郎</a>
+                        <a href="part3.html#robbe-grillet" class="dropdown-item"><i class="fas fa-camera"></i> アラン・ロブ＝グリエ</a>
+                        <a href="part3.html#duras" class="dropdown-item"><i class="fas fa-film"></i> マルグリット・デュラス</a>
+                        <a href="part3.html#calvino" class="dropdown-item"><i class="fas fa-chess-knight"></i> イタロ・カルヴィーノ</a>
+                        <a href="part3.html#abe" class="dropdown-item"><i class="fas fa-box"></i> 安部公房</a>
+                        <a href="part3.html#marquez" class="dropdown-item"><i class="fas fa-leaf"></i> G・ガルシア＝マルケス</a>
+                        <a href="part3.html#oe" class="dropdown-item"><i class="fas fa-child"></i> 大江健三郎</a>
+                        <a href="part3.html#pynchon" class="dropdown-item"><i class="fas fa-rocket"></i> トマス・ピンチョン</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part4.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-wave-square"></i> 動向
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part4.html#modernism" class="dropdown-item"><i class="fas fa-brain"></i> モダニズム文学</a>
+                        <a href="part4.html#futurism-it" class="dropdown-item"><i class="fas fa-industry"></i> イタリア未来派</a>
+                        <a href="part4.html#surrealism" class="dropdown-item"><i class="fas fa-moon"></i> ダダ・シュルレアリスム</a>
+                        <a href="part4.html#futurism-ru" class="dropdown-item"><i class="fas fa-rocket"></i> ロシア未来派</a>
+                        <a href="part4.html#absurdism" class="dropdown-item"><i class="fas fa-theater-masks"></i> 不条理文学</a>
+                        <a href="part4.html#nouveau" class="dropdown-item"><i class="fas fa-camera"></i> ヌーヴォー・ロマン</a>
+                        <a href="part4.html#beat" class="dropdown-item"><i class="fas fa-drum"></i> ビート・ジェネレーション</a>
+                        <a href="part4.html#oulipo" class="dropdown-item"><i class="fas fa-chess-knight"></i> ウリポ</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part5.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-lightbulb"></i> テーマ
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part5.html#alienation" class="dropdown-item"><i class="fas fa-user-slash"></i> 疎外とアイデンティティ</a>
+                        <a href="part5.html#city-machine" class="dropdown-item"><i class="fas fa-city"></i> 都市と機械</a>
+                        <a href="part5.html#reality" class="dropdown-item"><i class="fas fa-eye"></i> 現実と意識</a>
+                        <a href="part5.html#language-doubt" class="dropdown-item"><i class="fas fa-comment-slash"></i> 言語への懐疑</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part6.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-gift"></i> 遺産
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part6.html#postmodern-inheritance" class="dropdown-item"><i class="fas fa-forward"></i> ポストモダンへの継承</a>
+                        <a href="part6.html#mainstream-influence" class="dropdown-item"><i class="fas fa-film"></i> 主流と他メディアへの影響</a>
+                        <a href="part6.html#contemporary-relevance" class="dropdown-item"><i class="fas fa-globe-americas"></i> 現代的意義</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="chronology.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i> 年表
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="glossary.html" class="nav-link">
+                        <i class="fas fa-book-medical"></i> 用語集
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="references.html" class="nav-link">
+                        <i class="fas fa-book"></i> 参考文献
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
+            <span class="breadcrumb-separator">/</span>
+            <span>第3部：巨匠たちとその作品</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-wrapper fade-in">
+            <h1 class="page-title"><i class="fas fa-user-tie"></i> 第3部：前衛小説の巨匠たちとその作品</h1>
+
+            <p>前衛小説の歴史は、旧来の文学的伝統に果敢に挑み、新たな表現の地平を切り拓いた作家たちの闘いの歴史でもある。本章では、その中でも特に重要な役割を果たした作家たちを取り上げ、その作品と手法を詳述することで、前衛小説の具体的な実践とその豊かさを明らかにする。</p>
+
+            <h2 id="gogol"><i class="fas fa-mask"></i> 1. ニコライ・ゴーゴリ<small>不条理と幻想の先駆者</small></h2>
+            <p>ロシアの小説家、劇作家ニコライ・ゴーゴリ（1809-1852）は、その幻想的でグロテスクな作風によって、ロシア文学のみならず、後の<a href="glossary.html#absurdism">不条理文学</a>や前衛文学に大きな影響を与えた。彼の作品は、現実と非現実の境界を曖昧にし、人間の存在の滑稽さや悲劇性を鋭く描き出す。</p>
+            <h4>『鼻』（1836年）</h4>
+            <p>ある朝、サンクトペテルブルクの官僚コワリョフ少佐が目覚めると、自分の鼻が顔から消え失せていた。そして、その鼻が、自分よりも高い地位の官僚の制服を着て街を歩いているのを発見するという、奇妙で<a href="glossary.html#absurdism">不条理</a>な物語。ゴーゴリは、この作品を通じて、当時のロシア社会の階級制度や官僚主義を痛烈に風刺した。</p>
+            <h4>『外套』（1842年）</h4>
+            <p>貧しい下級官僚アカーキイ・アカーキエヴィチが、新しい外套を手に入れるために全財産を費やすが、その外套を盗まれてしまい、絶望の末に死んでいく物語。この作品は、取るに足らない存在として扱われる人間の尊厳と、社会の冷酷さを描き出し、後のロシア文学における「小さな人間」のテーマの源流となった。</p>
+
+            <h2 id="proust"><i class="fas fa-cookie-bite"></i> 2. マルセル・プルースト<small>失われた時を求めて</small></h2>
+            <p>フランスの作家マルセル・プルースト（1871-1922）は、その生涯を捧げた大長編『失われた時を求めて』によって、人間の記憶と時間の本質を、かつてない深さで描き出した。</p>
+            <p>この作品は、語り手「私」が、幼少期から青年期、そして壮年期に至るまでの記憶を回想する、自伝的な要素の強い物語である。しかし、単なる思い出話ではない。プルーストの目的は、過去の出来事を時系列に沿って再現することではなく、過去が現在の意識の中に、いかにして蘇り、意味を持つのか、そのプロセス自体を文学的に再構築することにあった。</p>
+            <p>その中心的な役割を果たすのが、「<strong><a href="glossary.html#involuntary-memory">無意志的記憶</a></strong>」という概念である。語り手は、ある日、紅茶に浸したマドレーヌの味をきっかけに、幼少期にコンブレーの叔母の家で過ごした日々の記憶を、鮮烈な感覚と共に、まるごと取り戻す。</p>
+
+            <h2 id="bely"><i class="fas fa-cube"></i> 3. アンドレイ・ベールイ<small>象徴主義とリズムの探求</small></h2>
+            <p>ロシア<a href="glossary.html#symbolism">象徴主義</a>を代表する作家アンドレイ・ベールイ（1880-1934）は、詩的な散文と、音楽的なリズムを取り入れた革新的な文体によって、20世紀<a href="glossary.html#modernism">モダニズム文学</a>の先駆者の一人と見なされている。</p>
+            <h4>『ペテルブルグ』（1916年）</h4>
+            <p>ベールイの代表作であり、ロシア・モダニズムの金字塔。1905年のロシア第一革命前夜の帝都ペテルブルグを舞台に、元老院議員である父親アポロンと、革命思想に傾倒するその息子ニコライの葛藤を、スリリングな筋立ての中に描く。この作品の革新性は、言語のリズムと響きを重視したその文体にある。ベールイは、色彩の象徴的な使用（黄色と赤の対比など）や、同じモチーフの執拗な反復、そして<a href="glossary.html#stream-of-consciousness">意識の流れ</a>を先取りするような<a href="glossary.html#internal-monologue">内的独白</a>を駆使して、革命前夜の都市の不安と混沌を、読者の感覚に直接訴えかけるように描き出した。</p>
+
+            <h2 id="joyce"><i class="fas fa-map-signs"></i> 4. ジェイムズ・ジョイス<small>言語の錬金術師</small></h2>
+            <p>20世紀文学の最高峰と称されるアイルランドの作家、ジェイムズ・ジョイス（1882-1941）は、その生涯を通じて言語の可能性を極限まで追求し、小説という形式そのものを変革した。</p>
+            <h4>『ユリシーズ』（1922年）</h4>
+            <p>ジョイスの代表作『ユリシーズ』は、ホメロスの叙事詩『オデュッセイア』の構造を下敷きに、1904年6月16日という、たった一日のダブリンを舞台として、広告取りのレオポルド・ブルームと、若き芸術家スティーヴン・ディーダラスの行動と思索を克明に描き出した作品である。</p>
+            <p>この作品が前衛的である所以は、その徹底した「<a href="glossary.html#stream-of-consciousness">意識の流れ</a>」の導入にある。さらにジョイスは、18の章それぞれを、全く異なる文体で書き分けるという驚異的な実験を試みた。</p>
+            <h4>『フィネガンズ・ウェイク』（1939年）</h4>
+            <p>ジョイスが最後の17年間を捧げた『フィネガンズ・ウェイク』は、文学史上、最も難解な作品の一つとして知られる。この作品でジョイスは、通常の英語の枠組みを完全に逸脱し、60以上の言語から借用した単語や、自ら作り出した造語を組み合わせた、多層的な意味を持つ独自の言語（「夢の言語」）を創造した。</p>
+            <div class="deep-dive">
+                <h4><i class="fas fa-star"></i> 深掘り分析：ジョイスの言語宇宙</h4>
+                <p>ジョイスの探求は、単なる文体実験に留まらない。『ユリシーズ』における「神話的方法」は、<strong>T.S.エリオット</strong>が指摘したように、混沌とした現代に秩序と形式を与えるための批評的戦略であった。ホメロスの古典的な構造を、現代の平凡な一日に重ね合わせることで、ジョイスは、神話が現代にも遍在し、人間の無意識の内に生き続けていることを示した。</p>
+            </div>
+
+            <h2 id="woolf"><i class="fas fa-water"></i> 5. ヴァージニア・ウルフ<small>内なる生の風景</small></h2>
+            <p>イギリスの<a href="glossary.html#modernism">モダニズム文学</a>を代表する作家、ヴァージニア・ウルフ（1882-1941）は、ジェイムズ・ジョイスと並び、「<a href="glossary.html#stream-of-consciousness">意識の流れ</a>」の技法を発展させ、人間の内面世界の詩的な探求を行った。</p>
+            <h4>『ダロウェイ夫人』（1925年）</h4>
+            <p>ロンドンの上流階級の女性、クラリッサ・ダロウェイが、ある日のパーティの準備をする一日の出来事を描いた作品。物語は、クラリッサの意識と、第一次世界大戦のトラウマに苦しむ青年セプティマスの意識とを交錯させながら進んでいく。</p>
+            <h4>『灯台へ』（1927年）</h4>
+            <p>ラムジー一家が、夏の別荘で過ごした二つの時点を描いた、三部構成の作品。この作品は、明確なプロットよりも、登場人物たちの記憶や喪失感、そして芸術による時間の克服といったテーマが、詩的なイメージの連鎖によって描き出されており、ウルフの最も完成度の高い作品の一つとされている。</p>
+
+            <h2 id="kafka"><i class="fas fa-bug"></i> 6. フランツ・カフカ<small>不条理の迷宮</small></h2>
+            <p>プラハのドイツ語系ユダヤ人作家フランツ・カフカ（1883-1924）の作品は、現代社会における人間の孤独、不安、そして救いのない<a href="glossary.html#absurdism">不条理</a>を、夢のような、しかし同時に驚くほどリアルな筆致で描き出し、20世紀の文学と思想に深刻な影響を与えた。</p>
+            <h4>『審判』（1925年）</h4>
+            <p>銀行員ヨーゼフ・Kは、ある朝、突然、理由も知らされぬまま逮捕される。しかし、彼は拘束されるわけではなく、普段通りの生活を送りながら、自らの裁判の進行を待つことを要求される。Kは、自らの無罪を証明しようと、不可解で巨大な裁判機構の中を奔走するが、努力すればするほど、事態はますます絶望的になっていく。</p>
+            <h4>『城』（1926年）</h4>
+            <p>測量師Kは、ある村にやってくるが、彼を雇ったはずの「城」からの連絡は一向になく、村人たちからも冷遇される。Kは、自らの正当性を証明するために、城へ入ろうとあらゆる手段を試みるが、城は、物理的にはすぐそこに見えているにもかかわらず、官僚主義的な手続きや、不可解な慣習に阻まれ、決して到達することができない。</p>
+
+            <h2 id="faulkner"><i class="fas fa-clock"></i> 7. ウィリアム・フォークナー<small>南部の神話の創造主</small></h2>
+            <p>アメリカ南部文学の巨匠、ウィリアム・フォークナー（1897-1962）は、アメリカ南部の架空の土地「ヨクナパトーファ郡」を舞台に、人間の罪、記憶、歴史の重圧といったテーマを、神話的なスケールで描き出した。</p>
+            <h4>『響きと怒り』（1929年）</h4>
+            <p>かつては名家であったコンプソン家の崩壊を、四人の異なる語り手の視点から描いた作品。読者は、まず、時間の感覚がなく、感覚的なイメージしか捉えられないベンジーの断片的な意識の奔流に投げ込まれる。これらの断片的で主観的な語りをパズルのように組み合わせることで、初めてコンプソン家の悲劇の全体像が、徐々に浮かび上がってくる。</p>
+
+            <h2 id="borges"><i class="fas fa-infinity"></i> 8. ホルヘ・ルイス・ボルヘス<small>迷宮の図書館員</small></h2>
+            <p>アルゼンチンの作家ホルヘ・ルイス・ボルヘス（1899-1986）は、長編小説を一篇も書かなかったにもかかわらず、その迷宮的で知的な短編によって、20世紀の世界文学、特に<a href="glossary.html#postmodernism">ポストモダン文学</a>に決定的な影響を与えた。</p>
+            <p>ボルヘスの作品は、無限、時間、記憶、アイデンティティといった形而上学的なテーマを、幻想的な物語のガジェットを用いて探求する。彼の物語には、無限に続く図書館、円環する時間、自分自身の分身（ドッペルゲンガー）、夢の中の創造物といったモチーフが繰り返し現れる。</p>
+            <h4>『伝奇集』（1944年）</h4>
+            <p>ボルヘスの代表的な短編集。『バベルの図書館』では、宇宙そのものが、六角形の閲覧室が無限に連なる巨大な図書館であるという世界が描かれる。ボルヘスの手法の独創性は、実在しない書物の書評や、架空の哲学者の思想の解説といった、偽の学術論文のような形式を多用する点にある。</p>
+
+            <h2 id="beckett"><i class="fas fa-tree"></i> 9. サミュエル・ベケット<small>沈黙と不在の文学</small></h2>
+            <p>アイルランド出身で、主にフランス語で執筆したサミュエル・ベケット（1906-1989）は、戯曲『ゴドーを待ちながら』で知られるが、小説においても、従来の小説の概念を根底から覆す、ラディカルな探求を行った。</p>
+            <p>ベケットの小説は、物語、登場人物、意味といった、小説を成り立たせている要素を、極限まで削ぎ落としていくことを特徴とする。彼の試みは、<a href="part5.html#language-doubt">言語そのものへの深い懐疑</a>に基づいている。</p>
+
+            <h2 id="burroughs"><i class="fas fa-cut"></i> 10. ウィリアム・S・バロウズ<small>言語の解体者</small></h2>
+            <p><a href="glossary.html#beat-generation">ビート・ジェネレーション</a>を代表する作家の一人であるウィリアム・S・バロウズ（1914-1997）は、その過激な生涯と作品で、戦後アメリカ文学に大きな衝撃を与えた。</p>
+            <p>バロウズが編み出した最も有名な手法が、「<a href="glossary.html#cut-up">カットアップ</a>」と「フォールドイン」である。これは、既存のテキスト（新聞、雑誌、他の文学作品など）を文字通りハサミで切り刻み、それらをランダムに繋ぎ合わせることで、新たなテキストを創造する試みである。</p>
+            <h4>『裸のランチ』（1959年）</h4>
+            <p>バロウズの代表作であり、猥褻罪で裁判になったことでも知られる問題作。明確なプロットは存在せず、ジャンキーである主人公リーの幻覚的な体験が、様々なエピソードの断片として、悪夢のように展開される。</p>
+
+            <h2 id="nakamura"><i class="fas fa-yin-yang"></i> 11. 中村真一郎<small>知性と形式の探求者</small></h2>
+            <p>戦後日本文学を代表する「戦後派」の作家の一人、中村真一郎（1918-1997）は、西欧モダニズム文学、特に<a href="part3.html#proust">マルセル・プルースト</a>からの深い影響のもと、記憶、時間、そして愛といったテーマを、極めて知的かつ構築的な手法で探求した。</p>
+            <h4>四部作『夏』『冬』『春』『秋』（1967-1981）</h4>
+            <p>中村の作品の前衛性は、物語の構造そのものを実験の対象とする点にある。彼の代表作である四部作では、複数の語り手の視点が交錯し、時間軸が複雑に行き来する中で、登場人物たちの心理と関係性が多層的に描き出される。それは、<a href="part3.html#abe">安部公房</a>の不条理や<a href="part3.html#oe">大江健三郎</a>の神話的世界とは異なり、小説という形式の知的な可能性を極限まで追求する、もう一つの前衛の形を示している。</p>
+
+            <h2 id="sarraute"><i class="fas fa-microscope"></i> 12. ナタリー・サロート<small>トロピスムの発見者</small></h2>
+            <p>フランスの作家ナタリー・サロート（1900-1999）は、<a href="glossary.html#nouveau-roman">ヌーヴォー・ロマン</a>の先駆者の一人であり、人間の意識の深層で蠢く、言葉になる前の微細な心理的動き「トロピスム（tropisme）」の描写に生涯を捧げた。彼女の作品は、伝統的な登場人物の心理描写や明確なプロットを排し、読者に内面世界の流動性を体験させることを目指した。</p>
+            <h4>『プラネタリウム』（1959年）</h4>
+            <p>サロートの代表作の一つ。ある家族の人間関係における、言葉にならない感情の揺れ動きや、権力関係の微細な変化を、トロピスムの視点から描く。登場人物の行動や会話の背後にある、無意識的な衝動や相互作用が、顕微鏡で覗き込むように詳細に描写される。</p>
+
+            <h2 id="robbe-grillet"><i class="fas fa-camera"></i> 13. アラン・ロブ＝グリエ<small>視線の文学</small></h2>
+            <p>フランスの<a href="glossary.html#nouveau-roman">ヌーヴォー・ロマン</a>の旗手として知られるアラン・ロブ＝グリエ（1922-2008）は、伝統的な小説の人間中心主義を徹底的に批判し、「物（もの）の文学」とも呼ばれる、客観的で非人間的な視点に貫かれた作品を創造した。</p>
+            <h4>『嫉妬』（1957年）</h4>
+            <p>熱帯地方のバナナ農園を舞台に、語り手である夫が、妻とその友人との関係に嫉妬の念を抱く様を描いた作品。しかし、小説の中で「嫉妬」という言葉は一度も使われず、語り手である「私」も登場しない。物語は、家の間取り、テーブルの上の食器の配置、百足（むかで）が壁を這う跡といった、客観的な情景描写のみで構成される。</p>
+
+            <h2 id="duras"><i class="fas fa-film"></i> 14. マルグリット・デュラス<small>記憶と不在の物語</small></h2>
+            <p>フランスの作家、映画監督マルグリット・デュラス（1914-1996）は、その簡潔で詩的な文体と、記憶、欲望、不在といったテーマの探求を通じて、<a href="glossary.html#nouveau-roman">ヌーヴォー・ロマン</a>とも共鳴しつつ、独自の文学世界を築き上げた。彼女の作品は、物語の断片化や時間軸の曖昧さによって、読者に能動的な読解を促す。</p>
+            <h4>『愛人／ラマン』（1984年）</h4>
+            <p>デュラスの代表作であり、ゴンクール賞を受賞した自伝的色彩の強い小説。植民地時代のインドシナを舞台に、フランス人少女と中国人富豪の青年との禁断の愛を描く。物語は、断片的な記憶のフラッシュバックと、現在と過去が交錯する<a href="glossary.html#non-linear">非線形的な語り</a>によって構成され、語り手の内面的な葛藤と、失われた時間への郷愁が詩的に表現される。</p>
+
+            <h2 id="calvino"><i class="fas fa-chess-knight"></i> 15. イタロ・カルヴィーノ<small>物語の構造の探求者</small></h2>
+            <p>イタリアの作家イタロ・カルヴィーノ（1923-1985）は、その知的な遊び心と、物語の構造自体を問い直す実験的な作風で、<a href="glossary.html#postmodernism">ポストモダン文学</a>を代表する作家の一人とされる。</p>
+            <h4>『見えない都市』（1972年）</h4>
+            <p>老いた皇帝フビライ・ハンに、探検家マルコ・ポーロが、自分が訪れた架空の都市について語って聞かせるという形式の作品。それぞれの都市は、「記憶」「欲望」「記号」といったテーマに基づいて分類され、現実の都市の隠された本質を寓話的に描き出す。</p>
+            <h4>『冬の夜ひとりの旅人が』（1979年）</h4>
+            <p>カルヴィーノの最も実験的な作品であり、<a href="glossary.html#metafiction">メタフィクション</a>の傑作。物語は、読者である「君」が、イタロ・カルヴィーノの新しい小説『冬の夜ひとりの旅人が』を読み始めるところから始まる。しかし、製本ミスで物語は途中で中断しており、「君」は物語の続きを求めて、次々と異なる小説の世界を旅することになる。この作品は、「読む」という行為そのものをテーマにしており、作者、読者、そして物語の関係性を根底から問い直す。</p>
+
+            <h2 id="abe"><i class="fas fa-box"></i> 16. 安部公房<small>日常に潜むシュルレアリスム</small></h2>
+            <p>日本の戦後文学を代表する作家の一人、安部公房（1924-1993）は、<a href="glossary.html#surrealism">シュルレアリスム（超現実主義）</a>の手法を独自に消化し、都市における人間の孤独やアイデンティティの喪失といったテーマを、奇抜な設定と緻密なリアリズムの融合によって描き出した。</p>
+            <h4>『砂の女』（1962年）</h4>
+            <p>昆虫採集のために砂丘を訪れた男が、蟻地獄のような砂の穴の底にある一軒家に閉じ込められ、そこから脱出できなくなる物語。男は、家の中に住む女と共に、絶えず流れ落ちてくる砂を掻き出すという、不毛で無限の労働を強いられる。</p>
+            <h4>『他人の顔』（1964年）</h4>
+            <p>事故で顔に重傷を負い、ケロイド状の皮膚で覆われた男が、精巧な仮面を作り、別人として妻との関係を再構築しようと試みる物語。しかし、仮面は、解放の道具となるどころか、逆に男のアイデンティティを侵食し、彼を更なる孤独へと追い込んでいく。</p>
+            <h4>『箱男』（1973年）</h4>
+            <p>頭から段ボール箱を被り、都市を彷徨う「箱男」になろうとする男の物語。箱に開けられた覗き窓から世界を観察する箱男は、一方的に「見る」存在であり、他者から「見られる」ことから自由である。</p>
+
+            <h2 id="marquez"><i class="fas fa-leaf"></i> 17. ガブリエル・ガルシア＝マルケス<small>マジックリアリズムの魔術師</small></h2>
+            <p>コロンビアの作家ガブリエル・ガルシア＝マルケス（1927-2014）は、「<a href="glossary.html#magic-realism">マジックリアリズム</a>」の旗手として、ラテンアメリカ文学を世界に知らしめた。彼の作品は、現実的な日常の中に、神話や伝説、奇跡といった幻想的な要素を、ごく自然な出来事として織り交ぜることを特徴とする。</p>
+            <h4>『百年の孤独』（1967年）</h4>
+            <p>架空の村マコンドを舞台に、ブエンディア一族の百年にわたる栄枯盛衰を描いた壮大な物語。空から黄色い花が降り注ぎ、死者が蘇り、美女がシーツと共に天に昇っていくといった奇跡的な出来事が、淡々とした筆致で語られる。この作品は、ラテンアメリカの混沌とした歴史と、そこに生きる人々の記憶を、神話的なスケールで描き出し、世界的なベストセラーとなった。</p>
+
+            <h2 id="oe"><i class="fas fa-child"></i> 18. 大江健三郎<small>周縁から世界を撃つ</small></h2>
+            <p>安部公房と並び、戦後日本文学を代表する大江健三郎（1935-2023）は、その知的で重層的な文体と、神話的な想像力を駆使して、戦後日本の社会と個人の魂のあり方を、執拗に問い続けた作家である。1994年にはノーベル文学賞を受賞している。</p>
+            <h4>『個人的な体験』（1964年）</h4>
+            <p>脳に障害を持って生まれた子供の誕生に直面した主人公「鳥（バード）」の葛藤を描いた、自伝的色彩の濃い作品。この作品は、極限的な状況における個人の倫理的な選択と責任という、大江文学の核心的なテーマを提示している。</p>
+            <h4>『万延元年のフットボール』（1967年）</h4>
+            <p>大江の代表作であり、戦後文学の金字塔の一つ。東京での生活に敗れた主人公の鷹四と、その弟で、知的障害を持つ子供の父親である蜜三郎が、故郷である四国の谷間の村に戻るところから物語は始まる。過去と現在、神話と現実、中心（東京）と周縁（村）、正常と異常といった、様々な二項対立が複雑に絡み合い、物語は破局的なクライマックスへと向かう。</p>
+
+            <h2 id="pynchon"><i class="fas fa-rocket"></i> 19. トマス・ピンチョン<small>ポストモダンの巨大な迷宮</small></h2>
+            <p>アメリカの作家トマス・ピンチョン（1937-）は、その極端な隠遁生活と、科学、歴史、ポップカルチャーを横断する百科事典的な知識を詰め込んだ、巨大で複雑な小説によって、<a href="glossary.html#postmodernism">ポストモダン文学</a>の最も重要な作家の一人と見なされている。</p>
+            <h4>『重力の虹』（1973年）</h4>
+            <p>ピンチョンの代表作であり、ポストモダン文学の金字塔。第二次世界大戦末期のヨーロッパを舞台に、ドイツのV2ロケットの謎を追う、多数の登場人物たちの姿を、複雑なプロットと、数学、物理学、心理学、オカルトといった多岐にわたる知識を織り交ぜながら描く。この作品は、エントロピー（無秩序の増大）という科学的な概念を、現代社会のメタファーとして用いており、あらゆるものが無秩序化し、意味を失っていく世界の姿を、壮大なスケールで描き出している。</p>
+
+            <div class="pagination">
+                <a href="part2.html" class="prev"><i class="fas fa-arrow-left"></i> 第2部：特徴</a>
+                <div class="page-info">第3部 / 全9部</div>
+                <a href="part4.html" class="next">第4部：動向 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+
+    <footer>
+        <p>&copy; 2025 前衛小説ガイドブック | 20世紀文学の革新と実験の記録. All Rights Reserved. | Planning & Direction: Fujiwara Mu</p>
+        <p class="ai-disclaimer">※このページはAIによって生成されたものであり、内容にはハルシネーション（AIの誤情報生成）が含まれる可能性があります。情報の正確性については、必ずご自身でご確認ください。</p>
+        <p><a href="index.html">トップページ</a> | <a href="chronology.html">年表</a> | <a href="references.html">参考文献</a> | <a href="about.html">このサイトについて</a></p>
+    </footer>
+
+    <script src="common.js"></script>
+</body>
+</html>

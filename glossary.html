@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用語集 | 前衛小説ガイドブック</title>
+    <link rel="icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3e%3cpath%20fill='%232c3e50'%20d='M410.3%20231l11.3-11.3-33.9-33.9-62.1-62.1L291.7%2089.8l-11.3%2011.3-22.6%2022.6L58.6%20322.9c-10.4%2010.4-18%2023.3-22.2%2037.4L1%20480.7c-2.5%208.4-.2%2017.5%206.1%2023.7s15.3%208.5%2023.7%206.1l120.3-35.4c14.1-4.2%2027-11.8%2037.4-22.2L387.7%20253.7%20410.3%20231zM160%20399.4l-9.1%2022.7c-4%203.1-8.5%205.4-13.3%206.9L59.4%20452l23-78.1c1.4-4.9%203.8-9.4%206.9-13.3l22.7-9.1v32c0%208.8%207.2%2016%2016%2016h32zM362.7%2018.7L348.3%2033.2%20325.7%2055.8%20314.3%2067.1l33.9%2033.9%2062.1%2062.1%2033.9%2033.9%2011.3-11.3%2022.6-22.6L494.9%2052.6c11.3-11.3%2011.3-29.5%200-40.8L403.5%201.2c-11.3-11.3-29.5-11.3-40.8%200z'/%3e%3c/svg%3e">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 進捗インジケーター -->
+    <div class="progress-indicator">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-book-open"></i>
+                前衛小説ガイドブック
+            </a>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+                <span class="menu-toggle-text">メニュー</span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-home"></i> ホーム
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part1.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-history"></i> 歴史
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part1.html#prehistory" class="dropdown-item"><i class="fas fa-seedling"></i> 前史</a>
+                        <a href="part1.html#modernism" class="dropdown-item"><i class="fas fa-landmark"></i> モダニズムの胎動</a>
+                        <a href="part1.html#dada" class="dropdown-item"><i class="fas fa-bomb"></i> ダダ・シュルレアリスム</a>
+                        <a href="part1.html#postwar" class="dropdown-item"><i class="fas fa-globe"></i> 戦後の展開</a>
+                        <a href="part1.html#postmodernism" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> ポストモダニズム</a>
+                        <a href="part1.html#japan" class="dropdown-item"><i class="fas fa-torii-gate"></i> 日本の前衛小説</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part2.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-tools"></i> 特徴
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part2.html#narrative" class="dropdown-item"><i class="fas fa-project-diagram"></i> 物語性の解体</a>
+                        <a href="part2.html#consciousness" class="dropdown-item"><i class="fas fa-water"></i> 意識の流れ</a>
+                        <a href="part2.html#absurd" class="dropdown-item"><i class="fas fa-question-circle"></i> 不条理とグロテスク</a>
+                        <a href="part2.html#fragmentation" class="dropdown-item"><i class="fas fa-cut"></i> 断片化とコラージュ</a>
+                        <a href="part2.html#metafiction" class="dropdown-item"><i class="fas fa-layer-group"></i> メタフィクション</a>
+                        <a href="part2.html#unreliable" class="dropdown-item"><i class="fas fa-user-secret"></i> 信頼できない語り</a>
+                        <a href="part2.html#language" class="dropdown-item"><i class="fas fa-language"></i> 言語の実験</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown dropdown-mega">
+                    <a href="part3.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-user-tie"></i> 巨匠
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part3.html#gogol" class="dropdown-item"><i class="fas fa-mask"></i> ニコライ・ゴーゴリ</a>
+                        <a href="part3.html#proust" class="dropdown-item"><i class="fas fa-cookie-bite"></i> マルセル・プルースト</a>
+                        <a href="part3.html#bely" class="dropdown-item"><i class="fas fa-cube"></i> アンドレイ・ベールイ</a>
+                        <a href="part3.html#joyce" class="dropdown-item"><i class="fas fa-map-signs"></i> ジェイムズ・ジョイス</a>
+                        <a href="part3.html#woolf" class="dropdown-item"><i class="fas fa-water"></i> ヴァージニア・ウルフ</a>
+                        <a href="part3.html#kafka" class="dropdown-item"><i class="fas fa-bug"></i> フランツ・カフカ</a>
+                        <a href="part3.html#faulkner" class="dropdown-item"><i class="fas fa-clock"></i> ウィリアム・フォークナー</a>
+                        <a href="part3.html#borges" class="dropdown-item"><i class="fas fa-infinity"></i> ホルヘ・ルイス・ボルヘス</a>
+                        <a href="part3.html#beckett" class="dropdown-item"><i class="fas fa-tree"></i> サミュエル・ベケット</a>
+                        <a href="part3.html#burroughs" class="dropdown-item"><i class="fas fa-cut"></i> ウィリアム・S・バロウズ</a>
+                        <a href="part3.html#sarraute" class="dropdown-item"><i class="fas fa-microscope"></i> ナタリー・サロート</a>
+                        <a href="part3.html#nakamura" class="dropdown-item"><i class="fas fa-yin-yang"></i> 中村真一郎</a>
+                        <a href="part3.html#robbe-grillet" class="dropdown-item"><i class="fas fa-camera"></i> アラン・ロブ＝グリエ</a>
+                        <a href="part3.html#duras" class="dropdown-item"><i class="fas fa-film"></i> マルグリット・デュラス</a>
+                        <a href="part3.html#calvino" class="dropdown-item"><i class="fas fa-chess-knight"></i> イタロ・カルヴィーノ</a>
+                        <a href="part3.html#abe" class="dropdown-item"><i class="fas fa-box"></i> 安部公房</a>
+                        <a href="part3.html#marquez" class="dropdown-item"><i class="fas fa-leaf"></i> G・ガルシア＝マルケス</a>
+                        <a href="part3.html#oe" class="dropdown-item"><i class="fas fa-child"></i> 大江健三郎</a>
+                        <a href="part3.html#pynchon" class="dropdown-item"><i class="fas fa-rocket"></i> トマス・ピンチョン</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part4.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-wave-square"></i> 動向
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part4.html#modernism" class="dropdown-item"><i class="fas fa-brain"></i> モダニズム文学</a>
+                        <a href="part4.html#futurism-it" class="dropdown-item"><i class="fas fa-industry"></i> イタリア未来派</a>
+                        <a href="part4.html#surrealism" class="dropdown-item"><i class="fas fa-moon"></i> ダダ・シュルレアリスム</a>
+                        <a href="part4.html#futurism-ru" class="dropdown-item"><i class="fas fa-rocket"></i> ロシア未来派</a>
+                        <a href="part4.html#absurdism" class="dropdown-item"><i class="fas fa-theater-masks"></i> 不条理文学</a>
+                        <a href="part4.html#nouveau" class="dropdown-item"><i class="fas fa-camera"></i> ヌーヴォー・ロマン</a>
+                        <a href="part4.html#beat" class="dropdown-item"><i class="fas fa-drum"></i> ビート・ジェネレーション</a>
+                        <a href="part4.html#oulipo" class="dropdown-item"><i class="fas fa-chess-knight"></i> ウリポ</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part5.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-lightbulb"></i> テーマ
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part5.html#alienation" class="dropdown-item"><i class="fas fa-user-slash"></i> 疎外とアイデンティティ</a>
+                        <a href="part5.html#city-machine" class="dropdown-item"><i class="fas fa-city"></i> 都市と機械</a>
+                        <a href="part5.html#reality" class="dropdown-item"><i class="fas fa-eye"></i> 現実と意識</a>
+                        <a href="part5.html#language-doubt" class="dropdown-item"><i class="fas fa-comment-slash"></i> 言語への懐疑</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="part6.html" class="nav-link dropdown-toggle">
+                        <i class="fas fa-gift"></i> 遺産
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="part6.html#postmodern-inheritance" class="dropdown-item"><i class="fas fa-forward"></i> ポストモダンへの継承</a>
+                        <a href="part6.html#mainstream-influence" class="dropdown-item"><i class="fas fa-film"></i> 主流と他メディアへの影響</a>
+                        <a href="part6.html#contemporary-relevance" class="dropdown-item"><i class="fas fa-globe-americas"></i> 現代的意義</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="chronology.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i> 年表
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="glossary.html" class="nav-link active">
+                        <i class="fas fa-book-medical"></i> 用語集
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="references.html" class="nav-link">
+                        <i class="fas fa-book"></i> 参考文献
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav><div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
+            <span class="breadcrumb-separator">/</span>
+            <span>用語集</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-wrapper fade-in">
+            <h1 class="page-title"><i class="fas fa-book-medical"></i> 用語集</h1>
+            <p>このガイドブックで用いられる主要な専門用語を解説します。</p>
+
+            <div class="glossary">
+                <h3 id="glossary-a">あ行</h3>
+                <dl>
+                    <dt id="avant-garde">アヴァンギャルド (Avant-garde)</dt>
+                    <dd>フランス語で「前衛」を意味する軍事用語に由来。芸術の文脈では、伝統的な規範や形式を打破し、未知の表現領域を切り拓こうとする芸術家やその運動を指す。単なる「新しい」だけでなく、しばしば既存の芸術制度や社会通念に対する批判的な姿勢を含む。</dd>
+                    <dt id="absurdism">不条理文学 (Absurdism)</dt>
+                    <dd>人生や世界の無意味さ、不合理さをテーマとする文学。第二次世界大戦後の実存主義思想を背景に、特に<strong>サミュエル・ベケット</strong>らの演劇で隆盛した。論理的な因果関係が崩壊した世界で、目的もなく行動を反復する登場人物などが描かれる。</dd>
+                    <dt id="automatism">自動記述 (オートマティスム)</dt>
+                    <dd>理性のコントロールを排し、無意識から湧き出る思考やイメージを、検閲を加えず直接書き記す手法。<strong>アンドレ・ブルトン</strong>が提唱したシュルレアリスムの中心的な技法であり、夢や無意識の世界を探求するための手段とされた。</dd>
+                    <dt id="stream-of-consciousness">意識の流れ (Stream of Consciousness)</dt>
+                    <dd>登場人物の心の中に浮かぶ思考、記憶、感覚の絶え間ない流れを、論理的な整理を加えずそのまま記述する手法。<strong>ジェイムズ・ジョイス</strong>や<strong>ヴァージニア・ウルフ</strong>が発展させたモダニズム文学の代表的な技法。</dd>
+                    <dt id="oulipo">ウリポ (Oulipo)</dt>
+                    <dd>「潜在的文学の工房」を意味するフランスの文学グループ。<strong>レーモン・クノー</strong>らが設立。「e」の文字を使わずに小説を書くなど、意図的に課した数学的な「制約」を用いることで、新たな文学の創造性を引き出すことを目指した。</dd>
+                    <dt id="internal-monologue">内的独白 (Internal Monologue)</dt>
+                    <dd>登場人物が心の中で行う、比較的整理された思考や自問自答を描写する手法。「意識の流れ」が無秩序な心の動き全体を捉えようとするのに対し、内的独白はより言語化され、論理的な側面が強いが、両者はしばしば併用される。</dd>
+                    <dt id="existentialism"><i class="fas fa-user-edit"></i> 実存主義 (Existentialism)</dt>
+                    <dd>「実存は本質に先立つ」という<strong>サルトル</strong>の言葉に代表される、20世紀の主要な思想。人間は、あらかじめ定められた本質や運命を持つのではなく、まず「実存」し、自らの自由な選択と行動によって自己を形成していく存在であると考える。<strong>サルトル</strong>や<strong>カミュ</strong>の作品を通じて、不条理な世界における個人の自由、選択、責任といったテーマを文学に持ち込み、戦後文学に大きな影響を与えた。</dd>
+                </dl>
+
+                <h3 id="glossary-k">か行</h3>
+                <dl>
+                    <dt id="cut-up">カットアップ (Cut-up)</dt>
+                    <dd>既存のテキストを物理的に切り刻み、ランダムに再結合して新しいテキストを創造する技法。ダダイズムに源流を持ち、特にビート・ジェネレーションの<strong>ウィリアム・S・バロウズ</strong>が多用したことで知られる。作者の意図を超えた偶然性を作品に導入する。</dd>
+                    <dt id="collage">コラージュ (Collage)</dt>
+                    <dd>新聞の切り抜きや写真など、異質な素材を作品に貼り付ける芸術技法。文学においては、様々な文体、ジャンルの異なる文章、引用などを断片的に並置する手法を指す。<strong>T.S.エリオット</strong>の『荒地』などが代表例。</dd>
+                </dl>
+
+                <h3 id="glossary-s">さ行</h3>
+                <dl>
+                    <dt id="zaum">ザウミ (Zaum)</dt>
+                    <dd>ロシア語で「超意味言語」を意味する。ロシア未来派の詩人たちが試みた、既存の言語の意味から解放された、音の響きそのものを重視する言語実験。言葉を意味伝達の道具ではなく、自律した音響的なオブジェとして扱おうとする試み。</dd>
+                    <dt id="signe">シーニュ (Signe / Sign)</dt>
+                    <dd>スイスの言語学者<strong>フェルディナン・ド・ソシュール</strong>が提唱した言語学の基本単位。「記号表現（シニフィアン／音や文字）」と「記号内容（シニフィエ／意味内容）」の恣意的な結びつきを指す。この理論は、言語が現実を直接反映するものではないという考えを導き、前衛文学に大きな影響を与えた。</dd>
+                    <dt id="surrealism">シュルレアリスム (Surrealism)</dt>
+                    <dd>ダダイズムから発展し、フロイトの精神分析の影響を受け、無意識や夢の世界の探求を通じて「超現実」を描こうとした芸術運動。<strong>アンドレ・ブルトン</strong>が中心となり、自動記述などの技法を生み出した。</dd>
+                    <dt id="mythical-method">神話的方法 (Mythical Method)</dt>
+                    <dd><strong>T.S.エリオット</strong>が<strong>ジェイムズ・ジョイス</strong>の『ユリシーズ』を評して名付けた言葉。混沌とした現代に秩序を与えるため、古代の神話や古典文学の構造を、現代を舞台とした作品の隠れた骨格として用いる手法。</dd>
+                    <dt id="symbolism">象徴主義 (Symbolism)</dt>
+                    <dd>19世紀末のフランスやロシアで興った文学・芸術運動。外面的な世界の写実的な描写ではなく、暗示や象徴、音楽的な響きによって、内面的な観念や神秘的な精神世界を表現しようとした。モダニズム文学の先駆とされる。</dd>
+                </dl>
+
+                <h3 id="glossary-t">た行</h3>
+                <dl>
+                    <dt id="dadaism">ダダイズム (Dadaism)</dt>
+                    <dd>第一次世界大戦中に起こった、既成の秩序や常識に対する徹底的な破壊と否定を掲げた芸術運動。偶然性の導入や「反芸術」を特徴とし、論理や意味そのものを攻撃した。<strong>トリスタン・ツァラ</strong>が主導した。</dd>
+                    <dt id="deconstruction">脱構築 (Deconstruction)</dt>
+                    <dd>フランスの哲学者<strong>ジャック・デリダ</strong>が提唱した批評理論・哲学思想。テクスト内部に存在する、西洋形而上学的な二項対立（声／文字、男／女など）の階層関係を暴き、その構造を解体することで、単一で安定した意味を揺るがす批評的アプローチ。</dd>
+                </dl>
+
+                <h3 id="glossary-n">な行</h3>
+                <dl>
+                    <dt id="nouveau-roman">ヌーヴォー・ロマン (Nouveau Roman)</dt>
+                    <dd>1950年代のフランスで起こった小説の動向。「新しい小説」を意味する。伝統的なプロット、登場人物の心理描写、作者による意味付けを排し、客観的な物質世界の描写を推し進めた。<strong>アラン・ロブ＝グリエ</strong>や<strong>ナタリー・サロート</strong>が代表的な作家。</dd>
+                </dl>
+
+                <h3 id="glossary-h">は行</h3>
+                <dl>
+                    <dt id="hypertext">ハイパーテキスト (Hypertext)</dt>
+                    <dd>テキスト内のリンクによって、読者が非線形的に情報をたどることができる電子的なテキストシステム。<strong>ホルヘ・ルイス・ボルヘス</strong>の『庭の小道が分岐する公園』などが、その文学的先駆と見なされる。</dd>
+                    <dt id="pastiche">パスティーシュ (Pastiche)</dt>
+                    <dd>過去の作家や作品の文体・作風を模倣すること。ポストモダン文学では、特定の原作を揶揄する「パロディ」とは異なり、しばしば敬意を込めた模倣として、複数の文体を混在させるために多用される。</dd>
+                    <dt id="parole-in-liberta">パローレ・イン・リベルタ (Parole in Libertà)</dt>
+                    <dd>イタリア語で「解放された言葉」を意味する。イタリア未来派が提唱した、伝統的な構文や句読点を破壊し、タイポグラフィを駆使して言語のダイナミズム（速度、機械音など）を視覚的・聴覚的に表現する手法。</dd>
+                    <dt id="beat-generation">ビート・ジェネレーション (Beat Generation)</dt>
+                    <dd>1950年代のアメリカで、画一的な社会への反抗と精神的な自由を求めた文学者たちのグループ。<strong>ジャック・ケルアック</strong>、<strong>アレン・ギンズバーグ</strong>らが中心。ジャズの即興性や東洋思想の影響が強い。</dd>
+                    <dt id="non-linear">非線形な物語 (Non-linear Narrative)</dt>
+                    <dd>出来事が時系列に沿って語られず、時間が断片化されたり、逆行したり、ループしたりする物語構造。伝統的な因果律に基づいた物語観を解体する試みであり、<strong>アラン・ロブ＝グリエ</strong>の作品などで顕著に見られる。</dd>
+                    <dt id="futurism">未来派 (フューチャリズム)</dt>
+                    <dd>20世紀初頭にイタリアで始まった芸術運動。<strong>マリネッティ</strong>の「未来派宣言」に端を発する。過去の芸術を徹底的に破壊し、機械、スピード、戦争といった近代のダイナミズムを賛美した。ロシアなどでも独自の展開を見せた。</dd>
+                    <dt id="postmodernism">ポストモダン文学 (Postmodern Literature)</dt>
+                    <dd>第二次世界大戦後に顕著になった文学の動向。モダニズムの思想を批判的に継承し、「大きな物語」の失墜を背景に、メタフィクション、パスティーシュ、不確定性などを特徴とする。<strong>トマス・ピンチョン</strong>らが代表的。</dd>
+                    <dt id="post-structuralism">ポスト構造主義 (Post-structuralism)</dt>
+                    <dd>構造主義の思想を引き継ぎつつ、構造そのものの安定性や中心性を批判した1960年代以降の思想潮流。言語によって世界が構築されるという考えを推し進め、意味の多義性や流動性を強調した。<strong>ジャック・デリダ</strong>らが代表的。</dd>
+                </dl>
+
+                <h3 id="glossary-m">ま行</h3>
+                <dl>
+                    <dt id="magic-realism">マジックリアリズム (Magic Realism)</dt>
+                    <dd>現実的な日常の描写の中に、神話的・幻想的な出来事を、驚きや違和感なく、ごく自然なこととして織り込む表現手法。特に<strong>ガブリエル・ガルシア＝マルケス</strong>らのラテンアメリカ文学で発展した。</dd>
+                    <dt id="metafiction">メタフィクション (Metafiction)</dt>
+                    <dd>小説がそれ自体でフィクション（作り物）であることを、作品内で意識的に言及する手法。作者が創作過程に言及したり、登場人物が自身を物語の登場人物だと認識したりする。<strong>イタロ・カルヴィーノ</strong>の『冬の夜ひとりの旅人が』がその代表例。</dd>
+                    <dt id="modernism">モダニズム (Modernism)</dt>
+                    <dd>19世紀末から20世紀初頭にかけて、伝統的な価値観や芸術形式からの脱却を目指した広範な芸術・文化運動。産業化や都市化を背景に、外面的なリアリズムよりも、個人の内面性や主観的な認識を重視した。</dd>
+                    <dt id="involuntary-memory">無意志的記憶 (Involuntary Memory)</dt>
+                    <dd><strong>マルセル・プルースト</strong>の『失われた時を求めて』の中心概念。特定の感覚的なきっかけ（紅茶に浸したマドレーヌの味など）によって、意図せず過去の記憶が、それに伴う感情や感覚と共に全体的かつ鮮烈に蘇る現象。</dd>
+                </dl>
+            </div>
+
+            <div class="pagination">
+                <a href="chronology.html" class="prev"><i class="fas fa-arrow-left"></i> 年表</a>
+                <div class="page-info">用語集</div>
+                <a href="references.html" class="next">参考文献 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+
+    <footer>
+        <p>&copy; 2025 前衛小説ガイドブック | 20世紀文学の革新と実験の記録. All Rights Reserved. | Planning & Direction: Fujiwara Mu</p>
+        <p class="ai-disclaimer">※このページはAIによって生成されたものであり、内容にはハルシネーション（AIの誤情報生成）が含まれる可能性があります。情報の正確性については、必ずご自身でご確認ください。</p>
+        <p><a href="index.html">トップページ</a> | <a href="chronology.html">年表</a> | <a href="references.html">参考文献</a> | <a href="about.html">このサイトについて</a></p>
+    </footer>
+
+    <script src="common.js"></script>
+</body>
+</html>
