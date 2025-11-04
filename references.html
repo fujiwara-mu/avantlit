@@ -8,432 +8,188 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="is-loading">
     <!-- 進捗インジケーター -->
     <div class="progress-indicator">
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <!-- ナビゲーションバー -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <i class="fas fa-book-open"></i>
-                前衛小説ガイドブック
-            </a>
-            <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-                <span class="menu-toggle-text">メニュー</span>
-            </button>
-            <ul class="nav-menu" id="navMenu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">
-                        <i class="fas fa-home"></i> ホーム
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part1.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-history"></i> 歴史
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part1.html#prehistory" class="dropdown-item"><i class="fas fa-seedling"></i> 前史</a>
-                        <a href="part1.html#modernism" class="dropdown-item"><i class="fas fa-landmark"></i> モダニズムの胎動</a>
-                        <a href="part1.html#dada" class="dropdown-item"><i class="fas fa-bomb"></i> ダダ・シュルレアリスム</a>
-                        <a href="part1.html#postwar" class="dropdown-item"><i class="fas fa-globe"></i> 戦後の展開</a>
-                        <a href="part1.html#postmodernism" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> ポストモダニズム</a>
-                        <a href="part1.html#japan" class="dropdown-item"><i class="fas fa-torii-gate"></i> 日本の前衛小説</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part2.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-tools"></i> 特徴
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part2.html#narrative" class="dropdown-item"><i class="fas fa-project-diagram"></i> 物語性の解体</a>
-                        <a href="part2.html#consciousness" class="dropdown-item"><i class="fas fa-water"></i> 意識の流れ</a>
-                        <a href="part2.html#absurd" class="dropdown-item"><i class="fas fa-question-circle"></i> 不条理とグロテスク</a>
-                        <a href="part2.html#fragmentation" class="dropdown-item"><i class="fas fa-cut"></i> 断片化とコラージュ</a>
-                        <a href="part2.html#metafiction" class="dropdown-item"><i class="fas fa-layer-group"></i> メタフィクション</a>
-                        <a href="part2.html#unreliable" class="dropdown-item"><i class="fas fa-user-secret"></i> 信頼できない語り</a>
-                        <a href="part2.html#language" class="dropdown-item"><i class="fas fa-language"></i> 言語の実験</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown dropdown-mega">
-                    <a href="part3.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-user-tie"></i> 巨匠
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part3.html#gogol" class="dropdown-item"><i class="fas fa-mask"></i> ニコライ・ゴーゴリ</a>
-                        <a href="part3.html#proust" class="dropdown-item"><i class="fas fa-cookie-bite"></i> マルセル・プルースト</a>
-                        <a href="part3.html#bely" class="dropdown-item"><i class="fas fa-cube"></i> アンドレイ・ベールイ</a>
-                        <a href="part3.html#joyce" class="dropdown-item"><i class="fas fa-map-signs"></i> ジェイムズ・ジョイス</a>
-                        <a href="part3.html#woolf" class="dropdown-item"><i class="fas fa-water"></i> ヴァージニア・ウルフ</a>
-                        <a href="part3.html#kafka" class="dropdown-item"><i class="fas fa-bug"></i> フランツ・カフカ</a>
-                        <a href="part3.html#faulkner" class="dropdown-item"><i class="fas fa-clock"></i> ウィリアм・フォークナー</a>
-                        <a href="part3.html#borges" class="dropdown-item"><i class="fas fa-infinity"></i> ホルヘ・ルイス・ボルヘス</a>
-                        <a href="part3.html#beckett" class="dropdown-item"><i class="fas fa-tree"></i> サミュエル・ベケット</a>
-                        <a href="part3.html#burroughs" class="dropdown-item"><i class="fas fa-cut"></i> ウィリアム・S・バロウズ</a>
-                        <a href="part3.html#sarraute" class="dropdown-item"><i class="fas fa-microscope"></i> ナタリー・サロート</a>
-                        <a href="part3.html#nakamura" class="dropdown-item"><i class="fas fa-yin-yang"></i> 中村真一郎</a>
-                        <a href="part3.html#robbe-grillet" class="dropdown-item"><i class="fas fa-camera"></i> アラン・ロブ＝グリエ</a>
-                        <a href="part3.html#duras" class="dropdown-item"><i class="fas fa-film"></i> マルグリット・デュラス</a>
-                        <a href="part3.html#calvino" class="dropdown-item"><i class="fas fa-chess-knight"></i> イタロ・カルヴィーノ</a>
-                        <a href="part3.html#abe" class="dropdown-item"><i class="fas fa-box"></i> 安部公房</a>
-                        <a href="part3.html#marquez" class="dropdown-item"><i class="fas fa-leaf"></i> G・ガルシア＝マルケス</a>
-                        <a href="part3.html#oe" class="dropdown-item"><i class="fas fa-child"></i> 大江健三郎</a>
-                        <a href="part3.html#pynchon" class="dropdown-item"><i class="fas fa-rocket"></i> トマス・ピンチョン</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part4.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-wave-square"></i> 動向
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part4.html#modernism" class="dropdown-item"><i class="fas fa-brain"></i> モダニズム文学</a>
-                        <a href="part4.html#futurism-it" class="dropdown-item"><i class="fas fa-industry"></i> イタリア未来派</a>
-                        <a href="part4.html#surrealism" class="dropdown-item"><i class="fas fa-moon"></i> ダダ・シュルレアリスム</a>
-                        <a href="part4.html#futurism-ru" class="dropdown-item"><i class="fas fa-rocket"></i> ロシア未来派</a>
-                        <a href="part4.html#absurdism" class="dropdown-item"><i class="fas fa-theater-masks"></i> 不条理文学</a>
-                        <a href="part4.html#nouveau" class="dropdown-item"><i class="fas fa-camera"></i> ヌーヴォー・ロマン</a>
-                        <a href="part4.html#beat" class="dropdown-item"><i class="fas fa-drum"></i> ビート・ジェネレーション</a>
-                        <a href="part4.html#oulipo" class="dropdown-item"><i class="fas fa-chess-knight"></i> ウリポ</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part5.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-lightbulb"></i> テーマ
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part5.html#alienation" class="dropdown-item"><i class="fas fa-user-slash"></i> 疎外とアイデンティティ</a>
-                        <a href="part5.html#city-machine" class="dropdown-item"><i class="fas fa-city"></i> 都市と機械</a>
-                        <a href="part5.html#reality" class="dropdown-item"><i class="fas fa-eye"></i> 現実と意識</a>
-                        <a href="part5.html#language-doubt" class="dropdown-item"><i class="fas fa-comment-slash"></i> 言語への懐疑</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part6.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-gift"></i> 遺産
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part6.html#postmodern-inheritance" class="dropdown-item"><i class="fas fa-forward"></i> ポストモダンへの継承</a>
-                        <a href="part6.html#mainstream-influence" class="dropdown-item"><i class="fas fa-water"></i> 主流への影響</a>
-                        <a href="part6.html#contemporary-relevance" class="dropdown-item"><i class="fas fa-globe-americas"></i> 現代的意義</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="chronology.html" class="nav-link">
-                        <i class="fas fa-calendar-alt"></i> 年表
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="glossary.html" class="nav-link">
-                        <i class="fas fa-book-medical"></i> 用語集
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="references.html" class="nav-link">
-                        <i class="fas fa-book"></i> 参考文献
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="breadcrumb">
-        <div class="breadcrumb-container">
-            <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
-            <span class="breadcrumb-separator">/</span>
-            <span>参考文献</span>
-        </div>
-    </div>
+    <div id="header-placeholder"></div>
 
     <div class="container">
         <div class="content-wrapper references fade-in">
-            <h1 class="page-title"><i class="fas fa-book"></i> 参考文献</h1>
+            <h1 class="page-title"><i class="fas fa-book"></i> <span class="title-text">参考文献</span></h1>
 
             <p>このガイドブックを作成するにあたり、以下の書籍、ウェブサイト、論文、および各種資料を広範に参照しました。リストは、読者がさらに探求を深めるための一助となることを目的としています。</p>
 
-            <h2 id="books"><i class="fas fa-book-open"></i> 書籍</h2>
+            <h2 id="books"><i class="fas fa-book-open"></i> <span class="title-text">書籍</span></h2>
             
-            <h3><i class="fas fa-landmark"></i> 古典・主要作品（邦訳版）</h3>
-            <p class="bookstore-note"><i class="fas fa-info-circle"></i> 各書籍の購入リンクは、各項目の<i class="fas fa-shopping-cart"></i>ボタンからアクセスできます。</p>
+            <h3><i class="fas fa-landmark"></i> <span class="title-text">古典・主要作品（邦訳版）</span></h3>
+            <p class="bookstore-note"><i class="fas fa-info-circle"></i> スマホ：書籍名をタップで購入リンクが表示されます。PC：<i class="fas fa-shopping-cart"></i>ボタンにマウスを乗せると購入リンクが表示されます。</p>
             <ul class="book-list">
                 <li>
                     <span class="book-title">安部公房『砂の女』新潮文庫、2003年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/410112115X" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/1657880/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784101121154" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/410112115X" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/1657880/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784101121154" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">ヴァージニア・ウルフ（土屋政雄訳）『ダロウェイ夫人』光文社古典新訳文庫、2010年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4334752055" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/6474118/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784334752057" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4334752055" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/6474118/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784334752057" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
-                    <span class="book-title">ウィリアм・S・バロウズ（鮎川信夫訳、山形浩生改訂）『裸のランチ【完全版】』河出文庫、2025年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4309468152" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784309468150" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309468150" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <span class="book-title">ウィリアム・S・バロウズ（鮎川信夫訳、山形浩生改訂）『裸のランチ【完全版】』河出文庫、2025年。</span>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/裸のランチ-完全版-河出文庫-ハ-5-1/dp/4309468152" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/18184912/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309468150" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
-                    <span class="book-title">ウィリアм・フォークナー（平石貴樹・新納卓也訳）『響きと怒り』岩波文庫、2007年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4003232348" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/4272609/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784003232347" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <span class="book-title">ウィリアム・フォークナー（平石貴樹・新納卓也訳）『響きと怒り（上）』岩波文庫、2007年。</span>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/響きと怒り-上-岩波文庫-フォークナー/dp/4003232348" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/4272609/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784003232354" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">大江健三郎『個人的な体験』新潮文庫、1981年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4101126100" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/31718/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784101126104" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4101126100" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/31718/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784101126104" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">大江健三郎『万延元年のフットボール』講談社文芸文庫、1988年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4061960148" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/302257/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784061960145" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4061960148" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/302257/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784061960145" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">ガブリエル・ガルシア＝マルケス（鼓直訳）『百年の孤独』新潮文庫、2024年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4102052127" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/17834556/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784102052129" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/百年の孤独-新潮文庫-24-2-ガブリエル・ガルシア-マルケス/dp/4102052127" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/17834556/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784102052129" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">サミュエル・ベケット（宇野邦一訳）『モロイ』河出書房新社、2019年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4309207693" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/15880889/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309207698" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4309207693" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/15880889/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309207698" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">サミュエル・ベケット（宇野邦一訳）『マロウンは死ぬ』河出書房新社、2019年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4309207790" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784309207797" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309207797" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/マロウン死す-サミュエル・ベケット/dp/4309207790" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/15976923/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309207797" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">サミュエル・ベケット（宇野邦一訳）『名づけられないもの』河出書房新社、2019年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4309207871" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784309207872" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309207872" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/名づけられないもの-サミュエル・ベケット/dp/4309207871" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/16091946/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309207872" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
-                    <span class="book-title">ジェイмズ・ジョイス（丸谷才一ほか訳）『ユリシーズ 1』集英社文庫、2003年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4087610047" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784087610048" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784087610048" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <span class="book-title">ジェイムズ・ジョイス（丸谷才一ほか訳）『ユリシーズ 1』集英社文庫、2003年。</span>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/ユリシーズ-1-集英社文庫-ジェイムズ・ジョイス/dp/4087610047" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/1594482/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784087610048" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
-                    <span class="book-title">ジェイмズ・ジョイス（柳瀬尚紀訳）『フィネガンズ・ウェイク I・II』河出書房新社、2024年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4309209009" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/17823416/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309209005" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <span class="book-title">ジェイмズ・ジョイス（柳瀬尚紀訳）『フィネガンズ・ウェイク III・IV』河出書房新社、2024年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4309209017" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/17823415/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309209012" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <span class="book-title">ジェイムズ・ジョイス（柳瀬尚紀訳）『フィネガンズ・ウェイク I・II』河出書房新社、2024年。</span>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/フィネガンズ・ウェイク-I・II-ジェイムズ・ジョイス/dp/4309209009" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/17823416/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309209005" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">トマス・ピンチョン（志村正雄訳）『競売ナンバー49の叫び』ちくま文庫、2010年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4480426965" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784480426963" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784480426963" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4480426965" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/6444143/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784480426963" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">中村真一郎『四季』小学館、2020年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4093523835" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784093523837" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784093523837" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4093523835" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/16131648/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784093523837" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">ニコライ・ゴーゴリ（平井肇訳）『外套・鼻』岩波文庫、2006年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4003260538" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784003260531" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784003260531" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4003260538" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/134320/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784003260531" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">フランツ・カフカ（高橋義孝訳）『変身』新潮文庫、1952年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4102071016" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/1746906/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784102071014" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4102071016" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/1746906/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784102071014" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">ホルヘ・ルイス・ボルヘス（鼓直訳）『伝奇集』岩波文庫、1993年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4003279212" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/625134/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784003279212" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4003279212" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/625134/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784003279212" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
-                    <span class="book-title">マルグリット・デュラス（清水徹訳）『愛人／ラマン』河出文庫、1992年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4309460925" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/rb/514520/" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784309460925" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <span class="book-title">マルグリット・デュラス（清水徹訳）『愛人／ラマン』河出文庫、1992年。※電子書籍のみ。</span>
+                    <div class="bookstore-menu">
+                        <a href="https://amzn.asia/d/arfgYmE" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rk/4e8c3b2cfaff34f9b67c91e9803ce11a/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/disp/CSfGoodsPage_001.jsp?CAT=08&GOODS_STK_NO=9920063061" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">マルセル・プルースト（吉川一義訳）『失われた時を求めて 1』岩波文庫、2010年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4003751094" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784003751091" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784003751091" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4003751094" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/6861133/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784003751091" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
                 <li>
                     <span class="book-title">イタロ・カルヴィーノ（脇功訳）『冬の夜ひとりの旅人が』白水Uブックス、2016年。</span>
-                    <div class="bookstore-dropdown">
-                        <button class="bookstore-trigger" aria-haspopup="true" aria-expanded="false" title="オンライン書店で探す">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                        <div class="bookstore-menu" role="menu">
-                            <a href="https://www.amazon.co.jp/dp/4560072078" target="_blank" class="store-link amazon" role="menuitem"><i class="fab fa-amazon"></i> Amazon</a>
-                            <a href="https://books.rakuten.co.jp/search?isbn=9784560072073" target="_blank" class="store-link rakuten" role="menuitem"><i class="fas fa-book"></i> 楽天ブックス</a>
-                            <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784560072073" target="_blank" class="store-link kinokuniya" role="menuitem"><i class="fas fa-store"></i> 紀伊國屋書店</a>
-                        </div>
+                    <div class="bookstore-menu">
+                        <a href="https://www.amazon.co.jp/dp/4560072078" target="_blank" class="store-link amazon"><i class="fab fa-amazon"></i> Amazon <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://books.rakuten.co.jp/rb/14410162/" target="_blank" class="store-link rakuten"><i class="fas fa-book"></i> 楽天ブックス <i class="fas fa-arrow-right"></i></a>
+                        <a href="https://www.kinokuniya.co.jp/f/dsg-01-9784560072073" target="_blank" class="store-link kinokuniya"><i class="fas fa-store"></i> 紀伊國屋書店 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </li>
             </ul>
 
-            <h3><i class="fas fa-archive"></i> 絶版・入手困難な重要作品</h3>
+            <h3><i class="fas fa-archive"></i> <span class="title-text">絶版・入手困難な重要作品</span></h3>
             <p>以下の作品は、前衛小説の歴史において非常に重要ですが、現在、新刊での入手が困難（絶版・品切れ）となっているものです。古書店や図書館で探す際の手がかりとしてご活用ください。</p>
             <ul class="book-list plain">
                 <li>アンドレイ・ベールイ（川端香男里訳）『ペテルブルグ』講談社文芸文庫、1999年。</li>
@@ -442,7 +198,7 @@
                 <li>中村真一郎 四部作『夏』（1967年）、『秋』（1981年）、『冬』（1971年）各・新潮社。</li>
             </ul>
 
-            <h3><i class="fas fa-glasses"></i> 研究書・批評・理論書</h3>
+            <h3><i class="fas fa-glasses"></i> <span class="title-text">研究書・批評・理論書</span></h3>
             <ul>
                 <li>Barthes, Roland. "The Death of the Author." <em>Image, Music, Text</em>, translated by Stephen Heath, Hill and Wang, 1977.</li>
                 <li>Bradbury, Malcolm, and James McFarlane, eds. <em>Modernism: A Guide to European Literature 1890-1930</em>. Penguin Books, 1991.</li>
@@ -470,7 +226,7 @@
                 <li>松浦寿輝『 modernist japan: モダニズムの日本の文学と芸術』名古屋大学出版会、2010年。</li>
             </ul>
 
-            <h2 id="papers"><i class="fas fa-file-alt"></i> 論文・学術記事</h2>
+            <h2 id="papers"><i class="fas fa-file-alt"></i> <span class="title-text">論文・学術記事</span></h2>
             <p>CiNii Articles, J-STAGE, Google Scholar, 各大学リポジトリ等の公開情報を元に、オンラインで閲覧可能な論文を中心にリストアップしました。</p>
 
             <h4><i class="fas fa-brain"></i> モダニズム文学</h4>
@@ -599,10 +355,10 @@
                 <li>"<a href="https://www.researchgate.net/publication/384870609_The_Use_of_Unreliable_Narrators_in_Modern_English_Literature_A_Study_of_Narrative_Ambiguity_and_Reader_Engagement" target="_blank">The Use of Unreliable Narrators in Modern English Literature: A Study of Narrative Ambiguity and Reader Engagement</a>." <em>ResearchGate</em>, 2024.</li>
             </ul>
 
-            <h2 id="reading-guide"><i class="fas fa-map-signs"></i> 読書案内：レベル別おすすめ作品</h2>
+            <h2 id="reading-guide"><i class="fas fa-map-signs"></i> <span class="title-text">読書案内<small>レベル別おすすめ作品</small></span></h2>
             <p>前衛小説の広大な世界を探検するための、ささやかな道標として、以下の作品をおすすめします。</p>
 
-            <h3><i class="fas fa-seedling"></i> 初級編：まずはここから</h3>
+            <h3><i class="fas fa-seedling"></i> <span class="title-text">初級編：まずはここから</span></h3>
             <p>比較的読みやすく、前衛小説の持つ特異な面白さへの扉を開いてくれる作品群です。</p>
             <ul>
                 <li><strong>フランツ・カフカ『変身』</strong>：ある朝、巨大な虫になっていた男の物語。不条理文学の古典でありながら、その心理描写は普遍的で、読者を引き込みます。</li>
@@ -610,7 +366,7 @@
                 <li><strong>ホルヘ・ルイス・ボルヘス『伝奇集』</strong>：無限の図書館や円環する時間など、幻想的なモチーフを通じて哲学的な問いを探求する短編集。一篇一篇が思考の迷宮です。</li>
             </ul>
 
-            <h3><i class="fas fa-leaf"></i> 中級編：実験の深みへ</h3>
+            <h3><i class="fas fa-leaf"></i> <span class="title-text">中級編：実験の深みへ</span></h3>
             <p>物語の快楽だけでなく、「小説とは何か」という問いそのものを楽しむための作品群です。</p>
             <ul>
                 <li><strong>ヴァージニア・ウルフ『ダロウェイ夫人』</strong>：「意識の流れ」の技法を駆使し、ある一日のロンドンを舞台に、人々の内面世界を詩的に描き出します。</li>
@@ -618,29 +374,29 @@
                 <li><strong>アラン・ロブ＝グリエ『嫉妬』</strong>：心理描写を排し、執拗な物質描写だけで嫉妬という感情を浮かび上がらせる、ヌーヴォー・ロマンの代表作。</li>
             </ul>
 
-            <h3><i class="fas fa-tree"></i> 上級編：文学の極北へ</h3>
+            <h3><i class="fas fa-tree"></i> <span class="title-text">上級編：文学の極北へ</span></h3>
             <p>読解には忍耐と努力を要しますが、乗り越えた先には、これまでの文学観を根底から覆すような体験が待っています。</p>
             <ul>
-                <li><strong>ジェイмズ・ジョイス『ユリシーズ』</strong>：20世紀文学の最高峰。たった一日の出来事を、驚異的な言語実験の連続で描き尽くします。</li>
+                <li><strong>ジェイムズ・ジョイス『ユリシーズ』</strong>：20世紀文学の最高峰。たった一日の出来事を、驚異的な言語実験の連続で描き尽くします。</li>
                 <li><strong>マルセル・プルースト『失われた時を求めて』</strong>：紅茶とマドレーヌの記憶から始まる、意識と時間の探求の旅。読書自体が人生の一大プロジェクトとなります。</li>
-                <li><strong>ジェイмズ・ジョイス『フィネガンズ・ウェイク』</strong>：複数の言語を融合させた「夢の言語」で書かれた、文学史上最も難解とされる作品。言語の極北を目指す冒険です。</li>
+                <li><strong>ジェイムズ・ジョイス『フィネガンズ・ウェイク』</strong>：複数の言語を融合させた「夢の言語」で書かれた、文学史上最も難解とされる作品。言語の極北を目指す冒険です。</li>
             </ul>
 
-            <div class="pagination">
-                <a href="glossary.html" class="prev"><i class="fas fa-arrow-left"></i> 用語集</a>
-                <div class="page-info">参考文献</div>
-                <a href="index.html" class="next">トップページへ戻る <i class="fas fa-home"></i></a>
-            </div>
+        </div>
+        <div class="pagination">
+            <a href="glossary.html" class="prev">
+                <i class="fas fa-angle-double-left"></i><span>用語集</span>
+            </a>
+            <div class="page-info">参考文献</div>
+            <a href="index.html" class="next">
+                <span>ホーム</span><i class="fas fa-angle-double-right"></i>
+            </a>
         </div>
     </div>
 
     <button class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
-    <footer>
-        <p>&copy; 2025 前衛小説ガイドブック | 20世紀文学の革新と実験の記録. All Rights Reserved. | Planning & Direction: Fujiwara Mu</p>
-        <p class="ai-disclaimer">※このページはAIによって生成されたものであり、内容にはハルシネーション（AIの誤情報生成）が含まれる可能性があります。情報の正確性については、必ずご自身でご確認ください。</p>
-        <p><a href="index.html">トップページ</a> | <a href="chronology.html">年表</a> | <a href="references.html">参考文献</a> | <a href="about.html">このサイトについて</a></p>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="common.js"></script>
 </body>

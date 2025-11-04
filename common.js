@@ -1,144 +1,219 @@
-// 前衛小説報告書 - 共通JavaScript
+// 前衛小説報告書 - 共通JavaScript (v17改 - Native Scroll Delegation)
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Elements ---
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
-    const navContainer = document.querySelector('.nav-container');
-    const dropdownToggles = document.querySelectorAll('.dropdown .dropdown-toggle');
-    const bookstoreDropdowns = document.querySelectorAll('.bookstore-dropdown');
+    // --- Scroll Management ---
 
-    // --- Menu Logic ---
-
-    // Hamburger Toggle
-    if (menuToggle) {
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navMenu.classList.toggle('active');
-        });
+    // スクロール復元はブラウザに任せる
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'auto';
     }
 
-    // Submenu Toggles (Mobile)
-    dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
-            if (window.innerWidth > 768) return;
-            e.preventDefault();
-            e.stopPropagation();
-            const parentDropdown = toggle.closest('.dropdown');
-            const wasActive = parentDropdown.classList.contains('active');
-            // Close all other submenus
-            document.querySelectorAll('.dropdown.active').forEach(d => {
-                if (d !== parentDropdown) d.classList.remove('active');
-            });
-            // Toggle the clicked one
-            parentDropdown.classList.toggle('active');
-        });
-    });
+    /**
+     * 共通コンポーネント（HTML）を非同期で読み込み、指定されたIDの要素に挿入する関数
+     */
+    const loadComponent = async (url, placeholderId) => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+            }
+            const data = await response.text();
+            const placeholder = document.getElementById(placeholderId);
+            if (placeholder) {
+                placeholder.outerHTML = data;
+            }
+        } catch (error) {
+            console.error(`Error loading component from ${url}:`, error);
+            const placeholder = document.getElementById(placeholderId);
+            if (placeholder) {
+                placeholder.innerHTML = `<p style="color: red;">Error: ${url} could not be loaded.</p>`;
+            }
+        }
+    };
 
-    // Bookstore Dropdown Toggles
-    bookstoreDropdowns.forEach(dropdown => {
-        const trigger = dropdown.querySelector('.bookstore-trigger');
-        if (trigger) {
-            trigger.addEventListener('click', (e) => {
+    /**
+     * ページ全体のインタラクティブ機能を初期化するメイン関数
+     */
+    const initializePage = () => {
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        const allNavItems = document.querySelectorAll('.nav-menu > .nav-item');
+        const drillDownPanel = document.createElement('div');
+        drillDownPanel.id = 'drillDownPanel';
+        drillDownPanel.className = 'drilldown-panel';
+        document.body.appendChild(drillDownPanel);
+
+        function updateMenuState(state) {
+            document.body.classList.remove('menu-l1-visible', 'menu-l2-visible', 'no-scroll');
+            if (state) {
+                document.body.classList.add(state);
+                document.body.classList.add('no-scroll');
+            }
+        }
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const parent = trigger.closest('.bookstore-dropdown');
-                const menu = parent.querySelector('.bookstore-menu');
-                const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+                const isVisible = document.body.classList.contains('menu-l1-visible') || document.body.classList.contains('menu-l2-visible');
+                const icon = menuToggle.querySelector('i');
+                if (isVisible) {
+                    updateMenuState(null);
+                    menuToggle.classList.remove('active');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-compass');
+                } else {
+                    updateMenuState('menu-l1-visible');
+                    menuToggle.classList.add('active');
+                    icon.classList.remove('fa-compass');
+                    icon.classList.add('fa-times');
+                }
+            });
+        }
 
-                // Close all other bookstore dropdowns
-                document.querySelectorAll('.bookstore-dropdown').forEach(d => {
-                    if (d !== parent) {
-                        d.querySelector('.bookstore-trigger')?.setAttribute('aria-expanded', 'false');
-                        d.querySelector('.bookstore-menu')?.classList.remove('open');
-                    }
+        allNavItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (window.innerWidth > 768) return;
+                if (item.classList.contains('dropdown')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const submenu = item.querySelector('.dropdown-menu');
+                    const navLink = item.querySelector('.nav-link');
+                    const title = navLink.textContent.trim();
+                    const titleLink = navLink.getAttribute('href');
+                    const iconHTML = navLink.querySelector('i')?.outerHTML || '';
+                    let listItems = '';
+                    submenu.querySelectorAll('a').forEach(link => { listItems += `<li>${link.outerHTML}</li>`; });
+                    drillDownPanel.innerHTML = `
+                        <div class="drilldown-header">
+                            <button class="drilldown-back"><i class="fas fa-arrow-left"></i> 戻る</button>
+                            <a href="${titleLink}" class="drilldown-title">${iconHTML} ${title}</a>
+                        </div>
+                        <div class="drilldown-content"><ul>${listItems}</ul></div>
+                    `;
+                    updateMenuState('menu-l2-visible');
+                    drillDownPanel.querySelector('.drilldown-back').addEventListener('click', () => updateMenuState('menu-l1-visible'));
+                    drillDownPanel.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setTimeout(() => updateMenuState(null), 300)));
+                } else {
+                    setTimeout(() => updateMenuState(null), 300);
+                }
+            });
+        });
+
+        // 【重要】アンカーリンクのイベントリスナーを簡略化
+        document.querySelectorAll('a[href*="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // e.preventDefault() を削除し、ブラウザのネイティブなハッシュ移動を許可する
+                // メニューを閉じる動作のみ行う
+                if (document.body.classList.contains('menu-l1-visible') || document.body.classList.contains('menu-l2-visible')) {
+                    updateMenuState(null);
+                }
+            });
+        });
+
+        const scrollTop = document.getElementById('scrollTop');
+        const progressBar = document.getElementById('progressBar');
+        if (scrollTop && progressBar) {
+            window.addEventListener('scroll', () => {
+                scrollTop.classList.toggle('show', window.pageYOffset > 300);
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (docHeight > 0) {
+                    const progress = (window.pageYOffset / docHeight) * 100;
+                    progressBar.style.width = progress + '%';
+                }
+            });
+            scrollTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        const currentPage = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-menu .nav-link').forEach(link => {
+            if (link.getAttribute('href').split('/').pop() === currentPage) {
+                link.classList.add('active');
+                link.closest('.dropdown')?.querySelector('.dropdown-toggle')?.classList.add('active');
+            }
+        });
+        
+        // setupBookstoreLinks は変更なし
+        // ... (省略)
+        setupBookstoreLinks();
+    };
+
+    /**
+     * 購入リンクのインタラクションをセットアップする関数
+     */
+    const setupBookstoreLinks = () => {
+        const bookListItems = document.querySelectorAll('.book-list > li');
+
+        bookListItems.forEach(item => {
+            const title = item.querySelector('.book-title');
+            const menu = item.querySelector('.bookstore-menu');
+
+            if (!title || !menu) return;
+
+            // PC: アイコンにマウスを乗せたらメニュー表示
+            if (window.innerWidth > 768) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'bookstore-wrapper';
+
+                const cartIcon = document.createElement('button');
+                cartIcon.className = 'bookstore-trigger';
+                cartIcon.innerHTML = '<i class="fas fa-shopping-cart"></i>';
+
+                wrapper.appendChild(cartIcon);
+                wrapper.appendChild(menu);
+                item.appendChild(wrapper);
+
+                let closeTimer;
+
+                wrapper.addEventListener('mouseenter', () => {
+                    clearTimeout(closeTimer);
+                    menu.classList.add('open');
+                    wrapper.classList.add('wrapper-active');
                 });
 
-                // Toggle the clicked one
-                trigger.setAttribute('aria-expanded', !isExpanded);
-                menu.classList.toggle('open');
-            });
-        }
-    });
-
-    // --- Global Click Listener to Close Menus ---
-    document.addEventListener('click', (e) => {
-        // Close main nav menu if click is outside the nav container
-        if (navMenu && navMenu.classList.contains('active') && !navContainer.contains(e.target)) {
-            navMenu.classList.remove('active');
-            document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
-        }
-
-        // Close bookstore dropdowns if click is outside
-        if (!e.target.closest('.bookstore-dropdown')) {
-            document.querySelectorAll('.bookstore-dropdown').forEach(d => {
-                d.querySelector('.bookstore-trigger')?.setAttribute('aria-expanded', 'false');
-                d.querySelector('.bookstore-menu')?.classList.remove('open');
-            });
-        }
-    });
-
-
-    // --- Other Functionalities (no changes needed here) ---
-
-    // Smooth Scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href === '#') return;
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                if (navMenu) navMenu.classList.remove('active');
+                wrapper.addEventListener('mouseleave', () => {
+                    closeTimer = setTimeout(() => {
+                        menu.classList.remove('open');
+                        wrapper.classList.remove('wrapper-active');
+                    }, 100); // 100msの遅延
+                });
+            } 
+            // Mobile: 書籍名をタップしたらメニュー表示
+            else {
+                title.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    item.classList.toggle('open');
+                    menu.classList.toggle('open');
+                });
             }
         });
-    });
 
-    // Scroll Top Button & Progress Bar
-    const scrollTop = document.getElementById('scrollTop');
-    if (scrollTop) {
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollTop.classList.add('show');
-            } else {
-                scrollTop.classList.remove('show');
-            }
-            const progressBar = document.getElementById('progressBar');
-            if (progressBar) {
-                const windowHeight = window.innerHeight;
-                const documentHeight = document.documentElement.scrollHeight - windowHeight;
-                const scrolled = window.pageYOffset;
-                const progress = (scrolled / documentHeight) * 100;
-                progressBar.style.width = progress + '%';
+        // ページ全体でクリックイベントを監視し、メニュー外をクリックしたら閉じる
+        document.addEventListener('click', (e) => {
+            const openItem = document.querySelector('.book-list > li.open');
+            if (openItem && !openItem.contains(e.target)) {
+                openItem.classList.remove('open');
+                openItem.querySelector('.bookstore-menu').classList.remove('open');
             }
         });
-        scrollTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
+    };
 
-    // Set Active Nav State
-    const currentPage = window.location.pathname.split('/').pop();
-    const navLinks = document.querySelectorAll('.nav-menu .nav-link');
-    navLinks.forEach(link => {
-        const linkPage = link.getAttribute('href').split('/').pop();
-        if (linkPage === currentPage) {
-            link.classList.add('active');
-            const parentDropdown = link.closest('.dropdown');
-            if (parentDropdown) {
-                parentDropdown.querySelector('.dropdown-toggle').classList.add('active');
-            }
-        }
-    });
 
-    // Fade-in Animation
-    document.querySelectorAll('.fade-in').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
+    /**
+     * ページの初期化処理を実行するエントリーポイント
+     */
+    const bootstrap = async () => {
+        await Promise.all([
+            loadComponent('_header.html', 'header-placeholder'),
+            loadComponent('_footer.html', 'footer-placeholder')
+        ]);
+        
+        initializePage();
+
+        // 【重要】'load'イベントではなく、確実に実行されるsetTimeoutでローディングを解除
         setTimeout(() => {
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
-        }, 100);
-    });
+            document.body.classList.remove('is-loading');
+        }, 100); // 100ms後に実行
+    };
+
+    bootstrap();
 });

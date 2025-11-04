@@ -8,179 +8,48 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="is-loading">
     <!-- 進捗インジケーター -->
     <div class="progress-indicator">
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <!-- ナビゲーションバー -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <i class="fas fa-book-open"></i>
-                前衛小説ガイドブック
-            </a>
-            <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-                <span class="menu-toggle-text">メニュー</span>
-            </button>
-            <ul class="nav-menu" id="navMenu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">
-                        <i class="fas fa-home"></i> ホーム
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part1.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-history"></i> 歴史
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part1.html#prehistory" class="dropdown-item"><i class="fas fa-seedling"></i> 前史</a>
-                        <a href="part1.html#modernism" class="dropdown-item"><i class="fas fa-landmark"></i> モダニズムの胎動</a>
-                        <a href="part1.html#dada" class="dropdown-item"><i class="fas fa-bomb"></i> ダダ・シュルレアリスム</a>
-                        <a href="part1.html#postwar" class="dropdown-item"><i class="fas fa-globe"></i> 戦後の展開</a>
-                        <a href="part1.html#postmodernism" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> ポストモダニズム</a>
-                        <a href="part1.html#japan" class="dropdown-item"><i class="fas fa-torii-gate"></i> 日本の前衛小説</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part2.html" class="nav-link active dropdown-toggle">
-                        <i class="fas fa-tools"></i> 特徴
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part2.html#narrative" class="dropdown-item"><i class="fas fa-project-diagram"></i> 物語性の解体</a>
-                        <a href="part2.html#consciousness" class="dropdown-item"><i class="fas fa-water"></i> 意識の流れ</a>
-                        <a href="part2.html#absurd" class="dropdown-item"><i class="fas fa-question-circle"></i> 不条理とグロテスク</a>
-                        <a href="part2.html#fragmentation" class="dropdown-item"><i class="fas fa-cut"></i> 断片化とコラージュ</a>
-                        <a href="part2.html#metafiction" class="dropdown-item"><i class="fas fa-layer-group"></i> メタフィクション</a>
-                        <a href="part2.html#unreliable" class="dropdown-item"><i class="fas fa-user-secret"></i> 信頼できない語り</a>
-                        <a href="part2.html#language" class="dropdown-item"><i class="fas fa-language"></i> 言語の実験</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown dropdown-mega">
-                    <a href="part3.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-user-tie"></i> 巨匠
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part3.html#gogol" class="dropdown-item"><i class="fas fa-mask"></i> ニコライ・ゴーゴリ</a>
-                        <a href="part3.html#proust" class="dropdown-item"><i class="fas fa-cookie-bite"></i> マルセル・プルースト</a>
-                        <a href="part3.html#bely" class="dropdown-item"><i class="fas fa-cube"></i> アンドレイ・ベールイ</a>
-                        <a href="part3.html#joyce" class="dropdown-item"><i class="fas fa-map-signs"></i> ジェイムズ・ジョイス</a>
-                        <a href="part3.html#woolf" class="dropdown-item"><i class="fas fa-water"></i> ヴァージニア・ウルフ</a>
-                        <a href="part3.html#kafka" class="dropdown-item"><i class="fas fa-bug"></i> フランツ・カフカ</a>
-                        <a href="part3.html#faulkner" class="dropdown-item"><i class="fas fa-clock"></i> ウィリアム・フォークナー</a>
-                        <a href="part3.html#borges" class="dropdown-item"><i class="fas fa-infinity"></i> ホルヘ・ルイス・ボルヘス</a>
-                        <a href="part3.html#beckett" class="dropdown-item"><i class="fas fa-tree"></i> サミュエル・ベケット</a>
-                        <a href="part3.html#burroughs" class="dropdown-item"><i class="fas fa-cut"></i> ウィリアム・S・バロウズ</a>
-                        <a href="part3.html#sarraute" class="dropdown-item"><i class="fas fa-microscope"></i> ナタリー・サロート</a>
-                        <a href="part3.html#nakamura" class="dropdown-item"><i class="fas fa-yin-yang"></i> 中村真一郎</a>
-                        <a href="part3.html#robbe-grillet" class="dropdown-item"><i class="fas fa-camera"></i> アラン・ロブ＝グリエ</a>
-                        <a href="part3.html#duras" class="dropdown-item"><i class="fas fa-film"></i> マルグリット・デュラス</a>
-                        <a href="part3.html#calvino" class="dropdown-item"><i class="fas fa-chess-knight"></i> イタロ・カルヴィーノ</a>
-                        <a href="part3.html#abe" class="dropdown-item"><i class="fas fa-box"></i> 安部公房</a>
-                        <a href="part3.html#marquez" class="dropdown-item"><i class="fas fa-leaf"></i> G・ガルシア＝マルケス</a>
-                        <a href="part3.html#oe" class="dropdown-item"><i class="fas fa-child"></i> 大江健三郎</a>
-                        <a href="part3.html#pynchon" class="dropdown-item"><i class="fas fa-rocket"></i> トマス・ピンチョン</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part4.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-wave-square"></i> 動向
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part4.html#modernism" class="dropdown-item"><i class="fas fa-brain"></i> モダニズム文学</a>
-                        <a href="part4.html#futurism-it" class="dropdown-item"><i class="fas fa-industry"></i> イタリア未来派</a>
-                        <a href="part4.html#surrealism" class="dropdown-item"><i class="fas fa-moon"></i> ダダ・シュルレアリスム</a>
-                        <a href="part4.html#futurism-ru" class="dropdown-item"><i class="fas fa-rocket"></i> ロシア未来派</a>
-                        <a href="part4.html#absurdism" class="dropdown-item"><i class="fas fa-theater-masks"></i> 不条理文学</a>
-                        <a href="part4.html#nouveau" class="dropdown-item"><i class="fas fa-camera"></i> ヌーヴォー・ロマン</a>
-                        <a href="part4.html#beat" class="dropdown-item"><i class="fas fa-drum"></i> ビート・ジェネレーション</a>
-                        <a href="part4.html#oulipo" class="dropdown-item"><i class="fas fa-chess-knight"></i> ウリポ</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part5.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-lightbulb"></i> テーマ
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part5.html#alienation" class="dropdown-item"><i class="fas fa-user-slash"></i> 疎外とアイデンティティ</a>
-                        <a href="part5.html#city-machine" class="dropdown-item"><i class="fas fa-city"></i> 都市と機械</a>
-                        <a href="part5.html#reality" class="dropdown-item"><i class="fas fa-eye"></i> 現実と意識</a>
-                        <a href="part5.html#language-doubt" class="dropdown-item"><i class="fas fa-comment-slash"></i> 言語への懐疑</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="part6.html" class="nav-link dropdown-toggle">
-                        <i class="fas fa-gift"></i> 遺産
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="part6.html#postmodern-inheritance" class="dropdown-item"><i class="fas fa-forward"></i> ポストモダンへの継承</a>
-                        <a href="part6.html#mainstream-influence" class="dropdown-item"><i class="fas fa-film"></i> 主流と他メディアへの影響</a>
-                        <a href="part6.html#contemporary-relevance" class="dropdown-item"><i class="fas fa-globe-americas"></i> 現代的意義</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="chronology.html" class="nav-link">
-                        <i class="fas fa-calendar-alt"></i> 年表
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="glossary.html" class="nav-link">
-                        <i class="fas fa-book-medical"></i> 用語集
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="references.html" class="nav-link">
-                        <i class="fas fa-book"></i> 参考文献
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="breadcrumb">
-        <div class="breadcrumb-container">
-            <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
-            <span class="breadcrumb-separator">/</span>
-            <span>第2部：特徴と技法</span>
-        </div>
-    </div>
+    <div id="header-placeholder"></div>
 
     <div class="container">
         <div class="content-wrapper fade-in">
-            <h1 class="page-title"><i class="fas fa-tools"></i> 第2部：前衛小説の主要な特徴と技法</h1>
+            <h1 class="page-title page-title-part"><i class="fas fa-tools"></i> 第2部 <span class="title-text">前衛小説の主要な特徴と技法</span></h1>
 
             <p>前衛小説は、単一の様式や規則に縛られるものではない。しかし、その多様な実践の中に、従来の文学の常識を覆し、新たな表現を切り拓くための、共通した戦略や技法を見出すことができる。本章では、その代表的なものを詳述する。</p>
 
-            <h2 id="narrative"><i class="fas fa-project-diagram"></i> 1. 物語性の解体<small>非線形な時間</small></h2>
+            <h2 id="narrative"><i class="fas fa-project-diagram"></i> <span class="title-text">1. 物語性の解体<small>非線形な時間</small></span></h2>
             <p>19世紀のリアリズム小説が、読者に安定した物語の世界を提供することを主眼としていたのに対し、多くの前衛小説は、その「物語性」そのものを疑い、解体しようと試みる。明確な起承転結、因果関係に基づいたプロット、そして過去から未来へと直線的に流れる時間は、もはや自明のものではなくなる。</p>
             <p>例えば、<strong><a href="part3.html#robbe-grillet">アラン・ロブ＝グリエ</a></strong>の『嫉妬』では、物語は語り手の主観的な視線によって何度も同じ場面を反復し、時間はループする。何が実際に起こったのかは、意図的に曖昧にされ、読者は客観的な真実ではなく、嫉妬という感情が生み出す迷宮的な現実を追体験させられる。これは、世界を秩序だった物語として認識する、人間中心的な視点そのものへの懐疑の表明でもある。</p>
 
-            <h2 id="consciousness"><i class="fas fa-water"></i> 2. 意識の流れ</h2>
+            <h2 id="consciousness"><i class="fas fa-water"></i> <span class="title-text">2. 意識の流れ<small>内面世界の直接描写</small></span></h2>
             <p><a href="glossary.html#modernism">モダニズム文学</a>の最も重要な発明の一つ。人間の意識が、論理的な思考だけでなく、脈絡のない記憶の断片、感覚的な印象、言葉にならない感情のうねりといった、雑多な要素の絶え間ない流れであることを、文学の形式によって再現しようとする技法である。<strong><a href="part3.html#joyce">ジェイムズ・ジョイス</a></strong>の『ユリシーズ』の最終章、モリ―・ブルームの独白は、句読点を排した奔流のような文体で、女性の内的宇宙を壮大に描き出し、この技法の頂点を示している。</p>
             <div class="deep-dive">
                 <h4><i class="fas fa-star"></i> 内的独白との違い</h4>
                 <p>「意識の流れ」は、より自由で無秩序な心の動きを捉えようとするのに対し、「内的独白」は、登場人物が心の中で行う、より整理された思考や自問自答を描写する。しかし、両者は厳密に区別されるものではなく、多くの作品で併用されている。</p>
             </div>
 
-            <h2 id="absurd"><i class="fas fa-question-circle"></i> 3. 不条理とグロテスク</h2>
+            <h2 id="absurd"><i class="fas fa-question-circle"></i> <span class="title-text">3. 不条理とグロテスク<small>世界の無意味さの表現</small></span></h2>
             <p><strong><a href="part3.html#kafka">フランツ・カフカ</a></strong>の作品に代表されるように、前衛小説はしばしば、世界の不条理さや、人間の存在の根拠のなさを描き出す。カフカの『変身』で、主人公がある朝、巨大な毒虫に変身してしまう出来事は、何の説明も与えられない。その不条理な状況が、まるで日常的な出来事であるかのように淡々と描写されることで、世界の非人間性や、人間存在の脆さが際立たされる。</p>
             <p><strong><a href="part3.html#gogol">ニコライ・ゴーゴリ</a></strong>の『鼻』のように、身体の一部が自律的に行動し始めるグロテスクなイメージもまた、理性的で統一された自己という近代的な人間観を内部から破壊する力を持つ。</p>
 
-            <h2 id="fragmentation"><i class="fas fa-cut"></i> 4. 断片化とコラージュ</h2>
+            <h2 id="fragmentation"><i class="fas fa-cut"></i> <span class="title-text">4. 断片化とコラージュ<small>非連続的な世界の再構築</small></span></h2>
             <p><a href="glossary.html#dadaism">ダダイズム</a>や<a href="glossary.html#surrealism">シュルレアリスム</a>に源流を持つこれらの技法は、作品の統一性を意図的に破壊し、異質な要素を並置することで、新たな意味のネットワークを生み出そうとする。<strong><a href="part3.html#burroughs">ウィリアム・S・バロウズ</a></strong>の「<a href="glossary.html#cut-up">カットアップ</a>」は、既存のテキストを物理的に切り刻み、ランダムに再構成する手法であり、作者のコントロールを超えた、言語の偶然の出会いを重視する。</p>
             <p><strong>T.S.エリオット</strong>の詩『荒地』のように、様々な神話や文学作品からの引用をコラージュのように繋ぎ合わせる手法は、断片化した現代文明の姿を映し出すと同時に、過去のテクストとの対話を通じて、新たなテクストを創造する試みでもある。</p>
 
-            <h2 id="metafiction"><i class="fas fa-layer-group"></i> 5. メタフィクション<small>自己言及的な小説</small></h2>
+            <h2 id="metafiction"><i class="fas fa-layer-group"></i> <span class="title-text">5. メタフィクション<small>小説が小説について語る</small></span></h2>
             <p><a href="glossary.html#postmodernism">ポストモダン文学</a>で顕著になるこの技法は、小説がそれ自体について語ることを特徴とする。<strong><a href="part3.html#calvino">イタロ・カルヴィーノ</a></strong>の『冬の夜ひとりの旅人が』は、読者である「君」が、まさにその小説を読もうとするところから始まる。この入れ子構造は、読者が物語に没入することを妨げ、「小説とは何か」「読むとはどういうことか」といった問いを突きつける。</p>
             <p>メタフィクションは、リアリズム小説が隠蔽しようとする「作り物」としての小説の性格をあえて暴露することで、現実とフィクションの境界を曖昧にし、読者を批評的な立場へと誘う。</p>
 
-            <h2 id="unreliable"><i class="fas fa-user-secret"></i> 6. 信頼できない語り<small>語り手の問題</small></h2>
+            <h2 id="unreliable"><i class="fas fa-user-secret"></i> <span class="title-text">6. 信頼できない語り<small>語り手の問題</small></span></h2>
             <p>物語の語り手が、意図的に嘘をついたり、精神的に不安定であったり、あるいは認識能力に限界があるために、その語る内容が客観的な事実とは異なっている、あるいはその可能性が示唆される手法。<strong><a href="part3.html#faulkner">ウィリアム・フォークナー</a></strong>の『響きと怒り』の第一部における、知的障害を持つベンジーの語りはその典型である。</p>
             <p>この技法は、単一の絶対的な真実という考えを揺るがし、読者に、語られていないことは何か、なぜそのように語られているのかを、能動的に推測し、解釈することを要求する。</p>
 
-            <h2 id="language"><i class="fas fa-language"></i> 7. 言語の実験</h2>
+            <h2 id="language"><i class="fas fa-language"></i> <span class="title-text">7. 言語の実験<small>言葉の再構築</small></span></h2>
             <p>究極的に、前衛小説の探求は、言語そのものへと向かう。<a href="part3.html#joyce">ジェイムズ・ジョイス</a>が『フィネガンズ・ウェイク』で試みたように、既存の言語の規則を破壊し、複数の言語を融合させた新たな造語を創造する試みは、その最も過激な例である。</p>
             <p>言葉遊び、駄洒落、詩的なリズムの導入、あるいは<strong><a href="part3.html#beckett">サミュエル・ベケット</a></strong>の小説のように、言語を極限まで削ぎ落とし、沈黙に近づけようとする試みまで、そのアプローチは多様である。これらの実験はすべて、我々が自明のものとして用いている言語が、いかに我々の世界認識を規定しているかを暴き出し、その支配から逃れる可能性を探る試みなのである。</p>
 
@@ -211,21 +80,22 @@
                 <p><strong>分析：</strong>ベンジーの語りには、明確な時系列が存在しません。彼は現在と過去を区別できず、ゴルフ場のプレーヤーたちが「キャディ」と叫ぶのを聞いて、幼い頃に亡くなった姉「キャディ」の記憶へと瞬時に引き戻されます。読者は、この断片的で主観的な情報だけを頼りに、コンプソン家の悲劇を自ら再構築していくことを強いられます。何が真実かは、語り手によって保証されません。</p>
             </div>
 
-            <div class="pagination">
-                <a href="part1.html" class="prev"><i class="fas fa-arrow-left"></i> 第1部：歴史</a>
-                <div class="page-info">第2部 / 全9部</div>
-                <a href="part3.html" class="next">第3部：巨匠たち <i class="fas fa-arrow-right"></i></a>
-            </div>
         </div>
+        <div class="pagination">
+            <a href="part1.html" class="prev">
+                <i class="fas fa-angle-double-left"></i><span>第1部</span>
+            </a>
+            <div class="page-info">第2部</div>
+            <a href="part3.html" class="next">
+                <span>第3部</span><i class="fas fa-angle-double-right"></i>
+            </a>
+        </div>
+    </main>
     </div>
 
     <button class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
-    <footer>
-        <p>&copy; 2025 前衛小説ガイドブック | 20世紀文学の革新と実験の記録. All Rights Reserved. | Planning & Direction: Fujiwara Mu</p>
-        <p class="ai-disclaimer">※このページはAIによって生成されたものであり、内容にはハルシネーション（AIの誤情報生成）が含まれる可能性があります。情報の正確性については、必ずご自身でご確認ください。</p>
-        <p><a href="index.html">トップページ</a> | <a href="chronology.html">年表</a> | <a href="references.html">参考文献</a> | <a href="about.html">このサイトについて</a></p>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="common.js"></script>
 </body>
