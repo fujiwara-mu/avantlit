@@ -9,29 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 共通コンポーネント（HTML）を非同期で読み込み、指定されたIDの要素に挿入する関数
-     */
-    const loadComponent = async (url, placeholderId) => {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
-            }
-            const data = await response.text();
-            const placeholder = document.getElementById(placeholderId);
-            if (placeholder) {
-                placeholder.outerHTML = data;
-            }
-        } catch (error) {
-            console.error(`Error loading component from ${url}:`, error);
-            const placeholder = document.getElementById(placeholderId);
-            if (placeholder) {
-                placeholder.innerHTML = `<p style="color: red;">Error: ${url} could not be loaded.</p>`;
-            }
-        }
-    };
-
-    /**
      * ページ全体のインタラクティブ機能を初期化するメイン関数
      */
     const initializePage = () => {
@@ -201,12 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * ページの初期化処理を実行するエントリーポイント
      */
-    const bootstrap = async () => {
-        await Promise.all([
-            loadComponent('_header.html', 'header-placeholder'),
-            loadComponent('_footer.html', 'footer-placeholder')
-        ]);
-        
+    const bootstrap = () => {
         initializePage();
 
         // 【重要】'load'イベントではなく、確実に実行されるsetTimeoutでローディングを解除
