@@ -3277,3 +3277,9 @@ a i.fas, button i.fas {
     h1, h2, h3, h4, h5, h6 {
         gap: 0.3rem;
     }
+}
+
+/* スクロールトップボタンのアイコンの不要なマージンをリセットする */
+.scroll-top i.fas {
+    margin-right: 0;
+}
