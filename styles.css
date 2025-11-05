@@ -1940,10 +1940,8 @@ body.is-leaving .hero {
 
     .book-title {
         width: 100%;
-        font-size: 1rem;
         line-height: 1.5;
     }
-
     .bookstore-dropdown {
         position: static; /* Allow it to flow naturally */
         align-self: flex-start; /* Align to the start */
