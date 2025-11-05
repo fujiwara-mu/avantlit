@@ -127,6 +127,7 @@ body.font-large .navbar {
     top: 0;
     z-index: 1000;
     padding: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* 境界線を追加 */
 }
 
 .nav-container {
@@ -1389,11 +1390,7 @@ body.is-leaving .hero {
 
 
 
-@media (max-width: 768px) {
-
-
-
-
+    @media (max-width: 768px) {
 
 
 
@@ -1401,23 +1398,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
-    
-
-
-
-
-
-
-
         .nav-container {
-
-
-
-
 
 
 
@@ -1425,15 +1406,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
             grid-template-columns: 1fr auto 1fr; /* 左・中央・右の3カラム */
-
-
-
-
 
 
 
@@ -1441,15 +1414,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
             justify-content: space-between; /* 要素間のスペースを均等に */
-
-
-
-
 
 
 
@@ -1457,15 +1422,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
-            height: 69px; /* 高さを固定してレイアウトの安定性を確保 */
-
-
-
-
+            height: 60px; /* 高さを60pxに最適化 */
 
 
 
@@ -1473,19 +1430,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
         }
-
-
-
-
-
-
-
-    
 
 
 
@@ -1497,15 +1442,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
             grid-column: 2 / 3; /* 中央カラムに配置 */
-
-
-
-
 
 
 
@@ -1513,15 +1450,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
             padding: 0; /* 中央揃えのため余白をリセット */
-
-
-
-
 
 
 
@@ -1529,15 +1458,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
             justify-self: center; /* 中央揃え */
-
-
-
-
 
 
 
@@ -1545,19 +1466,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
         }
-
-
-
-
-
-
-
-    
 
 
 
@@ -1569,15 +1478,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
             grid-column: 1 / 2; /* 左カラムに配置 */
-
-
-
-
 
 
 
@@ -1585,15 +1486,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
             position: static; /* Gridアイテムとして配置するためstaticに */
-
-
-
-
 
 
 
@@ -1601,27 +1494,19 @@ body.is-leaving .hero {
 
 
 
+            font-size: 1.6rem; /* アイコンサイズを大きく */
 
 
 
-
-            margin-left: -0.5rem; /* アイコンの視覚的な位置調整 */
-
+            padding: 0.75rem; /* 余白を調整 */
 
 
 
+            margin-left: 0; /* 余白調整のためリセット */
 
 
 
         }
-
-
-
-
-
-
-
-    
 
 
 
@@ -1633,15 +1518,7 @@ body.is-leaving .hero {
 
 
 
-
-
-
-
             grid-column: 3 / 4; /* 右カラムに配置 */
-
-
-
-
 
 
 
@@ -1649,31 +1526,19 @@ body.is-leaving .hero {
 
 
 
+            font-size: 1.4rem; /* アイコンサイズを大きく */
 
 
 
-
-            margin-right: -0.5rem; /* アイコンの視覚的な位置調整 */
-
+            padding: 0.75rem; /* 余白を調整 */
 
 
 
+            margin-right: 0; /* 余白調整のためリセット */
 
 
 
         }
-
-
-
-
-
-
-
-    
-
-
-
-
 
 
 
