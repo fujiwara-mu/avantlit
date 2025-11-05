@@ -152,6 +152,41 @@ document.addEventListener('DOMContentLoaded', () => {
         setupBookstoreLinks();
         setupFontSizeToggle(); // アイコンの色変更機能を呼び出し
         initializeFontSizeController(); // 文字サイズ変更機能を呼び出し
+        initializeManualSmoothScroll(); // 手動スムーズスクロール機能を初期化
+    };
+
+    /**
+     * 手動でのスムーズスクロール機能を初期化する
+     */
+    const initializeManualSmoothScroll = () => {
+        document.querySelectorAll('a[href*="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                const currentUrl = new URL(window.location.href);
+                const targetUrl = new URL(href, currentUrl.origin + currentUrl.pathname);
+
+                // リンクが現在のページ内のアンカーを指している場合のみ処理
+                if (targetUrl.pathname === currentUrl.pathname && targetUrl.hash) {
+                    e.preventDefault(); // ブラウザのデフォルトのジャンプ動作をキャンセル
+
+                    const targetElement = document.querySelector(targetUrl.hash);
+                    if (targetElement) {
+                        const header = document.querySelector('.navbar');
+                        const headerHeight = header ? header.offsetHeight : 0;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 10; // 10pxの追加マージン
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // URLのハッシュを手動で更新
+                        history.pushState(null, '', targetUrl.hash);
+                    }
+                }
+            });
+        });
     };
 
     const setupFontSizeToggle = () => {
@@ -307,12 +342,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const isExternal = (link.hostname !== window.location.hostname) && href.startsWith('http');
-        const isAnchor = href.startsWith('#');
+        const isAnchor = href.includes('#');
         const isNewTab = link.getAttribute('target') === '_blank';
 
             const isDropdownToggle = link.classList.contains('dropdown-toggle');
         
-            if (!isExternal && !isAnchor && !isNewTab && !isDropdownToggle) {
+            if (!isExternal && !isNewTab && !isDropdownToggle && !isAnchor) { // isAnchorがtrueの場合はこのイベントリスナーをスキップ
                 link.addEventListener('click', e => {
                     e.preventDefault();
                     // Start fade-out animation for current page
