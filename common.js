@@ -69,11 +69,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     updateMenuState('menu-l2-visible');
                     drillDownPanel.querySelector('.drilldown-back').addEventListener('click', () => updateMenuState('menu-l1-visible'));
-                    drillDownPanel.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setTimeout(() => updateMenuState(null), 300)));
+                    // モバイルメニューの表示/非表示をJavaScriptで制御
+                    if (submenu.style.display === 'flex') {
+                        submenu.style.display = 'none';
+                    } else {
+                        submenu.style.display = 'flex';
+                    }
+                    // アニメーションはCSSの:hoverで制御されるため、ここではクラスの追加・削除は不要
+                    // setTimeout(() => updateMenuState(null), 300); // この行は不要
                 } else {
-                    setTimeout(() => updateMenuState(null), 300);
+                    // setTimeout(() => updateMenuState(null), 300); // この行は不要
                 }
             });
+        });
+
+        // モバイルメニューのドロップダウンを初期状態で非表示にする
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+        }
+
+        // ウィンドウのリサイズ時にモバイルメニューの表示状態をリセット
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
+                    menu.style.display = ''; // デスクトップではCSSに任せる
+                });
+            } else {
+                document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none'; // モバイルでは非表示に
+                });
+            }
         });
 
         // 【重要】アンカーリンクのイベントリスナーを簡略化
@@ -112,8 +139,40 @@ document.addEventListener('DOMContentLoaded', () => {
         // setupBookstoreLinks は変更なし
         // ... (省略)
         setupBookstoreLinks();
+        setupFontSizeToggle(); // 文字サイズ変更機能を呼び出し
     };
 
+    const setupFontSizeToggle = () => {
+        const toggleButton = document.getElementById('font-size-toggle');
+        if (!toggleButton) return;
+        const tooltip = toggleButton.querySelector('.tooltip');
+
+        // CSS変数から直接色を取得
+        const rootStyles = getComputedStyle(document.documentElement);
+        const defaultColor = rootStyles.getPropertyValue('--white').trim();
+        const activeColor = rootStyles.getPropertyValue('--accent-color').trim();
+
+        // 状態をJS内で管理
+        let isToggleActive = false;
+
+        // 初期状態を設定
+        toggleButton.style.color = defaultColor;
+        tooltip.textContent = '文字を拡大';
+
+        // ボタンがクリックされたときの処理（スタイルを直接変更）
+        toggleButton.addEventListener('click', () => {
+            isToggleActive = !isToggleActive; // 状態を反転
+
+            if (isToggleActive) {
+                toggleButton.style.color = activeColor;
+                tooltip.textContent = '元に戻す';
+            } else {
+                toggleButton.style.color = defaultColor;
+                tooltip.textContent = '文字を拡大';
+            }
+        });
+    };
+    
     /**
      * 購入リンクのインタラクションをセットアップする関数
      */
@@ -181,11 +240,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const bootstrap = () => {
         initializePage();
 
-        // 【重要】'load'イベントではなく、確実に実行されるsetTimeoutでローディングを解除
+        // ページのちらつき防止クラスを削除
+        document.body.classList.remove('is-loading');
+
+        // 少し遅延させてから表示アニメーションを開始
         setTimeout(() => {
-            document.body.classList.remove('is-loading');
-        }, 100); // 100ms後に実行
+            document.querySelectorAll('.content-wrapper, .hero').forEach(el => {
+                el.classList.add('is-visible');
+            });
+        }, 50); // 50msの遅延で描画の安定性を確保
     };
 
     bootstrap();
+
+    // Page Transition: Handle internal link clicks
+    document.querySelectorAll('a').forEach(link => {
+        const href = link.getAttribute('href');
+        // Skip if it's not a valid, navigable link
+        if (!href) {
+            return;
+        }
+        const isExternal = (link.hostname !== window.location.hostname) && href.startsWith('http');
+        const isAnchor = href.startsWith('#');
+        const isNewTab = link.getAttribute('target') === '_blank';
+
+        if (!isExternal && !isAnchor && !isNewTab) {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                // Start fade-out animation for current page
+                document.body.classList.add('is-leaving');
+                // Wait for animation to finish, then navigate
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 400); // Must match body's CSS transition duration
+            });
+        }
+    });
 });

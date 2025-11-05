@@ -63,6 +63,7 @@ html {
 /* 1. スムーズスクロールをCSSで有効化 */
 html {
     scroll-behavior: smooth;
+    font-size: 16px; /* 基準フォントサイズをhtmlに設定 */
 }
 
 /* 2. アンカーリンクのオフセットを制御 */
@@ -85,8 +86,17 @@ body {
     line-height: 1.8;
     color: var(--text-color);
     background: var(--light-bg);
-    min-height: 100vh;
-    transition: opacity 0.4s ease, visibility 0.4s ease; /* フェードイン効果 */
+    /* font-size は継承に任せる */
+}
+
+/* 文字サイズ変更機能の本体 */
+body.font-large {
+    font-size: 1.35rem; /* 拡大率をアップ */
+}
+
+/* 文字サイズ変更時もナビゲーションバーのフォントサイズは維持する */
+body.font-large .navbar {
+    font-size: 1rem;
 }
 
 .container, .hero {
@@ -126,6 +136,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 2rem;
+    flex-wrap: nowrap; /* PC表示でナビゲーションアイテムの改行を防ぐ */
 }
 
 .nav-logo {
@@ -139,6 +150,7 @@ body {
     gap: 0.5rem;
     transition: opacity 0.3s ease;
     white-space: nowrap; /* ロゴテキストの改行を防ぐ */
+    flex-shrink: 0; /* ロゴが縮小されないようにする */
 }
 
 .nav-logo:hover {
@@ -209,17 +221,56 @@ body {
     flex-direction: column;
     padding: 0.5rem 0;
     opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    visibility: hidden; /* 表示・非表示の切り替えにのみ使用 */
+    transform: translateY(8px);
+    /* transitionの対象をアニメーション可能なプロパティのみに限定 */
+    transition: opacity 0.4s ease, transform 0.4s ease;
     pointer-events: none;
 }
 
-.dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: auto;
+/* デスクトップ表示でのみホバーアニメーションを有効化 */
+@media (min-width: 769px) {
+    .dropdown-menu {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+}
+
+/* ==========================================
+   ナビゲーションバー & コンテンツ アイコンアニメーション
+   ========================================== */
+
+/* ナビゲーションバーのアイコン、ドロップダウン内のアイコン、そして見出しアイコンにトランジションを設定 */
+.nav-link i,
+.dropdown-item i,
+.page-title i,
+h2 i,
+h3 i {
+    transition: transform 0.4s ease-out;
+}
+
+/* ドロップダウン（タブ）にホバーした際、そのタブのアイコンを回転 */
+.dropdown:hover > .nav-link i {
+    transform: rotate(360deg);
+}
+
+/* ドロップダウン内の各項目にホバーした際、その項目のアイコンを回転 */
+.dropdown-item:hover i {
+    transform: rotate(360deg);
+}
+
+/* 本文中の見出しアイコンにホバーした際、アイコンを回転 */
+.page-title:hover i,
+h2:hover i,
+h3:hover i {
+    transform: rotate(360deg);
 }
 
 .dropdown-item {
@@ -292,6 +343,70 @@ body {
     font-size: 0.6rem;
     font-weight: 500;
     display: block;
+}
+
+/* ==========================================
+   ユーティリティボタン (文字サイズ変更など)
+   ========================================== */
+.nav-utility-btn {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: 0.5rem; /* 他メニューとの間隔 */
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+}
+
+.nav-utility-btn:not(.font-toggle-active):hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+button#font-size-toggle.font-toggle-active {
+    color: var(--accent-color);
+}
+
+/* ツールチップ */
+.nav-utility-btn .tooltip {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+.nav-utility-btn:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================
+   文字サイズ変更機能
+   ========================================== */
+html.font-large {
+    font-size: 120%;
+}
+
+/* html.font-large 内のすべての要素に強制的にフォントサイズを継承させる */
+html.font-large * {
+    font-size: inherit !important;
+}
+
+/* 文字サイズ変更を滑らかにする (デバッグのため一時的に無効化) */
+p, h1, h2, h3, h4, h5, h6, li, dt, dd, a, span, button, input, textarea {
+    /* transition: font-size 0.3s ease; */
 }
 
 /* ==========================================
@@ -390,6 +505,8 @@ body {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 2rem;
+    min-width: 0; /* ズーム時のリフローを強制 */
+    width: 100%; /* 親要素の幅に追従させる */
 }
 
 .content-wrapper {
@@ -542,6 +659,10 @@ th {
 
 tr:nth-child(even) {
     background: var(--light-bg);
+}
+
+tr {
+    transition: background-color 0.3s ease;
 }
 
 tr:hover {
@@ -1089,33 +1210,81 @@ footer a:hover {
 
 /* ==========================================
 
-   アニメーション
+
+
+   アニメーション (Transition-based)
+
+
 
    ========================================== */
 
 
 
-@keyframes fadeIn {
+
+
+
+
+/* ページの主要コンテンツの初期状態 */
+
+
+
+.content-wrapper, .hero {
+
+
+
+    opacity: 0;
+
+
+
+    transform: translateY(30px);
+
+
+
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+
+
+}
+
+
+
+
+
+
+
+/* JSによって追加され、アニメーションを開始させるクラス */
+
+
+
+.content-wrapper.is-visible, .hero.is-visible {
+
+
+
+    opacity: 1;
+
+
+
+    transform: translateY(0);
+
+
+
+}
+
+
+
+
+
+
+
+/* ページ遷移時の退出アニメーション（下にスライドアウト） */
+
+
+
+@keyframes fadeOutDown {
 
 
 
     from {
-
-
-
-        opacity: 0;
-
-
-
-        transform: translateY(-10px);
-
-
-
-    }
-
-
-
-    to {
 
 
 
@@ -1131,23 +1300,83 @@ footer a:hover {
 
 
 
+    to {
+
+
+
+        opacity: 0;
+
+
+
+        transform: translateY(30px);
+
+
+
+    }
+
+
+
 }
 
 
 
-.fade-in {
 
-    animation: fadeIn 0.6s ease;
+
+
+
+/* is-leavingクラスが付与されたbody内の主要コンテンツに適用 */
+
+
+
+body.is-leaving .content-wrapper,
+
+
+
+body.is-leaving .hero {
+
+
+
+    animation: fadeOutDown 0.4s ease-in forwards;
+
+
 
 }
+
+
+
+
 
 
 
 /* ==========================================
 
+
+
+
+
+
+
    レスポンシブデザイン
 
+
+
+
+
+
+
    ========================================== */
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1203,19 +1432,39 @@ footer a:hover {
 
 
 
-    .nav-logo {
+                .nav-logo {
 
 
 
-        font-size: 1.1rem; /* モバイルでのフォントサイズを微調整 */
 
 
 
-        padding: 0; /* 中央揃えのため余白をリセット */
+
+                    font-size: 1.1rem; /* モバイルでのフォントサイズを微調整 */
 
 
 
-    }
+
+
+
+
+                    padding: 0; /* 中央揃えのため余白をリセット */
+
+
+
+
+
+
+
+                    white-space: normal; /* 【重要】ズーム時の改行を許可 */
+
+
+
+
+
+
+
+                }
 
 
 
@@ -1407,7 +1656,7 @@ footer a:hover {
         color: var(--white);
     }
 
-    .dropdown-menu { display: none !important; }
+    /* This rule was causing conflicts and has been removed. Mobile menu is handled by JS. */
 
     /* L2 Panel (Drill-Down Content) */
     .drilldown-panel {
@@ -1595,7 +1844,7 @@ footer a:hover {
 
 
 
-    .content-wrapper { padding: 1.5rem 1rem; border-radius: 0; box-shadow: none; }
+    .content-wrapper { padding: 1.5rem 1rem; border-radius: 0; box-shadow: none; width: 100%; }
 
         h2 { font-size: 1.6rem; }
     h3 { font-size: 1.3rem; }
@@ -1981,7 +2230,235 @@ footer a:hover {
 
 /* ==========================================
 
+
+
+   Bookstore Menu Animation (Conflict-Free)
+
+
+
+   ========================================== */
+
+
+
+
+
+
+
+.bookstore-menu-animated {
+
+
+
+    opacity: 0;
+
+
+
+    visibility: hidden;
+
+
+
+    transform: scale(0.9);
+
+
+
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+
+
+
+}
+
+
+
+
+
+
+
+.bookstore-menu-animated.open {
+
+
+
+    opacity: 1;
+
+
+
+    visibility: visible;
+
+
+
+    transform: scale(1);
+
+
+
+    transition-delay: 0s;
+
+
+
+}
+
+
+
+
+
+
+
+/* ==========================================
+
+
+
+
+
+
+
+   Bookstore Menu Animation (Conflict-Free)
+
+
+
+
+
+
+
+   ========================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.bookstore-menu-animated {
+
+
+
+
+
+
+
+    opacity: 0;
+
+
+
+
+
+
+
+    visibility: hidden;
+
+
+
+
+
+
+
+    transform: scale(0.9);
+
+
+
+
+
+
+
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.bookstore-menu-animated.open {
+
+
+
+
+
+
+
+    opacity: 1;
+
+
+
+
+
+
+
+    visibility: visible;
+
+
+
+
+
+
+
+    transform: scale(1);
+
+
+
+
+
+
+
+    transition-delay: 0s;
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================
+
+
+
+
+
+
+
    Bookstore Dropdown
+
+
+
+
+
+
 
    ========================================== */
 
@@ -2988,231 +3465,1657 @@ button.bookstore-trigger i.fas {
 
 
 
-.book-list .bookstore-menu {
+/* ==========================================
 
-    background: transparent;
 
-    margin-top: 0.5rem;
 
-    padding: 0.5rem 0;
 
-    display: none;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   サイトコンテンツラッパー
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ========================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.site-content-wrapper {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    display: flex;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     flex-direction: column;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    flex-grow: 1; /* 残りのスペースを全て占める */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    min-width: 0; /* フレックスアイテムの縮小を許可 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   Bookstore Dropdown (Unified Animation)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ========================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* モバイル表示時：アコーディオン形式 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.book-list .bookstore-menu {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    background: transparent;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    margin-top: 0.5rem;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    padding: 0.5rem 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    display: flex;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    flex-direction: column;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     gap: 0.5rem;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     overflow: hidden;
 
-    animation: slideDown 0.3s ease;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* 統一されたアニメーションの初期状態 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    opacity: 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    visibility: hidden;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    transform: scale(0.95) translateY(-10px);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    max-height: 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.4s ease, visibility 0s 0.4s;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    pointer-events: none;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
-@keyframes slideDown {
 
-    from {
 
-        opacity: 0;
 
-        max-height: 0;
 
-    }
 
-    to {
 
-        opacity: 1;
 
-        max-height: 200px;
 
-    }
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 .book-list .bookstore-menu.open {
 
-    display: flex;
-
-}
 
 
 
-.book-list .bookstore-menu .store-link {
-
-    color: var(--text-color);
-
-    text-decoration: none;
-
-    padding: 0.75rem 1rem;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 0.8rem;
-
-    transition: all 0.2s ease;
-
-    font-size: 0.95rem;
-
-    background: var(--white);
-
-    border: none;
-
-    border-radius: 6px;
-
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-
-}
-
-.book-list .bookstore-menu .store-link i:first-child {
-
-    margin-right: auto;
-
-}
-
-.book-list .bookstore-menu .store-link .fa-arrow-right {
-
-    font-size: 0.75rem;
-
-    opacity: 0.5;
-
-    transition: opacity 0.2s ease, transform 0.2s ease;
-
-}
 
 
 
-.book-list .bookstore-menu .store-link:hover {
 
-    background: var(--light-bg);
 
-    color: var(--accent-color);
 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 
-    transform: translateX(2px);
 
-}
 
-.book-list .bookstore-menu .store-link:hover .fa-arrow-right {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* 統一されたアニメーションの最終状態 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     opacity: 1;
 
-    transform: translateX(3px);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    visibility: visible;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    transform: scale(1) translateY(0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    max-height: 200px; /* 十分な高さを確保 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    transition-delay: 0s;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    pointer-events: auto;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
 
 
-.book-list .bookstore-menu .store-link i:first-child {
 
-    width: 20px;
 
-    text-align: center;
 
-    font-size: 1.1rem;
 
-}
 
-.book-list .bookstore-menu .store-link.amazon i:first-child {
 
-    color: #FF9900;
 
-}
 
-.book-list .bookstore-menu .store-link.rakuten i:first-child {
 
-    color: #BF0000;
 
-}
 
-.book-list .bookstore-menu .store-link.kinokuniya i:first-child {
 
-    color: #2E7D32;
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* PC表示時：アイコン形式のドロップダウン */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media (min-width: 769px) {
 
-    .book-list li {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 0.5rem; /* 余白を調整 */
-        border-bottom: 1px solid var(--border-color);
-        position: relative;
-    }
 
-    .book-item-toggle {
-        width: auto;
-        flex-grow: 1;
-        padding: 0;
-        cursor: default;
-    }
 
-    .book-item-toggle:hover {
-        background: none;
-    }
 
-    /* 新しいラッパーのスタイル */
-    .bookstore-wrapper {
-        position: relative; /* メニューの位置の基準点 */
-        margin-left: auto; /* flexアイテムとして右寄せ */
-    }
 
-    /* アクティブなラッパーを最前面に */
-    .bookstore-wrapper.wrapper-active {
-        z-index: 20;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     .book-list .bookstore-menu {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         position: absolute;
-        right: 0; /* ラッパーの右端に揃える */
-        top: 100%; /* アイコンの真下（0pxの隙間） */
-        transform: translateY(0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        right: 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        top: 100%;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         background: var(--white);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         border-radius: 8px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         box-shadow: var(--shadow-lg);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         min-width: 220px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         z-index: 10;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         padding: 0.5rem 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         gap: 0;
-        display: flex !important;
-        flex-direction: column;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease, visibility 0.2s ease;
-        pointer-events: none;
-        animation: none;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        max-height: none; /* PCでは高さ制限は不要 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* アニメーションのプロパティは共通定義を継承 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
-    .book-list .bookstore-menu.open {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
 
-    .book-list .bookstore-menu .store-link {
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-    }
 
-    .book-list .bookstore-menu .store-link:hover {
-        transform: none;
-        box-shadow: none;
-        border: none;
-    }
 
-    .bookstore-trigger {
-        position: relative;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
