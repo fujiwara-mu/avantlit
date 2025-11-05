@@ -9,29 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 共通コンポーネント（HTML）を非同期で読み込み、指定されたIDの要素に挿入する関数
-     */
-    const loadComponent = async (url, placeholderId) => {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
-            }
-            const data = await response.text();
-            const placeholder = document.getElementById(placeholderId);
-            if (placeholder) {
-                placeholder.outerHTML = data;
-            }
-        } catch (error) {
-            console.error(`Error loading component from ${url}:`, error);
-            const placeholder = document.getElementById(placeholderId);
-            if (placeholder) {
-                placeholder.innerHTML = `<p style="color: red;">Error: ${url} could not be loaded.</p>`;
-            }
-        }
-    };
-
-    /**
      * ページ全体のインタラクティブ機能を初期化するメイン関数
      */
     const initializePage = () => {
@@ -42,6 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
         drillDownPanel.id = 'drillDownPanel';
         drillDownPanel.className = 'drilldown-panel';
         document.body.appendChild(drillDownPanel);
+
+        // ドリルダウンパネル内のアンカーリンククリックでメニューを閉じる
+        drillDownPanel.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.getAttribute('href')?.includes('#')) {
+                updateMenuState(null);
+                // preventDefaultはしないので、ページ内スクロールは実行される
+            }
+        });
 
         function updateMenuState(state) {
             document.body.classList.remove('menu-l1-visible', 'menu-l2-visible', 'no-scroll');
@@ -71,13 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         allNavItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                if (window.innerWidth > 768) return;
-                if (item.classList.contains('dropdown')) {
+            const navLink = item.querySelector('.nav-link.dropdown-toggle'); // ドロップダウンのトグルリンクを直接取得
+            if (navLink) { // ドロップダウンのトグルリンクが存在する場合のみ処理
+                navLink.addEventListener('click', (e) => { // <a>タグに直接イベントリスナーを付与
+                    if (window.innerWidth > 768) return; // PC表示では何もしない
+
+                    // モバイルのドロップダウンリンクがクリックされた場合、デフォルトのページ遷移を完全に阻止
                     e.preventDefault();
-                    e.stopPropagation();
+                    e.stopPropagation(); // イベントの伝播も停止
+
                     const submenu = item.querySelector('.dropdown-menu');
-                    const navLink = item.querySelector('.nav-link');
                     const title = navLink.textContent.trim();
                     const titleLink = navLink.getAttribute('href');
                     const iconHTML = navLink.querySelector('i')?.outerHTML || '';
@@ -92,11 +81,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     updateMenuState('menu-l2-visible');
                     drillDownPanel.querySelector('.drilldown-back').addEventListener('click', () => updateMenuState('menu-l1-visible'));
-                    drillDownPanel.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setTimeout(() => updateMenuState(null), 300)));
-                } else {
-                    setTimeout(() => updateMenuState(null), 300);
-                }
+                    // モバイルメニューの表示/非表示をJavaScriptで制御
+                    if (submenu.style.display === 'flex') {
+                        submenu.style.display = 'none';
+                    } else {
+                        submenu.style.display = 'flex';
+                    }
+                });
+            }
+            // ドロップダウンではないナビゲーション項目については、
+            // ページ遷移アニメーションを管理する共通のイベントリスナーが処理します。
+            // ここで別途処理を追加する必要はありません。
+        });
+
+        // モバイルメニューのドロップダウンを初期状態で非表示にする
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
+                menu.style.display = 'none';
             });
+        }
+
+        // ウィンドウのリサイズ時にモバイルメニューの表示状態をリセット
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
+                    menu.style.display = ''; // デスクトップではCSSに任せる
+                });
+            } else {
+                document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none'; // モバイルでは非表示に
+                });
+            }
         });
 
         // 【重要】アンカーリンクのイベントリスナーを簡略化
@@ -135,8 +150,55 @@ document.addEventListener('DOMContentLoaded', () => {
         // setupBookstoreLinks は変更なし
         // ... (省略)
         setupBookstoreLinks();
+        setupFontSizeToggle(); // 文字サイズ変更機能を呼び出し
     };
 
+    const setupFontSizeToggle = () => {
+        const toggleButton = document.getElementById('font-size-toggle');
+        if (!toggleButton) return;
+        const tooltip = toggleButton.querySelector('.tooltip');
+        const FONT_SIZE_KEY = 'avantlit-font-size';
+        const LARGE_CLASS = 'font-large';
+
+        // UIと状態を更新する関数
+        const updateState = (isLarge) => {
+            document.body.classList.toggle(LARGE_CLASS, isLarge);
+            toggleButton.classList.toggle('font-toggle-active', isLarge); // CSSクラスでスタイルを制御
+            if (tooltip) {
+                tooltip.textContent = isLarge ? '元に戻す' : '文字を拡大';
+            }
+        };
+
+        // ページ読み込み時にlocalStorageから設定を復元
+        try {
+            const currentSetting = localStorage.getItem(FONT_SIZE_KEY);
+            const isInitiallyLarge = currentSetting === 'large';
+            updateState(isInitiallyLarge);
+        } catch (e) {
+            console.error('Failed to access localStorage:', e);
+        }
+
+
+        // ボタンクリック時の処理
+        toggleButton.addEventListener('click', () => {
+            const isCurrentlyLarge = document.body.classList.contains(LARGE_CLASS);
+            const newIsLarge = !isCurrentlyLarge;
+
+            updateState(newIsLarge);
+
+            // localStorageに設定を保存
+            try {
+                if (newIsLarge) {
+                    localStorage.setItem(FONT_SIZE_KEY, 'large');
+                } else {
+                    localStorage.removeItem(FONT_SIZE_KEY);
+                }
+            } catch (e) {
+                console.error('Failed to access localStorage:', e);
+            }
+        });
+    };
+    
     /**
      * 購入リンクのインタラクションをセットアップする関数
      */
@@ -201,19 +263,44 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * ページの初期化処理を実行するエントリーポイント
      */
-    const bootstrap = async () => {
-        await Promise.all([
-            loadComponent('_header.html', 'header-placeholder'),
-            loadComponent('_footer.html', 'footer-placeholder')
-        ]);
-        
+    const bootstrap = () => {
         initializePage();
 
-        // 【重要】'load'イベントではなく、確実に実行されるsetTimeoutでローディングを解除
+        // ページのちらつき防止クラスを削除
+        document.body.classList.remove('is-loading');
+
+        // 少し遅延させてから表示アニメーションを開始
         setTimeout(() => {
-            document.body.classList.remove('is-loading');
-        }, 100); // 100ms後に実行
+            document.querySelectorAll('.content-wrapper, .hero').forEach(el => {
+                el.classList.add('is-visible');
+            });
+        }, 50); // 50msの遅延で描画の安定性を確保
     };
 
     bootstrap();
+
+    // Page Transition: Handle internal link clicks
+    document.querySelectorAll('a').forEach(link => {
+        const href = link.getAttribute('href');
+        // Skip if it's not a valid, navigable link
+        if (!href) {
+            return;
+        }
+        const isExternal = (link.hostname !== window.location.hostname) && href.startsWith('http');
+        const isAnchor = href.startsWith('#');
+        const isNewTab = link.getAttribute('target') === '_blank';
+
+            const isDropdownToggle = link.classList.contains('dropdown-toggle');
+        
+            if (!isExternal && !isAnchor && !isNewTab && !isDropdownToggle) {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    // Start fade-out animation for current page
+                    document.body.classList.add('is-leaving');
+                    // Wait for animation to finish, then navigate
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 400); // Must match body's CSS transition duration
+                });
+            }    });
 });
