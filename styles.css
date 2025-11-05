@@ -362,7 +362,6 @@ h3:hover i {
 
 @media (hover: hover) {
     .nav-utility-btn:not(.font-toggle-active):hover {
-        color: var(--accent-color);
         transform: scale(1.1);
     }
 }
