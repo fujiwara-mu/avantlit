@@ -232,69 +232,52 @@ document.addEventListener('DOMContentLoaded', () => {
      * 購入リンクのインタラクションをセットアップする関数
      */
     const setupBookstoreLinks = () => {
-        const bookListItems = document.querySelectorAll('.book-list > li');
+        const backdrop = document.getElementById('bottom-sheet-backdrop');
+        const sheet = document.getElementById('bottom-sheet');
 
-        bookListItems.forEach(item => {
+        if (!backdrop || !sheet) return;
+
+        document.querySelectorAll('.book-list .book-item').forEach(item => {
             const title = item.querySelector('.book-title');
-            const menu = item.querySelector('.bookstore-menu');
+            if (!title) return;
 
-            if (!title || !menu) return;
+            title.addEventListener('click', (e) => {
+                if (window.innerWidth > 768) return; // PCでは何もしない
 
-            // PC: アイコンにマウスを乗せたらメニュー表示
-            if (window.innerWidth > 768) {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'bookstore-wrapper';
+                e.preventDefault();
+                e.stopPropagation();
 
-                const cartIcon = document.createElement('button');
-                cartIcon.className = 'bookstore-trigger';
-                cartIcon.innerHTML = '<i class="fas fa-shopping-cart"></i>';
+                const links = item.querySelectorAll('.store-link');
+                const bookTitle = title.textContent;
 
-                wrapper.appendChild(cartIcon);
-                wrapper.appendChild(menu);
-                item.appendChild(wrapper);
-
-                let closeTimer;
-
-                wrapper.addEventListener('mouseenter', () => {
-                    clearTimeout(closeTimer);
-                    menu.classList.add('open');
-                    wrapper.classList.add('wrapper-active');
+                let linksHTML = '';
+                links.forEach(link => {
+                    linksHTML += link.outerHTML;
                 });
 
-                wrapper.addEventListener('mouseleave', () => {
-                    closeTimer = setTimeout(() => {
-                        menu.classList.remove('open');
-                        wrapper.classList.remove('wrapper-active');
-                    }, 100); // 100msの遅延
-                });
-            } 
-            // Mobile: 書籍名をタップしたらメニュー表示
-            else {
-                title.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    // 他に開いているメニューがあれば閉じる
-                    const currentlyOpenItem = document.querySelector('.book-list > li.open');
-                    if (currentlyOpenItem && currentlyOpenItem !== item) {
-                        currentlyOpenItem.classList.remove('open');
-                        currentlyOpenItem.querySelector('.bookstore-menu').classList.remove('open');
-                    }
+                sheet.innerHTML = `
+                    <div class="bottom-sheet-header">
+                        <span class="bottom-sheet-title">${bookTitle}</span>
+                        <button id="bottom-sheet-close">&times;</button>
+                    </div>
+                    <div class="bottom-sheet-content">
+                        ${linksHTML}
+                    </div>
+                `;
 
-                    // クリックされたアイテムのメニューの開閉をトグルする
-                    item.classList.toggle('open');
-                    menu.classList.toggle('open');
-                });
-            }
+                backdrop.classList.add('open');
+                sheet.classList.add('open');
+
+                document.getElementById('bottom-sheet-close').addEventListener('click', closeSheet);
+            });
         });
 
-        // ページ全体でクリックイベントを監視し、メニュー外をクリックしたら閉じる
-        document.addEventListener('click', (e) => {
-            const openItem = document.querySelector('.book-list > li.open');
-            if (openItem && !openItem.contains(e.target)) {
-                openItem.classList.remove('open');
-                openItem.querySelector('.bookstore-menu').classList.remove('open');
-            }
-        });
+        const closeSheet = () => {
+            backdrop.classList.remove('open');
+            sheet.classList.remove('open');
+        };
+
+        backdrop.addEventListener('click', closeSheet);
     };
 
     /**
