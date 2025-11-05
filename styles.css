@@ -661,9 +661,8 @@ th {
 }
 
 tr:nth-child(even) {
-    background: var(--light-bg);
-}
-
+                                    background: var(--light-bg);
+                                }    
 tr {
     transition: background-color 0.3s ease;
 }
@@ -766,9 +765,7 @@ tr:hover {
 
     font-weight: 700;
 
-    font-size: 1.1rem;
-
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-size: 1.25rem !important; /* フォントを大きく */
 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
@@ -848,12 +845,11 @@ tr:hover {
 
     text-align: center;
 
-    color: var(--secondary-color);
-
-    font-size: 1.1rem;
-
-    font-weight: 700;
-
+            color: var(--secondary-color);
+        
+            font-size: 1.25rem !important; /* フォントを大きく */
+        
+            font-weight: 700;
     padding: 1rem 1.5rem;
 
     background: var(--white);
