@@ -150,41 +150,70 @@ document.addEventListener('DOMContentLoaded', () => {
         // setupBookstoreLinks は変更なし
         // ... (省略)
         setupBookstoreLinks();
-        setupFontSizeToggle(); // 文字サイズ変更機能を呼び出し
+        setupFontSizeToggle(); // アイコンの色変更機能を呼び出し
+        initializeFontSizeController(); // 文字サイズ変更機能を呼び出し
     };
 
     const setupFontSizeToggle = () => {
         const toggleButton = document.getElementById('font-size-toggle');
         if (!toggleButton) return;
         const tooltip = toggleButton.querySelector('.tooltip');
+
+        // CSS変数から直接色を取得
+        const rootStyles = getComputedStyle(document.documentElement);
+        const defaultColor = rootStyles.getPropertyValue('--white').trim();
+        const activeColor = rootStyles.getPropertyValue('--accent-color').trim();
+
+        // 状態をJS内で管理
+        let isToggleActive = false;
+
+        // 初期状態を設定
+        toggleButton.style.color = defaultColor;
+        if (tooltip) tooltip.textContent = '文字を拡大';
+
+        // ボタンがクリックされたときの処理（スタイルを直接変更）
+        toggleButton.addEventListener('click', () => {
+            isToggleActive = !isToggleActive; // 状態を反転
+
+            if (isToggleActive) {
+                toggleButton.style.color = activeColor;
+                if (tooltip) tooltip.textContent = '元に戻す';
+            } else {
+                toggleButton.style.color = defaultColor;
+                if (tooltip) tooltip.textContent = '文字を拡大';
+            }
+        });
+    };
+
+    /**
+     * 文字サイズ変更機能を初期化する（アイコンの見た目とは完全に分離）
+     */
+    const initializeFontSizeController = () => {
+        const toggleButton = document.getElementById('font-size-toggle');
+        if (!toggleButton) return;
+
         const FONT_SIZE_KEY = 'avantlit-font-size';
         const LARGE_CLASS = 'font-large';
 
-        // UIと状態を更新する関数
-        const updateState = (isLarge) => {
+        // UI（本文のクラス）を更新する関数
+        const updateFontSize = (isLarge) => {
             document.body.classList.toggle(LARGE_CLASS, isLarge);
-            toggleButton.classList.toggle('font-toggle-active', isLarge); // CSSクラスでスタイルを制御
-            if (tooltip) {
-                tooltip.textContent = isLarge ? '元に戻す' : '文字を拡大';
-            }
         };
 
         // ページ読み込み時にlocalStorageから設定を復元
         try {
             const currentSetting = localStorage.getItem(FONT_SIZE_KEY);
-            const isInitiallyLarge = currentSetting === 'large';
-            updateState(isInitiallyLarge);
+            updateFontSize(currentSetting === 'large');
         } catch (e) {
             console.error('Failed to access localStorage:', e);
         }
-
 
         // ボタンクリック時の処理
         toggleButton.addEventListener('click', () => {
             const isCurrentlyLarge = document.body.classList.contains(LARGE_CLASS);
             const newIsLarge = !isCurrentlyLarge;
 
-            updateState(newIsLarge);
+            updateFontSize(newIsLarge);
 
             // localStorageに設定を保存
             try {
@@ -196,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) {
                 console.error('Failed to access localStorage:', e);
             }
-            toggleButton.blur(); // クリック後にフォーカスを解除
         });
     };
     

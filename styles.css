@@ -356,18 +356,14 @@ h3:hover i {
     cursor: pointer;
     padding: 0.5rem;
     margin-left: 0.5rem; /* 他メニューとの間隔 */
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: transform 0.3s ease;
     position: relative;
 }
 
 @media (hover: hover) {
-    .nav-utility-btn:not(.font-toggle-active):hover {
+    .nav-utility-btn:hover {
         transform: scale(1.1);
     }
-}
-
-button#font-size-toggle.font-toggle-active {
-    color: var(--accent-color);
 }
 
 /* ツールチップ */
