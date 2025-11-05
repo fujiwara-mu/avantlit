@@ -196,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) {
                 console.error('Failed to access localStorage:', e);
             }
+            toggleButton.blur(); // クリック後にフォーカスを解除
         });
     };
     
