@@ -272,6 +272,15 @@ document.addEventListener('DOMContentLoaded', () => {
             else {
                 title.addEventListener('click', (e) => {
                     e.preventDefault();
+                    
+                    // 他に開いているメニューがあれば閉じる
+                    const currentlyOpenItem = document.querySelector('.book-list > li.open');
+                    if (currentlyOpenItem && currentlyOpenItem !== item) {
+                        currentlyOpenItem.classList.remove('open');
+                        currentlyOpenItem.querySelector('.bookstore-menu').classList.remove('open');
+                    }
+
+                    // クリックされたアイテムのメニューの開閉をトグルする
                     item.classList.toggle('open');
                     menu.classList.toggle('open');
                 });
@@ -287,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-
 
     /**
      * ページの初期化処理を実行するエントリーポイント
