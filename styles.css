@@ -360,9 +360,11 @@ h3:hover i {
     position: relative;
 }
 
-.nav-utility-btn:not(.font-toggle-active):hover {
-    color: var(--accent-color);
-    transform: scale(1.1);
+@media (hover: hover) {
+    .nav-utility-btn:not(.font-toggle-active):hover {
+        color: var(--accent-color);
+        transform: scale(1.1);
+    }
 }
 
 button#font-size-toggle.font-toggle-active {
