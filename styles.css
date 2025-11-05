@@ -1397,31 +1397,7 @@ body.is-leaving .hero {
 
 
 
-    /* --- Mobile Header Layout --- */
-
-
-
-    .nav-container {
-
-
-
-        justify-content: center; /* ロゴを中央に配置 */
-
-
-
-        position: relative;
-
-
-
-        height: 69px; /* 高さを固定してレイアウトの安定性を確保 */
-
-
-
-        padding: 0 1rem; /* 左右の余白を調整 */
-
-
-
-    }
+        /* --- Mobile Header Layout --- */
 
 
 
@@ -1429,7 +1405,7 @@ body.is-leaving .hero {
 
 
 
-                .nav-logo {
+    
 
 
 
@@ -1437,7 +1413,7 @@ body.is-leaving .hero {
 
 
 
-                    font-size: 1.1rem; /* モバイルでのフォントサイズを微調整 */
+        .nav-container {
 
 
 
@@ -1445,7 +1421,7 @@ body.is-leaving .hero {
 
 
 
-                    padding: 0; /* 中央揃えのため余白をリセット */
+            display: grid;
 
 
 
@@ -1453,7 +1429,7 @@ body.is-leaving .hero {
 
 
 
-                    white-space: normal; /* 【重要】ズーム時の改行を許可 */
+            grid-template-columns: 1fr auto 1fr; /* 左・中央・右の3カラム */
 
 
 
@@ -1461,11 +1437,247 @@ body.is-leaving .hero {
 
 
 
-                }
+            align-items: center;
 
 
 
-    /* --- End Mobile Header Layout --- */
+
+
+
+
+            justify-content: space-between; /* 要素間のスペースを均等に */
+
+
+
+
+
+
+
+            position: relative;
+
+
+
+
+
+
+
+            height: 69px; /* 高さを固定してレイアウトの安定性を確保 */
+
+
+
+
+
+
+
+            padding: 0 1rem; /* 左右の余白を調整 */
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+        .nav-logo {
+
+
+
+
+
+
+
+            grid-column: 2 / 3; /* 中央カラムに配置 */
+
+
+
+
+
+
+
+            font-size: 1.1rem; /* モバイルでのフォントサイズを微調整 */
+
+
+
+
+
+
+
+            padding: 0; /* 中央揃えのため余白をリセット */
+
+
+
+
+
+
+
+            white-space: normal; /* 【重要】ズーム時の改行を許可 */
+
+
+
+
+
+
+
+            justify-self: center; /* 中央揃え */
+
+
+
+
+
+
+
+            text-align: center; /* テキストも中央揃え */
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+        .menu-toggle {
+
+
+
+
+
+
+
+            grid-column: 1 / 2; /* 左カラムに配置 */
+
+
+
+
+
+
+
+            justify-self: start; /* 左揃え */
+
+
+
+
+
+
+
+            position: static; /* Gridアイテムとして配置するためstaticに */
+
+
+
+
+
+
+
+            transform: none; /* 以前のtransformをリセット */
+
+
+
+
+
+
+
+            margin-left: -0.5rem; /* アイコンの視覚的な位置調整 */
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+        .nav-utility-btn {
+
+
+
+
+
+
+
+            grid-column: 3 / 4; /* 右カラムに配置 */
+
+
+
+
+
+
+
+            justify-self: end; /* 右揃え */
+
+
+
+
+
+
+
+            margin-right: -0.5rem; /* アイコンの視覚的な位置調整 */
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+        /* --- End Mobile Header Layout --- */
 
 
 
