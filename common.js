@@ -537,14 +537,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 try {
-                    const response = await fetch('https://eoyncqa7z33mdko.m.pipedream.net', {
-                        method: 'POST',
-                        mode: 'cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                    });
+                const response = await fetch('https://eo9cqft3yp6ogsn.m.pipedream.net', {
+                    method: 'POST',
+                    mode: 'cors', // CORSモードを明示的に指定
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
 
                     if (response.ok) { // ステータスコードが200-299の範囲なら成功とみなす
                         formMessage.textContent = '修正提案が正常に送信されました。ご協力ありがとうございます！';
