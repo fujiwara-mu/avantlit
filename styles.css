@@ -1,41 +1,354 @@
-/* ==========================================
-   修正提案ボタン (フローティング)
+/* ========================================== 
+   前衛小説報告書 - 共通スタイルシート (最終修正版)
    ========================================== */
-.suggest-correction-btn {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem; /* 左下に配置 */
-    background: var(--highlight);
+
+/* リセットと基本設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #e74c3c;
+    --text-color: #333;
+    --light-bg: #ecf0f1;
+    --white: #ffffff;
+    --border-color: #bdc3c7;
+    --highlight: #3498db;
+    --gradient-start: #667eea;
+    --gradient-end: #764ba2;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================== 
+   【重要】スクロールと読み込み制御
+   ========================================== */
+
+/* 1. スムーズスクロールをCSSで有効化 */
+html {
+    scroll-behavior: smooth;
+    font-size: 16px; /* 基準フォントサイズをhtmlに設定 */
+}
+
+/* 2. アンカーリンクのオフセットを制御 */
+h1, h2, h3, h4, h5, h6, .glossary dt {
+    scroll-margin-top: 90px;
+}
+
+/* 3. 初期ロード時のちらつきを防ぐ */
+body.is-loading {
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* ========================================== 
+   これ以降は元のCSSコード
+   ========================================== */
+
+body {
+    font-family: 'Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', sans-serif;
+    line-height: 1.8;
+    color: var(--text-color);
+    background: var(--light-bg);
+    /* font-size は継承に任せる */
+}
+
+/* 文字サイズ変更機能の本体 */
+body.font-large {
+    font-size: 1.35rem; /* 拡大率をアップ */
+}
+
+/* 文字サイズ変更時もナビゲーションバーのフォントサイズは維持する */
+body.font-large .navbar {
+    font-size: 1rem;
+}
+
+.container, .hero {
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* body.is-loading の overflow: hidden は副作用が大きいため削除 */
+
+/* ... (ここから、お使いのstyles.cssの `.navbar` 以降のコードを、末尾まで全て貼り付けてください) ... */
+
+/* ========================================== 
+   ナビゲーションバー
+   ========================================== */
+
+/* 【重要】ヘッダーとフッターのレイアウトシフト（ちらつき）防止 */
+#header-placeholder {
+    min-height: 69px; /* ヘッダーのおおよその高さ */
+}
+#footer-placeholder {
+    min-height: 110px; /* フッターのおおよその高さ */
+}
+
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* 境界線を追加 */
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* ロゴ、メニュー、ユーティリティボタンの順 */
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.nav-logo {
     color: var(--white);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 1rem 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
+    transition: opacity 0.3s ease;
+    white-space: nowrap; /* ロゴテキストの改行を防ぐ */
+    flex-shrink: 0; /* ロゴが縮小されないようにする */
+    grid-column: 1 / 2; /* 左カラムに配置 */
+    justify-self: start; /* 左揃え */
+}
+
+.nav-logo:hover {
+    opacity: 0.8;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 0.5rem;
+    grid-column: 2 / 3; /* 中央カラムに配置 */
+    justify-self: start; /* 左揃え */
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    color: var(--white);
+    text-decoration: none;
+    padding: 1.2rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-bottom: 3px solid var(--accent-color);
+}
+
+/* ドロップダウンメニュー */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+.dropdown-toggle::after {
+    content: '▼';
+    font-size: 0.7rem;
+    margin-left: 0.3rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-toggle::after {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden; /* 表示・非表示の切り替えにのみ使用 */
+    transform: translateY(8px);
+    /* transitionの対象をアニメーション可能なプロパティのみに限定 */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+}
+
+/* デスクトップ表示でのみホバーアニメーションを有効化 */
+@media (min-width: 769px) {
+    .dropdown-menu {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+}
+
+/* ========================================== 
+   ナビゲーションバー & コンテンツ アイコンアニメーション
+   ========================================== */
+
+/* ナビゲーションバーのアイコン、ドロップダウン内のアイコン、そして見出しアイコンにトランジションを設定 */
+.nav-link i,
+.dropdown-item i,
+.page-title i,
+h2 i,
+h3 i {
+    transition: transform 0.4s ease-out;
+}
+
+/* ドロップダウン（タブ）にホバーした際、そのタブのアイコンを回転 */
+.dropdown:hover > .nav-link i {
+    transform: rotate(360deg);
+}
+
+/* すべてのナビゲーションリンクのアイコンにホバーした際、アイコンを回転 */
+.nav-link:hover i {
+    transform: rotate(360deg);
+}
+
+/* ドロップダウン内の各項目にホバーした際、その項目のアイコンを回転 */
+.dropdown-item:hover i {
+    transform: rotate(360deg);
+}
+
+/* 本文中の見出しアイコンにホバーした際、アイコンを回転 */
+.page-title:hover i,
+h2:hover i,
+h3:hover i {
+    transform: rotate(360deg);
+}
+
+.dropdown-item {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: background 0.2s ease;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .nav-menu.active {
+        max-height: calc(100vh - 70px); /* 画面の高さからヘッダーの高さを引いた分を最大値に */
+        overflow-y: auto; /* コンテンツがはみ出たらメニュー全体をスクロール */
+    }
+
+    .dropdown-menu {
+        width: calc(100% - 2rem); /* 左右に余白を持たせる */
+        max-width: 300px; /* 最大幅を設定 */
+        left: 1rem; /* 左からの位置調整 */
+        right: 1rem; /* 右からの位置調整 */
+        margin: 0 auto; /* 中央揃え */
+    }
+
+}
+
+.dropdown-item:hover {
+    background: var(--light-bg);
+    color: var(--accent-color);
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+    color: var(--highlight);
+}
+
+/* 複数列ドロップダウン */
+.dropdown-mega .dropdown-menu {
+    display: block; /* flexを上書きしてcolumn-countを有効化 */
+    width: 500px;
+    column-count: 2;
+    column-gap: 1rem;
+    padding: 1rem;
+}
+
+/* モバイルメニュートグル */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--white);
     font-size: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    z-index: 1000;
-    opacity: 0; /* 初期状態は非表示 */
-    visibility: hidden;
-    transform: scale(0.8);
+    cursor: pointer;
+    padding: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    line-height: 1;
 }
 
-.suggest-correction-btn.show {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
+.menu-toggle-text {
+    font-size: 0.6rem;
+    font-weight: 500;
+    display: block;
 }
 
-.suggest-correction-btn:hover {
-    background: var(--primary-color);
-    transform: translateY(-3px) scale(1.05);
+/* ========================================== 
+   ユーティリティボタン (文字サイズ変更など)
+   ========================================== */
+.nav-utility {
+    grid-column: 3 / 4; /* 右カラムに配置 */
+    justify-self: end; /* 右揃え */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* アイコン間の間隔 */
 }
 
-.suggest-correction-btn .tooltip {
+.nav-utility-btn {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+@media (hover: hover) {
+    .nav-utility-btn:hover {
+        transform: scale(1.1);
+    }
+}
+
+/* ツールチップ */
+.nav-utility-btn .tooltip,
+.search-icon-btn .tooltip { /* search-icon-btnのtooltipも追加 */
     position: absolute;
     bottom: 125%;
     left: 50%;
@@ -52,201 +365,2491 @@
     pointer-events: none;
 }
 
-.suggest-correction-btn:hover .tooltip {
+.nav-utility-btn:hover .tooltip,
+.search-icon-btn:hover .tooltip { /* search-icon-btnのtooltipも追加 */
     opacity: 1;
     visibility: visible;
 }
 
-/* ==========================================
-   修正提案モーダル
+/* ========================================== 
+   文字サイズ変更機能
    ========================================== */
-.correction-modal-overlay {
+html.font-large {
+    font-size: 120%;
+}
+
+/* html.font-large 内のすべての要素に強制的にフォントサイズを継承させる */
+html.font-large * {
+    font-size: inherit !important;
+}
+
+/* 文字サイズ変更を滑らかにする (デバッグのため一時的に無効化) */
+p, h1, h2, h3, h4, h5, h6, li, dt, dd, a, span, button, input, textarea {
+    /* transition: font-size 0.3s ease; */
+}
+
+/* ========================================== 
+   ヒーローセクション（トップページ用）
+   ========================================== */
+
+.hero {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: var(--white);
+    padding: 6rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="rgba(255,255,255,0.05)" d="M0,0 Q300,60 600,30 T1200,0 L1200,120 L0,120 Z"/></svg>') repeat-x bottom;
+    background-size: 100% 120px;
+}
+
+.hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 100%; /* 幅を100%に設定 */
+    justify-content: center; /* flexアイテムを中央揃えに */
+}
+
+.hero .subtitle {
+    font-size: 1.5rem;
+    opacity: 0.95;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--white);
+    color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+}
+
+.btn-outline:hover {
+    background: var(--white);
+    color: var(--primary-color);
+}
+
+/* ========================================== 
+   メインコンテンツ
+   ========================================== */
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    min-width: 0; /* ズーム時のリフローを強制 */
+    width: 100%; /* 親要素の幅に追従させる */
+}
+
+.content-wrapper {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    font-size: 2.5rem; /* 第○部のフォントサイズを現在のページタイトルくらいに */
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--accent-color);
+    position: relative;
+    display: flex; /* アイコンと第○部を横並びにする */
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.page-title .title-text {
+    font-size: 2rem; /* ページ内セクション(h2)の大きさに合わせる */
+    margin-top: 0.2rem; /* 第○部との間に少しスペース */
+    margin-left: 0.5em; /* 第○部との間に少しスペース */
+}
+
+/* 見出し */
+h2 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin: 2.5rem 0 1rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--accent-color);
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap; /* 画面が狭い場合に折り返す */
+}
+
+h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 60px;
+    height: 3px;
+    background: var(--highlight);
+}
+
+h2 small {
+    display: inline-flex; /* Flexアイテムとして振る舞う */
+    align-items: baseline; /* ベースラインで揃える */
+    margin-left: 1em; /* タイトルとの距離を固定 */
+    font-size: 1.1rem; /* フォントサイズを調整 */
+    color: #7f8c8d; /* Muted gray */
+    font-weight: 400;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-style: italic;
+    letter-spacing: 0.05em; /* 文字間隔を少し広げる */
+}
+
+h2 small::before {
+    content: '— '; /* 前にダッシュとスペース */
+    color: var(--border-color);
+    font-weight: 300;
+    font-size: 1.1rem; /* 副題のフォントサイズに合わせる */
+}
+
+h2 small::after {
+    content: ' —'; /* 後ろにスペースとダッシュ */
+    color: var(--border-color);
+    font-weight: 300;
+    font-size: 1.1rem; /* 副題のフォントサイズに合わせる */
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin: 2rem 0 1rem 0;
+    padding-left: 1rem;
+    border-left: 4px solid var(--accent-color);
+}
+
+/* h2, h3 の共通スタイルは個別の定義に任せる */
+
+/* scroll-margin-top はJavaScriptで制御するため削除 */
+
+.glossary dt {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 0.3rem;
+    scroll-margin-top: 90px;
+}
+
+/* ========================================== 
+   深掘り分析ボックス
+   ========================================== */
+
+.deep-dive {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border-left: 4px solid var(--highlight);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.deep-dive h4 {
+    color: var(--highlight);
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ========================================== 
+   テーブル
+   ========================================== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+}
+
+th {
+    background: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+tr:nth-child(even) {
+                                    background: var(--light-bg);
+                                }
+tr {
+    transition: background-color 0.3s ease;
+}
+
+tr:hover {
+    background: #e8f4f8;
+}
+
+/* 年表用のテーブルラッパー */
+.table-wrapper {
+    position: relative;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin: 2rem 0;
+}
+
+.table-wrapper table {
+    margin: 0;
+    box-shadow: none;
+}
+
+/* ========================================== 
+   参考文献
+   ========================================== */
+
+.references {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.references h2 {
+    border-bottom-color: var(--primary-color);
+}
+
+.references h3 {
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    border-left-color: var(--highlight);
+}
+
+.references ul {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.references li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.references li::before {
+    content: '📚';
+    position: absolute;
+    left: 0;
+}
+
+.references li:last-child {
+    border-bottom: none;
+}
+
+/* ==========================================   ページネーション (新デザイン V3 - BOLDER)
+
+   ========================================== */
+
+.pagination {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr;
+
+    gap: 2rem;
+
+    margin-top: 4rem;
+
+    padding-top: 3rem;
+
+    border-top: 1px solid var(--border-color);
+
+}
+
+.pagination a {
+
+    text-decoration: none;
+
+    color: var(--secondary-color);
+
+    background: var(--white);
+
+    border-radius: 6px;
+
+    padding: 1rem 1.5rem;
+
+    display: flex;
+
+    align-items: center;
+
+    font-weight: 700;
+
+    font-size: 1.25rem !important; /* フォントを大きく */
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    position: relative;
+
+    overflow: hidden;
+
+        z-index: 1;
+
+    }
+
+    .pagination a.empty-link {
+
+        visibility: hidden;
+
+        pointer-events: none;
+
+    }
+
+    .pagination a span {
+
+    }
+
+.pagination a::before {
+
+    content: '';
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: 0;
+
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+
+    opacity: 0;
+
+    transition: opacity 0.4s ease;
+
+    z-index: -1;
+
+}
+
+.pagination a:hover {
+
+    color: var(--white);
+
+    transform: translateY(-6px) scale(1.03);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+
+}
+
+.pagination a:hover::before {
+
+    opacity: 1;
+
+}
+
+.pagination a.prev,
+.pagination a.next {
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.pagination .page-info {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+            color: var(--secondary-color);
+        
+            font-size: 1.25rem !important; /* フォントを大きく */
+        
+            font-weight: 700;
+    padding: 1rem 1.5rem;
+
+    background: var(--white);
+
+    border-radius: 6px;
+
+    white-space: nowrap;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+}
+
+/* ========================================== 
+
+   進捗インジケーター
+
+   ========================================== */
+
+.progress-indicator {
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 4px;
+
+    background: rgba(255, 255, 255, 0.3);
+
+    z-index: 9999;
+
+    pointer-events: none;
+
+}
+
+.progress-bar {
+
+    height: 100%;
+
+    background: var(--accent-color);
+
+    width: 0%;
+
+    transition: width 0.3s ease;
+
+}
+
+/* ========================================== 
+
+   サイドバー目次（オプション）
+
+   ========================================== */
+
+.sidebar-toc {
+
+    position: fixed;
+
+    right: 2rem;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    background: var(--white);
+
+    padding: 1.5rem;
+
+    border-radius: 12px;
+
+    box-shadow: var(--shadow-lg);
+
+    max-width: 250px;
+
+    max-height: 70vh;
+
+    overflow-y: auto;
+
+    display: none;
+
+}
+
+.sidebar-toc.active {
+
+    display: block;
+
+}
+
+.sidebar-toc h4 {
+
+    margin-top: 0;
+
+    font-size: 1rem;
+
+    margin-bottom: 1rem;
+
+    color: var(--primary-color);
+
+}
+
+.sidebar-toc ul {
+
+    list-style: none;
+
+    margin: 0;
+
+}
+
+.sidebar-toc li {
+
+    margin-bottom: 0.5rem;
+
+}
+
+.sidebar-toc a {
+
+    color: var(--text-color);
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+
+    transition: color 0.3s ease;
+
+    display: block;
+
+    padding: 0.3rem 0;
+
+}
+
+.sidebar-toc a:hover {
+
+    color: var(--accent-color);
+
+}
+
+.sidebar-toc a.active {
+
+    color: var(--highlight);
+
+    font-weight: 600;
+
+}
+
+/* ========================================== 
+
+   スクロールトップボタン
+
+   ========================================== */
+
+.scroll-top {
+
+    position: fixed;
+
+    bottom: 2rem;
+
+    right: 2rem;
+
+    background: var(--accent-color);
+
+    color: var(--white);
+
+    width: 50px;
+
+    height: 50px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    cursor: pointer;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 1.5rem;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    transition: all 0.3s ease;
+
+    z-index: 1000;
+
+}
+
+.scroll-top:hover {
+
+    background: var(--primary-color);
+
+    transform: translateY(-3px);
+
+}
+
+.scroll-top.show {
+
+    display: flex;
+
+}
+
+/* ========================================== 
+
+   フッター
+
+   ========================================== */
+
+footer {
+
+    background: var(--primary-color);
+
+    color: var(--white);
+
+    text-align: center;
+
+    padding: 2rem;
+
+    margin-top: 3rem;
+
+}
+
+.footer-content {
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 0 2rem; /* 左右の余白を確保 */
+
+}
+
+footer a {
+
+    color: var(--highlight);
+
+    text-decoration: none;
+
+}
+
+footer a:hover {
+
+    text-decoration: underline;
+
+}
+
+.ai-disclaimer {
+    font-size: 0.8em;
+    color: #ccc;
+}
+
+/* ========================================== 
+
+   アニメーション (Transition-based)
+
+   ========================================== */
+
+/* ページの主要コンテンツの初期状態 */
+
+.content-wrapper, .hero {
+
+    opacity: 0;
+
+    transform: translateY(30px);
+
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+}
+
+/* JSによって追加され、アニメーションを開始させるクラス */
+
+.content-wrapper.is-visible, .hero.is-visible {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+}
+
+/* ページ遷移時の退出アニメーション（下にスライドアウト） */
+
+@keyframes fadeOutDown {
+
+    from {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+    to {
+
+        opacity: 0;
+
+        transform: translateY(30px);
+
+    }
+
+}
+
+/* is-leavingクラスが付与されたbody内の主要コンテンツに適用 */
+
+body.is-leaving .content-wrapper,
+body.is-leaving .hero {
+
+    animation: fadeOutDown 0.4s ease-in forwards;
+
+}
+
+/* ========================================== 
+
+   レスポンシブデザイン
+
+   ========================================== */
+
+@media (max-width: 1024px) {
+
+    .sidebar-toc {
+
+        display: none !important;
+
+    }
+
+}
+
+    @media (max-width: 768px) {
+
+        /* --- Mobile Header Layout --- */
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between; /* 左右のボタンを両端に配置 */
+            align-items: center;
+            position: relative;
+            height: 50px;
+            padding: 0 0.5rem; /* 左右対称のパディング */
+        }
+
+        .menu-toggle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            line-height: 1;
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1.6rem;
+            padding: 0.6rem 0.5rem 0.4rem 0.75rem; /* 上下左右のパディングを調整 */
+            margin: 0; /* デフォルトマージンをリセット */
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1003;
+        }
+
+        .nav-logo {
+            font-size: 1.1rem;
+            white-space: normal;
+            text-align: center;
+            padding: 0;
+            /* Absolute centering, shifted left */
+            position: absolute;
+            left: 44%; /* 中央からさらに右にずらす */
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /* Prevent overlap on narrow screens */
+            max-width: calc(100% - 180px);
+        }
+
+        .nav-utility {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-shrink: 0;
+            padding: 0.5rem; /* 左右対称のパディング */
+        }
+
+        .desktop-only {
+            display: none;
+        }
+        .mobile-only {
+            display: flex;
+        }
+
+    .hero h1 {
+        font-size: 2rem; /* モバイルでのフォントサイズを調整 */
+        white-space: nowrap; /* 強制的に改行させない */
+        overflow: hidden; /* はみ出した部分を隠す */
+        text-overflow: ellipsis; /* はみ出した場合に三点リーダーを表示 */
+    }
+
+    .hero .subtitle { font-size: 1.2rem; }
+
+    /* --- Mobile Page Title Wrap (v4 - Targeted) --- */
+    .page-title-part .title-text {
+        flex-basis: 100%; /* flexアイテムの初期サイズを100%に設定し、強制的に改行させる */
+        margin-left: 0; /* 左寄せ */
+    }
+    /* --- End Mobile Page Title Wrap --- */
+
+    .page-title {
+        flex-wrap: wrap;
+    }
+
+    .page-title .title-text {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .page-title {
+        flex-wrap: wrap; /* Allow items to wrap */
+    }
+
+    .page-title .title-text {
+        width: 100%; /* Take full width to force a wrap */
+        margin-left: 0; /* Reset margin for the new line */
+    }
+
+    .menu-toggle.active {
+
+        color: var(--accent-color);
+
+    }
+
+    /* Disable body scroll when menu is active */
+    body.no-scroll {
+        overflow: hidden;
+    }
+
+    /* --- The Unified Explorer (Definitive Fix) --- */
+
+    /* L1 Panel (Main Tabs) */
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--primary-color);
+        display: flex;
+        flex-direction: column;
+        padding: 70px 1rem 2rem; /* Adjusted padding */
+        z-index: 1001;
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        visibility: hidden;
+        overflow-y: auto; /* Ensure scrolling */
+    }
+
+    body.menu-l1-visible .nav-menu {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    body.menu-l2-visible .nav-menu {
+        transform: translateX(-100%);
+        visibility: visible;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    .nav-link {
+        font-size: 1.5rem;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--secondary-color);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative; /* For pseudo-element positioning */
+    }
+
+    /* Arrow icon for dropdowns */
+    .nav-link.dropdown-toggle::after {
+        font-family: "Font Awesome 6 Free";
+        content: '\f054'; /* fa-chevron-right */
+        font-weight: 900;
+        position: absolute;
+        right: 0.5rem;
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-link i {
+        width: 25px;
+        text-align: center;
+    }
+
+    .nav-link:hover {
+        background: transparent;
+        color: var(--white);
+    }
+
+    /* This rule was causing conflicts and has been removed. Mobile menu is handled by JS. */
+
+    /* L2 Panel (Drill-Down Content) */
+    .drilldown-panel {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--white);
+        color: var(--text-color);
+        z-index: 1002;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        visibility: hidden;
+    }
+
+    body.menu-l2-visible .drilldown-panel {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .drilldown-header {
+        display: flex; /* Use flexbox for easier alignment */
+        align-items: center;
+        justify-content: space-between; /* Space out items */
+        height: 70px;
+        border-bottom: 1px solid var(--border-color);
+        padding: 0 1rem;
+        position: relative; /* For absolute positioning of title */
+    }
+
+    .drilldown-back {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        color: var(--highlight);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        z-index: 2; /* Ensure it's above the title */
+    }
+
+    .drilldown-title {
+        position: absolute; /* Center absolutely */
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.3rem; /* Increased font size */
+        font-weight: 600;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        width: 100%;
+        justify-content: center;
+        padding: 0 4rem; /* Prevent overlap with back button */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .drilldown-title i {
+        color: var(--highlight);
+    }
+
+    .drilldown-title:hover {
+        background-size: 0;
+    }
+
+    .drilldown-content {
+        height: calc(100% - 70px);
+        overflow-y: auto;
+    }
+
+    .drilldown-content ul {
+
+        list-style: none;
+
+    }
+
+    .drilldown-content li a {
+
+        font-size: 1.5rem;
+
+        font-weight: 300;
+
+        color: var(--text-color);
+
+        padding: 0.75rem 2rem;
+
+        border-bottom: 1px solid var(--border-color);
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 1rem;
+
+        text-decoration: none;
+
+        background-image: none;
+
+    }
+
+    .drilldown-content li a:hover {
+
+        background-color: var(--light-bg);
+
+        background-size: 0;
+
+    }
+
+    .drilldown-content li a i {
+
+        width: 25px;
+
+        text-align: center;
+
+        color: var(--highlight);
+
+    }
+
+    /* --- Resetting other styles --- */
+
+    .container { max-width: 100%; margin: 0 auto; padding: 0 1rem; }
+
+    .content-wrapper { padding: 1.5rem 1rem; border-radius: 0; box-shadow: none; width: 100%; }
+
+        h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.3rem; }
+
+    .scroll-top { bottom: 1rem; right: 1rem; width: 45px; height: 45px; }
+
+    .references .book-list li {
+        padding: 0.8rem 0.5rem 0.1rem 1.5rem; /* 下の余白を最小限に削減 */
+        position: relative; /* ::before疑似要素の配置基準 */
+    }
+
+    .book-title {
+        width: 100%;
+    }    .bookstore-menu {
+        position: absolute; /* PC表示ではwrapperに対してabsolute */
+        top: 100%;
+        left: 0;
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: var(--shadow-lg);
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        pointer-events: none;
+    }
+
+    .bookstore-wrapper:hover .bookstore-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    @media (max-width: 768px) {
+        .references .book-list li {
+            padding: 0.8rem 0.5rem 1.2rem 1.5rem; /* 下の余白を最小限に削減 */
+            position: relative; /* ::before疑似要素の配置基準 */
+        }
+
+        .bookstore-menu {
+            position: absolute; /* モバイルではポップアップ形式に */
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            padding: 0.5rem;
+            border-radius: 8px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .book-list > li.open .bookstore-menu {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+        gap: 0.5rem; /* ボタン間の隙間 */
+
+    }
+
+    .pagination a {
+
+        padding: 0.8rem 0.4rem; /* 上下の余白は維持し、左右の余白を最小化 */
+
+        font-size: 0.8rem;     /* フォントサイズを微調整 */
+
+        gap: 0.3rem;           /* アイコンとテキストの隙間を最小化 */
+
+    }
+
+    .pagination a span {
+
+        white-space: nowrap;   /* テキストの折り返しを禁止 */
+
+    }
+
+    .pagination .page-info {
+
+        font-size: 0.8rem;     /* フォントサイズを統一 */
+
+        padding: 0.8rem 0.4rem; /* 余白を統一 */
+
+        white-space: nowrap;
+
+    }
+
+}
+
+/* ========================================== 
+
+   印刷用スタイル
+
+   ========================================== */
+
+@media print {
+
+    .navbar,
+
+    .pagination,
+
+    .scroll-top,
+
+    .sidebar-toc,
+
+    .progress-indicator,
+
+    footer {
+
+        display: none !important;
+
+    }
+
+    body {
+
+        background: white;
+
+    }
+
+    .content-wrapper {
+
+        box-shadow: none;
+
+        padding: 0;
+
+    }
+
+    .hero {
+
+        background: none;
+
+        color: black;
+
+        padding: 2rem 0;
+
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+
+        page-break-after: avoid;
+
+        color: black;
+
+    scroll-margin-top: 90px; /* ここを確実に追加/修正 */
+
+    }
+
+    table, figure, img {
+
+        page-break-inside: avoid;
+
+    }
+
+    a {
+
+        color: black;
+
+        text-decoration: none;
+
+    }
+
+    .deep-dive {
+
+        border: 1px solid #ccc;
+
+        background: #f5f5f5;
+
+    }
+
+}
+
+/* ========================================== 
+
+   用語集
+
+   ========================================== */
+
+.glossary dl {
+
+    margin-bottom: 2rem;
+
+}
+
+.glossary dt {
+
+    font-weight: 700;
+
+    color: var(--primary-color);
+
+    font-size: 1.15rem;
+
+    margin-top: 1.5rem;
+
+    margin-bottom: 0.5rem;
+
+    border-bottom: 1px dashed var(--border-color);
+
+    padding-bottom: 0.3rem;
+
+    scroll-margin-top: 90px; /* ここも確実に追加/修正 */
+
+}
+
+.glossary dd {
+
+    margin-left: 1.5rem;
+
+    margin-bottom: 1rem;
+
+    line-height: 1.6;
+
+}
+
+.glossary dd a {
+
+    color: var(--highlight);
+
+    text-decoration: none;
+
+}
+
+.glossary dd a:hover {
+
+    text-decoration: underline;
+
+}
+
+.glossary h3 {
+
+    color: var(--accent-color);
+
+    border-bottom: 2px solid var(--accent-color);
+
+    padding-bottom: 0.5rem;
+
+    margin-top: 3rem;
+
+    margin-bottom: 1.5rem;
+
+}
+
+.text-center {
+
+    text-align: center;
+
+}
+
+.mt-1 { margin-top: 1rem; }
+
+.mt-2 { margin-top: 2rem; }
+
+.mt-3 { margin-top: 3rem; }
+
+.mb-1 { margin-bottom: 1rem; }
+
+.mb-2 { margin-bottom: 2rem; }
+
+.mb-3 { margin-bottom: 3rem; }
+
+.hidden {
+
+    display: none;
+
+}
+
+/* ==========================================
+   検索キーワードハイライト
+   ========================================== */
+mark {
+    background-color: #fff59d; /* 明るい黄色の背景 */
+    padding: 1px 3px;
+    border-radius: 3px;
+    color: inherit; /* 元の文字色を維持 */
+}
+
+/* ==========================================
+
+   ハイセンスなリンクスタイル
+
+   ========================================== */
+.content-wrapper a {
+
+    color: var(--highlight);
+
+    text-decoration: none;
+
+    position: relative;
+
+    background-image: linear-gradient(var(--highlight), var(--highlight));
+
+    background-position: 0% 100%;
+
+    background-repeat: no-repeat;
+
+    background-size: 0% 2px;
+
+    transition: background-size .3s;
+
+}
+
+.content-wrapper a:hover,
+
+.content-wrapper a:focus {
+
+    background-size: 100% 2px;
+
+}
+
+/* ========================================== 
+
+   Bookstore Popover
+
+   ========================================== */
+
+
+
+.book-list .book-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    position: relative; /* For popover positioning */
+
+}
+
+
+
+.book-actions-wrapper {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+}
+
+
+
+.book-cart-icon {
+
+    padding: 0.5rem;
+
+    cursor: pointer;
+
+    color: var(--primary-color);
+
+    font-size: 1.2rem;
+
+    transition: color 0.3s ease;
+
+}
+
+
+
+.book-actions-wrapper:hover .book-cart-icon {
+
+    color: var(--highlight);
+
+}
+
+
+
+.bookstore-menu-popover {
+
+    position: absolute;
+
+    right: 100%; /* Position to the left of the icon */
+
+    top: 50%;
+
+    transform: translateY(-50%) translateX(-10px); /* Start slightly to the left */
+
+    background: var(--white);
+
+    border-radius: 8px;
+
+    box-shadow: var(--shadow-lg);
+
+    min-width: 220px;
+
+    z-index: 10;
+
+    padding: 0.5rem 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0.5rem;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+
+}
+
+
+
+/* Arrow for the popover */
+
+.bookstore-menu-popover::after {
+
+    content: '';
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 100%;
+
+    transform: translateY(-50%);
+
+    border-width: 8px;
+
+    border-style: solid;
+
+    border-color: transparent transparent transparent var(--white);
+
+}
+
+
+
+.book-actions-wrapper:hover .bookstore-menu-popover {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform: translateY(-50%) translateX(0);
+
+}
+
+
+
+.store-link {
+
+        color: var(--text-color);
+
+        text-decoration: none;
+
+        padding: 0.6rem 1.2rem;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 0.8rem;
+
+        transition: background 0.2s ease;
+
+            font-size: 1rem; /* フォントを大きく */
+
+            white-space: nowrap;
+
+        }
+
+        
+
+        .bookstore-menu-popover .store-link {
+
+                color: var(--text-color); /* リンクの色を黒に */
+
+                background-image: none; /* 下線アニメーションを削除 */
+
+                background-size: 0% 2px; /* 下線アニメーションを削除 */
+
+            }
+
+            
+
+            .store-link:hover {
+
+                background: var(--light-bg);
+
+                color: var(--accent-color);
+
+            }
+
+        
+
+        .store-link i {
+
+            width: 25px; /* アイコンと店名の空間を揃える */
+
+            text-align: center;
+
+            display: inline-flex; /* アイコンを中央揃えにする */
+
+                justify-content: center;
+
+                align-items: center;
+
+            }
+
+            
+
+            .store-link.amazon i.fa-amazon {
+
+                margin-left: 4px; /* Amazonアイコンをさらに右に移動 */
+            }
+
+/* Mobile Fallback/Style */
+
+
+
+@media (max-width: 768px) {
+
+
+
+    .book-list .book-item {
+
+
+
+        display: block;
+
+
+
+    }
+
+
+
+
+
+
+
+    .book-cart-icon {
+
+
+
+        display: none !important; /* Hide cart icon on mobile */
+
+
+
+    }
+
+
+
+
+
+
+
+    .book-title {
+
+
+
+        cursor: pointer; /* Show that the title is clickable */
+
+
+
+    }
+
+
+
+
+
+
+
+    .book-actions-wrapper:hover .bookstore-menu-popover {
+
+
+
+        /* Disable hover effect on mobile */
+
+
+
+        opacity: 0;
+
+
+
+        visibility: hidden;
+
+
+
+        pointer-events: none;
+
+
+
+    }
+
+
+
+
+
+
+
+    .bookstore-menu-popover {
+
+
+
+        display: none; /* Hide by default */
+
+
+
+        position: absolute;
+
+
+
+        top: 100%;
+
+
+
+        left: 0;
+
+
+
+        right: 0;
+
+
+
+        width: 100%;
+
+
+
+        transform: none;
+
+
+
+        background: var(--white);
+
+
+
+        box-shadow: var(--shadow);
+
+
+
+        padding: 0.5rem;
+
+
+
+        border-radius: 0 0 8px 8px;
+
+
+
+        z-index: 10;
+
+
+
+        animation: fadeIn 0.2s ease;
+
+
+
+    }
+
+
+
+
+
+
+
+    .bookstore-menu-popover.open {
+
+
+
+        display: flex;
+
+
+
+    }
+
+
+
+
+
+
+
+    .bookstore-menu-popover::after {
+
+
+
+        display: none; /* No arrow on mobile */
+
+
+
+    }
+
+
+
+}
+
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================== 
+   Bottom Sheet (for Mobile Bookstore)
+   ========================================== */
+.bottom-sheet-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1010;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s;
 }
 
-.correction-modal-overlay.open {
+.bottom-sheet-backdrop.open {
     opacity: 1;
     visibility: visible;
 }
 
-.correction-modal-content {
+.bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     background: var(--white);
-    border-radius: 12px;
-    box-shadow: var(--shadow-lg);
-    width: 90%;
-    max-width: 600px;
-    transform: translateY(-20px);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1020;
+    transform: translateY(100%);
     transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh;
-    overflow: hidden; /* 内容がはみ出さないように */
+    padding: 1rem;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
-.correction-modal-overlay.open .correction-modal-content {
+.bottom-sheet.open {
     transform: translateY(0);
 }
 
-.modal-header {
+.bottom-sheet-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem;
 }
 
-.modal-header h3 {
-    margin: 0;
-    font-size: 1.5rem;
+.bottom-sheet-title {
+    font-size: 1rem;
+    font-weight: 600;
     color: var(--primary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.close-modal-btn {
+#bottom-sheet-close {
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: var(--secondary-color);
     cursor: pointer;
-    line-height: 1;
-    padding: 0;
 }
 
-.close-modal-btn:hover {
-    color: var(--accent-color);
-}
-
-.modal-body {
-    padding: 2rem;
-    overflow-y: auto; /* 内容が多い場合にスクロール */
-    flex-grow: 1;
-}
-
-.modal-body p {
-    margin-bottom: 1rem;
-    line-height: 1.6;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
+.bottom-sheet-content .store-link {
     display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--primary-color);
-}
-
-.form-group .required {
-    color: var(--accent-color);
-    font-size: 0.9em;
-    margin-left: 0.3em;
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--border-color);
+    padding: 1rem;
     border-radius: 8px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    resize: vertical; /* テキストエリアの縦方向リサイズを許可 */
+    margin-bottom: 0.5rem;
+    background-color: var(--light-bg);
 }
 
-.form-control:focus {
-    border-color: var(--highlight);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+
+.book-list .bookstore-menu .store-link {
+
+    color: var(--text-color);
+
+    text-decoration: none;
+
+    padding: 0.75rem 1rem;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 0.8rem;
+
+    transition: background 0.2s ease;
+
+}
+
+.book-list .bookstore-menu .store-link:hover {
+
+    background: var(--light-bg);
+
+}
+
+.book-list.plain li {
+
+    display: block;
+
+    padding: 0.8rem 0 1.2rem 0;
+
+    padding-left: 1.5rem;
+
+    position: relative;
+
+}
+
+.book-list.plain li::before {
+
+    content: '📚';
+
+    position: absolute;
+
+    left: 0;
+
+}
+
+.book-title {
+
+    flex-grow: 1;
+
+    margin-right: 1rem;
+
+}
+
+.bookstore-dropdown {
+
+    position: relative;
+
+    display: inline-block;
+
+}
+
+.bookstore-trigger {
+
+    background: var(--primary-color);
+
+    color: var(--white);
+
+    border: none;
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    font-size: 1rem;
+
+    transition: all 0.3s ease;
+
+    padding: 0; /* パディングをリセット */
+
+    text-align: center; /* 水平中央揃え */
+
+    line-height: 38px; /* 垂直中央揃え */
+
+}
+
+button.bookstore-trigger i.fas {
+
+    margin: 0; /* グローバルな margin-right を上書き */
+
+    vertical-align: middle; /* line-heightでの中央揃えを補助 */
+
+}
+
+.bookstore-trigger:hover {
+
+    background: var(--highlight);
+
+    /* transform: translateY(-2px); */ /* アニメーションを削除 */
+
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+
+}
+
+/* ========================================== 
+
+   サイトコンテンツラッパー
+
+   ========================================== */
+
+.site-content-wrapper {
+
+    display: flex;
+
+    flex-direction: column;
+
+    flex-grow: 1; /* 残りのスペースを全て占める */
+
+    min-width: 0; /* フレックスアイテムの縮小を許可 */
+
+}
+
+.bookstore-wrapper {
+
+    position: relative;
+
+}
+
+.bookstore-menu {
+
+    position: absolute;
+
+    top: 100%;
+
+    right: 0;
+
+    background: var(--white);
+
+    border-radius: 8px;
+
+    box-shadow: var(--shadow-lg);
+
+    min-width: 250px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 0.5rem 0;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(8px);
+
+    transition: opacity 0.4s ease, transform 0.4s ease;
+
+    pointer-events: none;
+
+    z-index: 20;
+
+}
+
+.bookstore-wrapper:hover .bookstore-menu,
+
+.bookstore-menu.open {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
+
+}
+
+@media (max-width: 768px) {
+
+    .book-title {
+
+        width: 100%;
+
+        display: block;
+
+    }
+
+    .references .book-list li {
+
+        position: relative;
+
+    }
+
+    .bookstore-menu {
+
+        position: static;
+
+        display: none;
+
+        width: 100%;
+
+        box-shadow: none;
+
+        border: 1px solid var(--border-color);
+
+        margin-top: 0.5rem;
+
+        transform: none;
+
+        opacity: 1;
+
+        visibility: visible;
+
+        pointer-events: auto;
+
+        transition: none;
+
+    }
+
+    .bookstore-menu.open {
+
+        display: flex;
+
+    }
+
+}
+
+/* ========================================== 
+   アイコンとテキストの改行防止
+   ========================================== */
+
+/* アイコンを含む要素でアイコンとテキストが分離しないようにする */
+h1, h2, h3, h4, h5, h6 {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+h1 i, h2 i, h3 i, h4 i, h5 i, h6 i {
+    flex-shrink: 0;
+}
+
+.title-text {
+    flex: 1; /* 残りのスペースをすべて埋めるように成長する */
+    min-width: 0; /* flexアイテム内のテキスト折り返しを確実にする */
+}
+
+/* リンクやボタン内のアイコン */
+a i.fas, button i.fas {
+    margin-right: 0.3em;
+}
+
+/* ドロップダウンアイテム内のアイコンとテキストが改行しないようにする */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.dropdown-item i {
+    flex-shrink: 0;
+}
+
+/* ページネーション内のアイコン */
+.pagination a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.pagination i {
+    flex-shrink: 0;
+}
+
+/* スマホ表示時の追加対策 */
+@media (max-width: 768px) {
+    /* ドロップダウンメニュー項目が確実に改行しないようにする */
+    .dropdown-item {
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+    }
+
+    /* 小さな画面でもアイコンとテキストが分離しないようにする */
+    h1, h2, h3, h4, h5, h6 {
+        gap: 0.3rem;
+    }
+}
+
+/* スクロールトップボタンのアイコンの不要なマージンをリセットする */
+.scroll-top i.fas {
+    margin-right: 0;
+}
+
+/* ========================================== 
+   検索機能のスタイル
+   ========================================== */
+
+/* PC版検索ボックス */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* ダミーの背景となる疑似要素 */
+.search-container::before {
+    content: '';
+    position: absolute;
+    right: 50px; /* アイコンの左端を基準にする */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 40px;
+    background: var(--white);
+    border-radius: 25px;
+    box-shadow: var(--shadow);
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 8; /* アイコンや入力欄より背後に */
+}
+
+.search-container.active::before {
+    width: 300px; /* アクティブ時に背景が伸びる */
+}
+
+.search-icon-btn {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+    position: relative;
+    z-index: 10;
+}
+
+.search-input-wrapper {
+    position: absolute;
+    right: 40px; /* さらに右に寄せる */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px; /* 幅は固定 */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding-right: 25px;
+    z-index: 9; /* ダミー背景より手前に */
+}
+
+.search-container.active .search-input-wrapper {
+    opacity: 1;
+    visibility: visible;
+}
+
+.search-input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
     outline: none;
 }
 
-.modal-footer {
-    padding: 1.5rem 2rem;
-    border-top: 1px solid var(--border-color);
-    text-align: right;
+.search-input::placeholder {
+    color: var(--border-color);
 }
 
-.btn-primary {
-    background: var(--highlight);
-    color: var(--white);
+/* type="search"でブラウザが自動表示する「×」ボタンを非表示にする */
+.search-input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    display: none;
+}
+
+/* ブラウザのオートフィル時の背景色を強制的に上書き */
+.search-input:-webkit-autofill,
+.search-input:-webkit-autofill:hover,
+.search-input:-webkit-autofill:focus,
+.search-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--white) inset !important;
+    box-shadow: 0 0 0 30px var(--white) inset !important;
+    background-color: var(--white) !important; /* 背景色を強制的に白に */
+}
+
+.search-close-btn {
+    background: none;
     border: none;
-    padding: 0.8rem 1.8rem;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 600;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 0.3rem;
+    margin-left: 0.5rem;
+    transition: color 0.3s ease;
 }
 
-.btn-primary:hover {
-    background: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.error-message {
+.search-close-btn:hover {
     color: var(--accent-color);
-    font-size: 0.9rem;
-    margin-top: -1rem; /* 上の要素との間隔を詰める */
-    margin-bottom: 1rem;
-    text-align: left;
-    display: none; /* 初期状態は非表示 */
 }
 
-.error-message.show {
+/* PC版検索結果ドロップダウン */
+.search-results-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    pointer-events: none;
+}
+
+.search-container.active .search-results-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.search-results-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.search-results-dropdown li {
+    border-bottom: 1px solid var(--light-bg);
+}
+
+.search-results-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.search-results-dropdown a {
     display: block;
+    padding: 0.8rem 1.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    background-image: none;
 }
 
-/* モーダルが開いているときに背景のスクロールを禁止 */
-body.modal-open {
-    overflow: hidden;
+.search-results-dropdown a:hover {
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+}
+
+.search-results-dropdown .result-title {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.2rem;
+}
+
+.search-results-dropdown .result-snippet {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    line-height: 1.4;
+}
+
+.search-results-dropdown .result-title em,
+.search-results-dropdown .result-snippet em {
+    font-weight: 700;
+    color: var(--accent-color);
+    font-style: normal;
+    background-color: rgba(231, 76, 60, 0.1);
+    padding: 0 2px;
+    border-radius: 3px;
+}
+
+.search-results-dropdown .no-results {
+    padding: 1rem 1.5rem;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+/* モバイル版検索オーバーレイ */
+.mobile-search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    z-index: 1005;
+    transform: translateY(-100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+body.mobile-search-active .mobile-search-overlay {
+    transform: translateY(0);
+    visibility: visible;
+}
+
+.mobile-search-header {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    height: 60px;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.mobile-search-input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    outline: none;
+}
+
+.mobile-search-input::placeholder {
+    color: var(--border-color);
+}
+
+.mobile-search-cancel-btn {
+    background: none;
+    border: none;
+    color: var(--highlight);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+}
+
+.mobile-search-results {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.mobile-search-results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-search-results li:last-child {
+    border-bottom: none;
+}
+
+.mobile-search-results a {
+    display: block;
+    padding: 0.8rem 0;
+    color: var(--text-color);
+    text-decoration: none;
+    background-image: none;
+}
+
+.mobile-search-results .result-title {
+    font-weight: 600; /* タイトル全体を太字に */
+    font-size: 1.1rem; /* フォントサイズを少し大きく */
+    color: var(--primary-color);
+    margin-bottom: 0.2rem;
+}
+
+.mobile-search-results .result-title em,
+.mobile-search-results .result-snippet em {
+    font-weight: 700;
+    color: var(--accent-color);
+    font-style: normal;
+    background-color: rgba(231, 76, 60, 0.1); /* PC版と同様の背景色 */
+    padding: 0 2px; /* PC版と同様のパディング */
+    border-radius: 3px; /* PC版と同様の角丸 */
+}
+
+.mobile-search-results .no-results {
+    padding: 1rem 0;
+    color: var(--secondary-color);
+    text-align: center;
 }
 
 /* レスポンシブ調整 */
 @media (max-width: 768px) {
-    .suggest-correction-btn {
-        bottom: 1rem;
-        left: 1rem;
-        width: 45px;
-        height: 45px;
-        font-size: 1.3rem;
+    .search-container {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) {
+    #mobile-search-icon-btn {
+        display: none; /* PCではモバイル版検索アイコンを非表示 */
+    }
+    #search-icon-btn-mobile {
+        display: none;
     }
 
-    .correction-modal-content {
-        width: 95%;
-        margin: 1rem;
-    }
-
-    .modal-header {
-        padding: 1rem 1.5rem;
-    }
-
-    .modal-header h3 {
-        font-size: 1.2rem;
-    }
-
-    .modal-body {
-        padding: 1.5rem;
-    }
-
-    .modal-footer {
-        padding: 1rem 1.5rem;
-    }
-
-    .btn-primary {
-        padding: 0.7rem 1.5rem;
-        font-size: 0.9rem;
+    /* PC表示時に検索がアクティブになったらナビゲーションメニューを非表示 */
+    .search-container.active ~ .nav-menu {
+        display: none;
     }
 }
