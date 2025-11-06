@@ -537,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 try {
-                const response = await fetch('https://eo9cqft3yp6ogsn.m.pipedream.net', {
+                const response = await fetch('https://eocq6rlyhmbt2bq.m.pipedream.net', {
                     method: 'POST',
                     mode: 'cors', // CORSモードを明示的に指定
                     headers: {
