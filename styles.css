@@ -39,12 +39,6 @@ h1, h2, h3, h4, h5, h6, .glossary dt {
     scroll-margin-top: 90px;
 }
 
-/* 3. 初期ロード時のちらつきを防ぐ */
-body.is-loading {
-    visibility: hidden;
-    opacity: 0;
-}
-
 /* ========================================== 
    これ以降は元のCSSコード
    ========================================== */
@@ -1155,6 +1149,17 @@ body.is-leaving .hero {
 }
 
     @media (max-width: 768px) {
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        body {
+            padding-top: 50px;
+        }
 
         /* --- Mobile Header Layout --- */
 
@@ -2851,5 +2856,247 @@ body.mobile-search-active .mobile-search-overlay {
     /* PC表示時に検索がアクティブになったらナビゲーションメニューを非表示 */
     .search-container.active ~ .nav-menu {
         display: none;
+    }
+}
+
+@media screen and (max-width : 480px){
+html,
+body {
+overflow-x: hidden;
+overflow-y: scroll;
+}
+}
+
+/* ========================================== 
+   問題報告フォームのスタイル
+   ========================================== */
+
+.report-issue-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 6rem; /* スクロールトップボタンとの重複を避ける */
+    background: var(--highlight);
+    color: var(--white);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* アイコンを中央揃え */
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    animation: shake-animation 1s 2s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.report-issue-btn .no-margin {
+    margin: 0;
+}
+
+.report-issue-btn .tooltip {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+.report-issue-btn:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes shake-animation {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+.report-issue-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.issue-report-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.issue-report-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.issue-report-content {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.issue-report-content h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.issue-report-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.issue-report-content .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+.issue-report-content .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.issue-report-content label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.issue-report-content .required {
+    color: var(--accent-color);
+    margin-left: 0.2rem;
+}
+
+.issue-report-content input[type="text"],
+.issue-report-content textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', sans-serif;
+    background: var(--light-bg);
+    color: var(--text-color);
+}
+
+.issue-report-content textarea {
+    resize: vertical;
+}
+
+.issue-report-content input[type="text"]:focus,
+.issue-report-content textarea:focus {
+    outline: none;
+    border-color: var(--highlight);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+.issue-report-content .submit-btn {
+    background: var(--accent-color);
+    color: var(--white);
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    width: auto;
+    margin-top: 1rem;
+}
+
+.issue-report-content .submit-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+.issue-report-content .form-message {
+    margin-top: 1.5rem;
+    padding: 0.8rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+    display: none; /* 初期状態では非表示 */
+}
+
+.issue-report-content .form-message.success {
+    background: #e6ffe6;
+    color: #27ae60;
+    border: 1px solid #27ae60;
+}
+
+.issue-report-content .form-message.error {
+    background: #ffe6e6;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+}
+
+/* モバイルでの調整 */
+@media (max-width: 768px) {
+    .issue-report-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .issue-report-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .report-issue-btn {
+        bottom: 1rem;
+        right: 4.5rem; /* スクロールトップボタンとの重複を避ける */
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
     }
 }

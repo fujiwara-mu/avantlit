@@ -261,7 +261,13 @@
         </div>
     </footer>
 
-    <script src="common.js"></script>
+    <!-- 問題報告ボタン -->
+    <button class="report-issue-btn" id="reportIssueBtn">
+        <i class="fas fa-exclamation-triangle no-margin"></i>
+        <span class="tooltip">問題を報告</span>
+    </button>
+
+    <script src="common.js?v=2"></script>
 <!-- モバイル版検索オーバーレイ -->
 <div id="mobile-search-overlay" class="mobile-search-overlay">
     <div class="mobile-search-header">
@@ -275,40 +281,31 @@
     </div>
 </div>
 
-<!-- 修正提案ボタン (フローティング) -->
-<button id="suggestCorrectionBtn" class="suggest-correction-btn" aria-label="修正を提案">
-    <i class="fas fa-lightbulb"></i>
-    <span class="tooltip">修正を提案</span>
-</button>
-
-<!-- 修正提案モーダル -->
-<div id="correctionModal" class="correction-modal-overlay">
-    <div class="correction-modal-content">
-        <div class="modal-header">
-            <h3>AI生成コンテンツの修正提案</h3>
-            <button id="closeModalBtn" class="close-modal-btn">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p>このサイトの文章はAIによって生成されており、誤情報（ハルシネーション）が含まれる可能性があります。お気づきの点がございましたら、ぜひ修正案をご提案ください。</p>
-            <div class="form-group">
-                <label for="selectedText">指摘箇所 (自動入力)</label>
-                <textarea id="selectedText" class="form-control" rows="3" readonly></textarea>
-            </div>
-            <div class="form-group">
-                <label for="correctionDetails">具体的な修正案・指摘内容 <span class="required">(必須)</span></label>
-                <textarea id="correctionDetails" class="form-control" rows="5" placeholder="例: 「〇〇」は「△△」が正しいです。または、この記述は不正確です。"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="userName">ニックネーム (任意)</label>
-                <input type="text" id="userName" class="form-control" placeholder="例: 読者A">
-            </div>
-            <p class="error-message" id="modalErrorMessage"></p>
-        </div>
-        <div class="modal-footer">
-            <button id="submitCorrectionBtn" class="btn btn-primary">提案を送信</button>
-        </div>
-    </div>
-</div>
-
 </body>
 </html>
+
+<!-- 問題報告フォームのモーダル -->
+<div id="issueReportModal" class="issue-report-modal">
+    <div class="issue-report-content">
+        <button class="close-btn" id="closeIssueModal">&times;</button>
+        <h2><i class="fas fa-edit"></i> 内容の改善にご協力ください</h2>
+        <p>誤字脱字のご指摘、事実関係の誤り、より適切な表現のご提案など、このページの内容をより良くするためのフィードバックを歓迎いたします。お気づきの点がございましたら、お気軽にお知らせください。</p>
+        <form id="issueReportForm">
+            <div class="form-group">
+                <label for="selectedText">指摘箇所（選択中のテキスト）:</label>
+                <textarea id="selectedText" name="selectedText" rows="3" readonly></textarea>
+            </div>
+            <div class="form-group">
+                <label for="correctionDetails">具体的な修正案・指摘内容 <span class="required">*</span>:</label>
+                <textarea id="correctionDetails" name="correctionDetails" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="userName">お名前（任意）:</label>
+                <input type="text" id="userName" name="userName">
+            </div>
+            <input type="hidden" id="pageUrl" name="pageUrl">
+            <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> 送信</button>
+            <p class="form-message" id="formMessage"></p>
+        </form>
+    </div>
+</div>
