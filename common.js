@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycbxnLIUYN-XaatN_YcNAzHwYO6HPGqdFhjMJS2joS-sOL2Zx6QLyguWaGSGeo7AQT5_zUg/exec', {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbw_CyofkyB6_dU2s1WrR0mEKVb9p65hCcE98pL4SBjht0i_hKl56vAa5icIHMIpbifHCA/exec', {
                     method: 'POST',
                     mode: 'cors', // CORSモードを明示的に指定
                     headers: {
