@@ -55,6 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // クリックされたリンクの隣の要素(.dropdown-menu)を直接取得
                     const submenu = navLink.nextElementSibling;
+
+                    // 対応するドロップダウンがなければ何もしない
+                    if (!submenu || !submenu.classList.contains('dropdown-menu')) {
+                        window.location.href = navLink.href; // 通常のリンクとして遷移
+                        return;
+                    }
+
                     const title = navLink.textContent.trim();
                     const titleLink = navLink.getAttribute('href');
                     const iconHTML = navLink.querySelector('i')?.outerHTML || '';
