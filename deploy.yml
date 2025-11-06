@@ -1,20 +1,16 @@
 name: Deploy to GitHub Pages
 
 on:
-  # mainブランチにプッシュされたときにワークフローを実行
   push:
     branches:
       - main
-  # 手動での実行も可能にする
   workflow_dispatch:
 
-# GITHUB_TOKENのパーミッションを設定
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 同時デプロイを1つに制限
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -33,8 +29,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # zeneiディレクトリをアップロード
-          path: './zenei'
+          # ルートディレクトリをアップロード
+          path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
