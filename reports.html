@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指摘・改善の一覧 | 前衛文学</title>
+    <link rel="stylesheet" href="styles.css?v=11">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* reports.html固有のスタイル */
+        .reports-container {
+            padding: 2rem;
+            max-width: 900px;
+            margin: 2rem auto;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .reports-container h1 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--highlight);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .report-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--light-bg);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .report-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .report-header {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .report-content {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            white-space: pre-wrap; /* 改行を保持 */
+            word-wrap: break-word;
+            font-family: 'Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', sans-serif;
+            line-height: 1.7;
+        }
+        
+        .report-content.指摘 {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .report-meta {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-color-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .report-meta a {
+            color: var(--highlight);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .report-meta a:hover {
+            text-decoration: underline;
+        }
+
+        #loading-indicator {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: var(--text-color-light);
+        }
+
+        #error-message {
+            text-align: center;
+            padding: 2rem;
+            background: #ffe6e6;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+            border-radius: 8px;
+            display: none; /* 初期状態では非表示 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 進捗インジケーター -->
+    <div class="progress-indicator">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- ナビゲーションバー -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-book-open"></i>
+                前衛小説ガイドブック
+            </a>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-compass"></i>
+                <span class="menu-toggle-text">メニュー</span>
+            </button>
+                            <ul class="nav-menu" id="navMenu">
+                                <li class="nav-item dropdown">
+                                    <a href="part1.html" class="nav-link dropdown-toggle">
+                                        <i class="fas fa-history"></i> 歴史
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="part1.html#prehistory" class="dropdown-item"><i class="fas fa-seedling"></i> 前史</a>
+                                        <a href="part1.html#modernism" class="dropdown-item"><i class="fas fa-landmark"></i> モダニズムの胎動</a>
+                                        <a href="part1.html#dada" class="dropdown-item"><i class="fas fa-bomb"></i> ダダ・シュルレアリスムの衝撃</a>
+                                        <a href="part1.html#postwar" class="dropdown-item"><i class="fas fa-globe"></i> 戦後の展開と多様化</a>
+                                        <a href="part1.html#postmodernism" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> ポストモダニズム</a>
+                                        <a href="part1.html#japan" class="dropdown-item"><i class="fas fa-torii-gate"></i> 日本の前衛小説</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="part2.html" class="nav-link dropdown-toggle">
+                                        <i class="fas fa-tools"></i> 特徴
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="part2.html#narrative" class="dropdown-item"><i class="fas fa-project-diagram"></i> 物語性の解体</a>
+                                        <a href="part2.html#consciousness" class="dropdown-item"><i class="fas fa-water"></i> 意識の流れ</a>
+                                        <a href="part2.html#absurd" class="dropdown-item"><i class="fas fa-question-circle"></i> 不条理とグロテスク</a>
+                                        <a href="part2.html#fragmentation" class="dropdown-item"><i class="fas fa-cut"></i> 断片化とコラージュ</a>
+                                        <a href="part2.html#metafiction" class="dropdown-item"><i class="fas fa-layer-group"></i> メタフィクション</a>
+                                        <a href="part2.html#unreliable" class="dropdown-item"><i class="fas fa-user-secret"></i> 信頼できない語り</a>
+                                        <a href="part2.html#language" class="dropdown-item"><i class="fas fa-language"></i> 言語の実験</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown dropdown-mega">
+                                    <a href="part3.html" class="nav-link dropdown-toggle">
+                                        <i class="fas fa-user-tie"></i> 巨匠
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="part3.html#gogol" class="dropdown-item"><i class="fas fa-mask"></i> ニコライ・ゴーゴリ</a>
+                                        <a href="part3.html#proust" class="dropdown-item"><i class="fas fa-cookie-bite"></i> マルセル・プルースト</a>
+                                        <a href="part3.html#bely" class="dropdown-item"><i class="fas fa-cube"></i> アンドレイ・ベールイ</a>
+                                        <a href="part3.html#joyce" class="dropdown-item"><i class="fas fa-map-signs"></i> ジェイムズ・ジョイス</a>
+                                        <a href="part3.html#woolf" class="dropdown-item"><i class="fas fa-water"></i> ヴァージニア・ウルフ</a>
+                                        <a href="part3.html#kafka" class="dropdown-item"><i class="fas fa-bug"></i> フランツ・カフカ</a>
+                                        <a href="part3.html#faulkner" class="dropdown-item"><i class="fas fa-clock"></i> ウィリアム・フォークナー</a>
+                                        <a href="part3.html#borges" class="dropdown-item"><i class="fas fa-infinity"></i> ホルヘ・ルイス・ボルヘス</a>
+                                        <a href="part3.html#beckett" class="dropdown-item"><i class="fas fa-tree"></i> サミュエル・ベケット</a>
+                                        <a href="part3.html#burroughs" class="dropdown-item"><i class="fas fa-cut"></i> ウィリアム・S・バロウズ</a>
+                                        <a href="part3.html#sarraute" class="dropdown-item"><i class="fas fa-microscope"></i> ナタリー・サロート</a>
+                                        <a href="part3.html#nakamura" class="dropdown-item"><i class="fas fa-yin-yang"></i> 中村真一郎</a>
+                                        <a href="part3.html#robbe-grillet" class="dropdown-item"><i class="fas fa-camera"></i> アラン・ロブ＝グリエ</a>
+                                        <a href="part3.html#duras" class="dropdown-item"><i class="fas fa-film"></i> マルグリット・デュラス</a>
+                                        <a href="part3.html#calvino" class="dropdown-item"><i class="fas fa-chess-knight"></i> イタロ・カルヴィーノ</a>
+                                        <a href="part3.html#abe" class="dropdown-item"><i class="fas fa-box"></i> 安部公房</a>
+                                        <a href="part3.html#marquez" class="dropdown-item"><i class="fas fa-leaf"></i> G・ガルシア＝マルケス</a>
+                                        <a href="part3.html#oe" class="dropdown-item"><i class="fas fa-child"></i> 大江健三郎</a>
+                                        <a href="part3.html#pynchon" class="dropdown-item"><i class="fas fa-rocket"></i> トマス・ピンチョン</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="part4.html" class="nav-link dropdown-toggle">
+                                        <i class="fas fa-wave-square"></i> 動向
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="part4.html#modernism" class="dropdown-item"><i class="fas fa-brain"></i> モダニズム文学</a>
+                                        <a href="part4.html#futurism-it" class="dropdown-item"><i class="fas fa-industry"></i> イタリア未来派</a>
+                                        <a href="part4.html#surrealism" class="dropdown-item"><i class="fas fa-moon"></i> ダダイズムとシュルレアリスム</a>
+                                        <a href="part4.html#futurism-ru" class="dropdown-item"><i class="fas fa-rocket"></i> ロシア未来派</a>
+                                        <a href="part4.html#absurdism" class="dropdown-item"><i class="fas fa-theater-masks"></i> 不条理文学</a>
+                                        <a href="part4.html#nouveau" class="dropdown-item"><i class="fas fa-camera"></i> ヌーヴォー・ロマン</a>
+                                        <a href="part4.html#beat" class="dropdown-item"><i class="fas fa-drum"></i> ビート・ジェネレーション</a>
+                                        <a href="part4.html#oulipo" class="dropdown-item"><i class="fas fa-chess-knight"></i> ウリポ（潜在文学工房）</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="part5.html" class="nav-link dropdown-toggle">
+                                        <i class="fas fa-lightbulb"></i> テーマ
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="part5.html#alienation" class="dropdown-item"><i class="fas fa-user-slash"></i> 疎外とアイデンティティ</a>
+                                        <a href="part5.html#city-machine" class="dropdown-item"><i class="fas fa-city"></i> 都市と機械</a>
+                                        <a href="part5.html#reality" class="dropdown-item"><i class="fas fa-eye"></i> 現実と意識</a>
+                                        <a href="part5.html#language-doubt" class="dropdown-item"><i class="fas fa-comment-slash"></i> 言語への懐疑</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="part6.html" class="nav-link dropdown-toggle">
+                                        <i class="fas fa-scroll"></i> 遺産
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="part6.html#postmodern-inheritance" class="dropdown-item"><i class="fas fa-forward"></i> ポストモダンへの継承</a>
+                                        <a href="part6.html#mainstream-influence" class="dropdown-item"><i class="fas fa-film"></i> 主流への影響</a>
+                                        <a href="part6.html#contemporary-relevance" class="dropdown-item"><i class="fas fa-globe-americas"></i> 現代的意義</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="chronology.html" class="nav-link">
+                                        <i class="fas fa-calendar-alt"></i> 年表
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="glossary.html" class="nav-link">
+                                        <i class="fas fa-book-medical"></i> 用語集
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="references.html" class="nav-link dropdown-toggle">
+                                        <i class="fas fa-book"></i> 参考文献
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="references.html#books" class="dropdown-item"><i class="fas fa-book-open"></i> 書籍</a>
+                                        <a href="references.html#papers" class="dropdown-item"><i class="fas fa-file-alt"></i> 論文・学術記事</a>
+                                        <a href="references.html#reading-guide" class="dropdown-item"><i class="fas fa-map-signs"></i> 読書案内</a>
+                                    </div>
+                                </li>
+                            </ul>        <div class="nav-utility">
+            <button id="mobile-search-icon-btn" class="nav-utility-btn mobile-only" aria-label="サイト内検索 (モバイル)">
+                <i class="fas fa-search"></i>
+            </button>
+            <div class="search-container desktop-only">
+                <button id="search-icon-btn" class="search-icon-btn" aria-label="サイト内検索">
+                    <i class="fas fa-search"></i>
+                    <span class="tooltip">サイト内検索</span>
+                </button>
+                <div class="search-input-wrapper">
+                    <input type="search" id="search-input" class="search-input" placeholder="サイト内を検索...">
+                    <button id="search-close-btn" class="search-close-btn" aria-label="検索を閉じる">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="search-results-dropdown" class="search-results-dropdown">
+                    <ul>
+                        <!-- 検索結果がここに挿入されます -->
+                    </ul>
+                </div>
+            </div>
+            <button id="font-size-toggle" class="nav-utility-btn" aria-label="文字サイズ切替">
+                <i class="fas fa-font"></i>
+                <span class="tooltip">文字を拡大</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+    <main>
+        <div class="reports-container">
+            <h1><i class="fas fa-clipboard-check"></i> 指摘・改善の一覧</h1>
+            <p style="text-align: center; margin-bottom: 2rem;">皆様から寄せられ、承認されたご指摘の一覧です。ご協力に心より感謝申し上げます。</p>
+            
+            <div id="reports-list">
+                <!-- ここにJavaScriptでPRが挿入されます -->
+            </div>
+
+            <div id="loading-indicator">
+                <i class="fas fa-spinner fa-spin"></i> データを読み込んでいます...
+            </div>
+            <div id="error-message"></div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2025 前衛小説ガイドブック | 20世紀文学の革新と実験の記録. All Rights Reserved. | Planning & Direction: Fujiwara Mu</p>
+            <p class="ai-disclaimer">※このページはAIによって生成されたものであり、内容にはハルシネーション（AIの誤情報生成）が含まれる可能性があります。情報の正確性については、必ずご自身でご確認ください。</p>
+            <p><a href="index.html">トップページ</a> | <a href="about.html">このサイトについて</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const repoPath = 'fujiwara-mu/avantlit'; // あなたのリポジトリパス
+            const reportsList = document.getElementById('reports-list');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const errorMessage = document.getElementById('error-message');
+
+            try {
+                // GitHub APIを叩いて、マージ済みのPRを取得
+                const response = await fetch(`https://api.github.com/repos/${repoPath}/pulls?state=closed&sort=updated&direction=desc`);
+                
+                if (!response.ok) {
+                    throw new Error(`GitHub APIからの応答エラー: ${response.status}`);
+                }
+
+                const pullRequests = await response.json();
+                
+                // マージされたPRのみをフィルタリング
+                const mergedPrs = pullRequests.filter(pr => pr.merged_at);
+
+                if (mergedPrs.length === 0) {
+                    reportsList.innerHTML = '<p style="text-align:center;">現在、承認された指摘はありません。</p>';
+                    return;
+                }
+
+                // PRの本文から情報を抽出してHTMLを生成
+                mergedPrs.forEach(pr => {
+                    const body = pr.body;
+                    const prUrl = pr.html_url;
+                    const mergedDate = new Date(pr.merged_at).toLocaleDateString('ja-JP');
+
+                    // 正規表現を使って各セクションを抽出
+                    const nameMatch = body.match(/\*\*お名前:\*\*\s*([\s\S]*?)\n/);
+                    const problemMatch = body.match(/\*\*問題箇所:\*\*\s*```\n([\s\S]*?)\n```/);
+                    const suggestionMatch = body.match(/\*\*指摘:\*\*\s*```\n([\s\S]*?)\n```/);
+
+                    const name = nameMatch ? nameMatch[1].trim() : '取得失敗';
+                    const problem = problemMatch ? problemMatch[1].trim() : '取得失敗';
+                    const suggestion = suggestionMatch ? suggestionMatch[1].trim() : '取得失敗';
+
+                    const reportElement = document.createElement('div');
+                    reportElement.className = 'report-item';
+                    reportElement.innerHTML = "`
+                        <div>
+                            <span class="report-header">お名前</span>
+                            <div class="report-content お名前">${name}</div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <span class="report-header">問題箇所</span>
+                            <div class="report-content 問題箇所">${problem}</div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <span class="report-header">指摘</span>
+                            <div class="report-content 指摘">${suggestion}</div>
+                        </div>
+                        <div class="report-meta">
+                            <span>承認日: ${mergedDate}</span>
+                            <a href="${prUrl}" target="_blank" rel="noopener noreferrer">
+                                詳細を見る <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    `";
+                    reportsList.appendChild(reportElement);
+                });
+
+            } catch (error) {
+                console.error('Error fetching reports:', error);
+                errorMessage.textContent = '一覧の読み込み中にエラーが発生しました。しばらくしてから再度お試しください。';
+                errorMessage.style.display = 'block';
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
