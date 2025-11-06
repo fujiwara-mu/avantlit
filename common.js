@@ -535,6 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch('https://script.google.com/macros/s/AKfycbxnLIUYN-XaatN_YcNAzHwYO6HPGqdFhjMJS2joS-sOL2Zx6QLyguWaGSGeo7AQT5_zUg/exec', {
                     method: 'POST',
+                    mode: 'cors', // CORSモードを明示的に指定
                     headers: {
                         'Content-Type': 'application/json',
                     },
