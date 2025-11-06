@@ -520,44 +520,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // フォーム送信処理
     if (issueReportForm) {
-        issueReportForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            formMessage.style.display = 'none'; // メッセージをリセット
+            issueReportForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = e.target.querySelector('.submit-btn');
+                const formMessage = e.target.querySelector('.form-message');
 
-            const formData = new FormData(issueReportForm);
-            const data = {
-                selectedText: formData.get('selectedText'),
-                correctionDetails: formData.get('correctionDetails'),
-                userName: formData.get('userName'),
-                pageUrl: formData.get('pageUrl'),
-            };
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+                formMessage.style.display = 'none';
 
-            try {
-                const response = await fetch('https://eoyncqa7z33mdko.m.pipedream.net', {
-                    method: 'POST',
-                    mode: 'cors', // CORSモードを明示的に指定
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
+                const data = {
+                    selectedText: document.getElementById('selectedText').value,
+                    correctionDetails: document.getElementById('correctionDetails').value,
+                    userName: document.getElementById('userName').value || '匿名',
+                    pageUrl: window.location.href,
+                };
 
-                const result = await response.json();
+                try {
+                    const response = await fetch('https://eoyncqa7z33mdko.m.pipedream.net', {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
 
-                if (response.ok) {
-                    formMessage.textContent = 'ご報告ありがとうございます！GitHub Issueが正常に作成されました。';
-                    formMessage.className = 'form-message success';
-                    issueReportForm.reset();
-                } else {
-                    formMessage.textContent = `送信に失敗しました: ${result.message || '不明なエラー'}`;
+                    if (response.ok) { // ステータスコードが200-299の範囲なら成功とみなす
+                        formMessage.textContent = '修正提案が正常に送信されました。ご協力ありがとうございます！';
+                        formMessage.className = 'form-message success';
+                        issueReportForm.reset();
+                        document.getElementById('selectedText').value = ''; // 隠しフィールドもリセット
+                        setTimeout(() => {
+                            issueReportModal.classList.remove('active');
+                        }, 3000);
+                    } else {
+                        // エラーレスポンスがJSON形式の場合、そのメッセージを優先的に表示
+                        try {
+                            const errorData = await response.json();
+                            formMessage.textContent = `エラーが発生しました: ${errorData.message || 'サーバーからの応答が不正です。'}`;
+                        } catch (e) {
+                            formMessage.textContent = `サーバーエラーが発生しました (ステータス: ${response.status})。`;
+                        }
+                        formMessage.className = 'form-message error';
+                    }
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    formMessage.textContent = '送信中にエラーが発生しました。ネットワーク接続をご確認ください。';
                     formMessage.className = 'form-message error';
+                } finally {
+                    formMessage.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> 送信';
                 }
-            } catch (error) {
-                console.error('Error submitting form:', error);
-                formMessage.textContent = '送信中にエラーが発生しました。ネットワーク接続をご確認ください。';
-                formMessage.className = 'form-message error';
-            }
-            formMessage.style.display = 'block';
-        });
+            });
     }
 });
