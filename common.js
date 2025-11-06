@@ -1,9 +1,7 @@
-// 前衛小説報告書 - 共通JavaScript (v17改 - Native Scroll Delegation)
+// 前衛小説報告書 - 共通JavaScript (v17.1 - Final Stable)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Scroll Management ---
-
-    // スクロール復元はブラウザに任せる
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'auto';
     }
@@ -20,62 +18,55 @@ document.addEventListener('DOMContentLoaded', () => {
         drillDownPanel.className = 'drilldown-panel';
         document.body.appendChild(drillDownPanel);
 
-        // ドリルダウンパネル内のアンカーリンククリックでメニューを閉じる
-        drillDownPanel.addEventListener('click', (e) => {
-            const link = e.target.closest('a');
-            if (link && link.getAttribute('href')?.includes('#')) {
-                updateMenuState(null);
-                // preventDefaultはしないので、ページ内スクロールは実行される
-            }
-        });
-
+        // --- Menu State Machine ---
         function updateMenuState(state) {
             document.body.classList.remove('menu-l1-visible', 'menu-l2-visible', 'no-scroll');
             if (state) {
-                document.body.classList.add(state);
-                document.body.classList.add('no-scroll');
+                document.body.classList.add(state, 'no-scroll');
             }
+            // Toggle button state
+            const isVisible = !!state;
+            const icon = menuToggle.querySelector('i');
+            const text = menuToggle.querySelector('.menu-toggle-text');
+            menuToggle.classList.toggle('active', isVisible);
+            if (icon) {
+                icon.classList.toggle('fa-times', isVisible);
+                icon.classList.toggle('fa-compass', !isVisible);
+            }
+            if (text) text.textContent = isVisible ? '閉じる' : 'メニュー';
         }
 
+        // --- Event Listeners ---
         if (menuToggle) {
             menuToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const isVisible = document.body.classList.contains('menu-l1-visible') || document.body.classList.contains('menu-l2-visible');
-                const icon = menuToggle.querySelector('i');
-                const text = menuToggle.querySelector('.menu-toggle-text');
-
-                if (isVisible) {
-                    updateMenuState(null);
-                    menuToggle.classList.remove('active');
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-compass');
-                    if (text) text.textContent = 'メニュー';
-                } else {
-                    updateMenuState('menu-l1-visible');
-                    menuToggle.classList.add('active');
-                    icon.classList.remove('fa-compass');
-                    icon.classList.add('fa-times');
-                    if (text) text.textContent = '閉じる';
-                }
+                updateMenuState(isVisible ? null : 'menu-l1-visible');
             });
         }
 
         allNavItems.forEach(item => {
-            const navLink = item.querySelector('.nav-link.dropdown-toggle'); // ドロップダウンのトグルリンクを直接取得
-            if (navLink) { // ドロップダウンのトグルリンクが存在する場合のみ処理
-                navLink.addEventListener('click', (e) => { // <a>タグに直接イベントリスナーを付与
-                    if (window.innerWidth > 768) return; // PC表示では何もしない
-
-                    // モバイルのドロップダウンリンクがクリックされた場合、デフォルトのページ遷移を完全に阻止
+            const navLink = item.querySelector('.nav-link.dropdown-toggle');
+            if (navLink) {
+                navLink.addEventListener('click', (e) => {
+                    if (window.innerWidth > 768) return;
                     e.preventDefault();
-                    e.stopPropagation(); // イベントの伝播も停止
+                    e.stopPropagation();
 
-                    const submenu = item.querySelector('.dropdown-menu');
+                    // クリックされたリンクの隣の要素(.dropdown-menu)を直接取得
+                    const submenu = navLink.nextElementSibling;
                     const title = navLink.textContent.trim();
                     const titleLink = navLink.getAttribute('href');
                     const iconHTML = navLink.querySelector('i')?.outerHTML || '';
+                    
                     let listItems = '';
-                    submenu.querySelectorAll('a').forEach(link => { listItems += `<li>${link.outerHTML}</li>`; });
+                    // submenuが存在し、それが.dropdown-menuであることを確認
+                    if (submenu && submenu.classList.contains('dropdown-menu')) {
+                        submenu.querySelectorAll('a.dropdown-item').forEach(link => {
+                            listItems += `<li><a href="${link.href}" class="drilldown-item">${link.innerHTML}</a></li>`;
+                        });
+                    }
+
                     drillDownPanel.innerHTML = `
                         <div class="drilldown-header">
                             <button class="drilldown-back"><i class="fas fa-arrow-left"></i> 戻る</button>
@@ -84,49 +75,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="drilldown-content"><ul>${listItems}</ul></div>
                     `;
                     updateMenuState('menu-l2-visible');
+                    
                     drillDownPanel.querySelector('.drilldown-back').addEventListener('click', () => updateMenuState('menu-l1-visible'));
-                    // モバイルメニューの表示/非表示をJavaScriptで制御
-                    if (submenu.style.display === 'flex') {
-                        submenu.style.display = 'none';
-                    } else {
-                        submenu.style.display = 'flex';
-                    }
-                });
-            }
-            // ドロップダウンではないナビゲーション項目については、
-            // ページ遷移アニメーションを管理する共通のイベントリスナーが処理します。
-            // ここで別途処理を追加する必要はありません。
-        });
-
-        // モバイルメニューのドロップダウンを初期状態で非表示にする
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
-                menu.style.display = 'none';
-            });
-        }
-
-        // ウィンドウのリサイズ時にモバイルメニューの表示状態をリセット
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
-                    menu.style.display = ''; // デスクトップではCSSに任せる
-                });
-            } else {
-                document.querySelectorAll('.nav-menu .dropdown-menu').forEach(menu => {
-                    menu.style.display = 'none'; // モバイルでは非表示に
                 });
             }
         });
 
-        // 【重要】アンカーリンクのイベントリスナーを簡略化
-        document.querySelectorAll('a[href*="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                // e.preventDefault() を削除し、ブラウザのネイティブなハッシュ移動を許可する
-                // メニューを閉じる動作のみ行う
-                if (document.body.classList.contains('menu-l1-visible') || document.body.classList.contains('menu-l2-visible')) {
-                    updateMenuState(null);
-                }
-            });
+        // Close menu on any main content click
+        document.querySelector('main').addEventListener('click', () => {
+            if (document.body.classList.contains('menu-l1-visible') || document.body.classList.contains('menu-l2-visible')) {
+                updateMenuState(null);
+            }
+        });
+
+        // Close menu on anchor link click inside drilldown
+        drillDownPanel.addEventListener('click', (e) => {
+            if (e.target.closest('a[href*="#"]')) {
+                updateMenuState(null);
+            }
         });
 
         const scrollTop = document.getElementById('scrollTop');
@@ -151,20 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        // setupBookstoreLinks は変更なし
-        // ... (省略)
         setupBookstoreLinks();
-        setupFontSizeToggle(); // アイコンの色変更機能を呼び出し
-        initializeFontSizeController(); // 文字サイズ変更機能を呼び出し
-        initializeManualSmoothScroll(); // 手動スムーズスクロール機能を初期化
-        initializeSearch(); // 検索機能を初期化
-        highlightSearchTerm(); // 検索キーワードのハイライト処理を呼び出し
-        scrollToAnchorOnLoad(); // ★ 新しく追加：アンカーへのスクロール処理を呼び出し
+        setupFontSizeToggle();
+        initializeFontSizeController();
+        initializeManualSmoothScroll();
+        initializeSearch();
+        highlightSearchTerm();
+        scrollToAnchorOnLoad();
     };
 
-    /**
-     * URLパラメータから検索キーワードを取得し、ページ内の該当箇所をハイライトする
-     */
     const highlightSearchTerm = () => {
         const params = new URLSearchParams(window.location.search);
         const term = params.get('highlight');
@@ -174,28 +135,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!contentWrapper) return;
 
         const regex = new RegExp(term, 'gi');
-        
-        // TreeWalkerを使って安全にテキストノードを探索
-        const walker = document.createTreeWalker(
-            contentWrapper,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
+        const walker = document.createTreeWalker(contentWrapper, NodeFilter.SHOW_TEXT, null, false);
 
         let node;
         const nodesToReplace = [];
         while (node = walker.nextNode()) {
-            // スクリプトやスタイルタグの中は無視
-            if (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE') {
-                continue;
-            }
-            if (regex.test(node.nodeValue)) {
+            if (node.parentElement.tagName !== 'SCRIPT' && node.parentElement.tagName !== 'STYLE' && regex.test(node.nodeValue)) {
                 nodesToReplace.push(node);
             }
         }
 
-        // マッチしたノードを<mark>タグを含むDOMフラグメントに置換
         nodesToReplace.forEach(node => {
             const parent = node.parentNode;
             if (!parent) return;
@@ -218,52 +167,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /**
-     * ページ読み込み時にURLのアンカー（ハッシュ）へスクロールする
-     */
     const scrollToAnchorOnLoad = () => {
         const hash = window.location.hash;
         if (!hash) return;
 
-        // highlight処理によるDOM変更を待つために少し遅延させる
         setTimeout(() => {
             const targetElement = document.querySelector(hash);
             if (targetElement) {
                 const header = document.querySelector('.navbar');
                 const headerHeight = header ? header.offsetHeight : 0;
                 const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 10; // 10pxの追加マージン
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 10;
 
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
                 });
             }
-        }, 100); // 100msの遅延でDOMの安定を待つ
+        }, 650);
     };
 
-    /**
-     * 検索機能を初期化する
-     */
     const initializeSearch = () => {
-        // 検索対象のページリスト
-        const pagesToIndex = [
-            'index.html',
-            'part1.html',
-            'part2.html',
-            'part3.html',
-            'part4.html',
-            'part5.html',
-            'part6.html',
-            'chronology.html',
-            'glossary.html',
-            'references.html'
-        ];
-
+        const pagesToIndex = ['index.html', 'part1.html', 'part2.html', 'part3.html', 'part4.html', 'part5.html', 'part6.html', 'chronology.html', 'glossary.html', 'references.html'];
         let searchIndex = [];
         let isIndexReady = false;
 
-        // 検索インデックスを非同期で作成
         const createSearchIndex = async () => {
             try {
                 const fetchPromises = pagesToIndex.map(async (url) => {
@@ -274,49 +202,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     const contentWrapper = doc.querySelector('.content-wrapper');
                     if (!contentWrapper) return [];
 
-                    const pageTitle = (doc.querySelector('title')?.textContent || '')
-                        .replace(/\| 前衛小説ガイドブック/g, '').replace(/前衛小説ガイドブック \|/g, '').trim();
-                    
+                    const pageTitle = (doc.querySelector('title')?.textContent || '').replace(/\| 前衛小説ガイドブック/g, '').replace(/前衛小説ガイドブック \|/g, '').trim();
                     const sections = [];
                     const headings = contentWrapper.querySelectorAll('h2, h3');
 
-                    headings.forEach((heading, index) => {
+                    headings.forEach((heading) => {
                         const id = heading.id;
-                        if (!id) return; // idがない見出しはスキップ
+                        if (!id) return;
 
-                        let content = ''; // 空の文字列から始める
+                        let content = '';
                         let nextElement = heading.nextElementSibling;
-
                         while (nextElement && !nextElement.matches('h2, h3')) {
                             content += ' ' + nextElement.textContent.trim();
                             nextElement = nextElement.nextElementSibling;
                         }
 
-                        // サブタイトル（<small>タグ）を除外したタイトルを取得
                         const titleElement = heading.cloneNode(true);
                         const smallTag = titleElement.querySelector('small');
-                        if (smallTag) {
-                            smallTag.remove();
-                        }
+                        if (smallTag) smallTag.remove();
                         const cleanTitle = titleElement.textContent.trim();
 
-                        sections.push({
-                            url: `${url}#${id}`,
-                            title: cleanTitle, // サブタイトルを除外したタイトルを使用
-                            content: content.trim(),
-                            tag: heading.tagName.toLowerCase()
-                        });
+                        sections.push({ url: `${url}#${id}`, title: cleanTitle, content: content.trim(), tag: heading.tagName.toLowerCase() });
                     });
                     
-                    // ページ全体のコンテンツもインデックスに追加（見出しがないページや、見出し前のコンテンツ用）
-                    // ただし、タイトルはページタイトルのみとする
-                    sections.push({
-                        url: url,
-                        title: pageTitle,
-                        content: contentWrapper.textContent.trim(),
-                        tag: 'page' // ページ全体を示すタグ
-                    });
-
+                    sections.push({ url: url, title: pageTitle, content: contentWrapper.textContent.trim(), tag: 'page' });
                     return sections;
                 });
 
@@ -328,11 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // 検索を実行して結果を返す
         const performSearch = (query) => {
-            if (!isIndexReady || !query) {
-                return [];
-            }
+            if (!isIndexReady || !query) return [];
 
             const lowerCaseQuery = query.toLowerCase();
             const queryRegex = new RegExp(query, 'gi');
@@ -343,35 +249,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 sections.forEach(section => {
                     if (addedUrls.has(section.url)) return;
 
-                    const titleIndex = section.title.toLowerCase().indexOf(lowerCaseQuery);
-                    const contentIndex = section.content.toLowerCase().indexOf(lowerCaseQuery);
-
-                    if (titleIndex > -1 || contentIndex > -1) {
+                    if (section.title.toLowerCase().includes(lowerCaseQuery) || section.content.toLowerCase().includes(lowerCaseQuery)) {
                         let snippet = '';
-                        const snippetLength = 100;
-                        let bestIndex = contentIndex > -1 ? contentIndex : section.content.toLowerCase().indexOf(section.title.toLowerCase());
-                        if (contentIndex > -1) { bestIndex = contentIndex; }
-                        
-                        const start = Math.max(0, bestIndex - snippetLength / 2);
-                        snippet = section.content.substring(start, start + snippetLength);
+                        const contentIndex = section.content.toLowerCase().indexOf(lowerCaseQuery);
+                        const start = Math.max(0, contentIndex - 50);
+                        snippet = section.content.substring(start, start + 100);
 
                         const highlightedSnippet = snippet.replace(queryRegex, (match) => `<em>${match}</em>`);
                         const highlightedTitle = section.title.replace(queryRegex, (match) => `<em>${match}</em>`);
 
-                        // URLにハイライト用の検索クエリを追加
                         let finalUrl = section.url;
                         const highlightParam = `?highlight=${encodeURIComponent(query)}`;
-                        if (finalUrl.includes('#')) {
-                            finalUrl = finalUrl.replace('#', `${highlightParam}#`);
-                        } else {
-                            finalUrl += highlightParam;
-                        }
+                        finalUrl = finalUrl.includes('#') ? finalUrl.replace('#', `${highlightParam}#`) : finalUrl + highlightParam;
 
-                        results.push({
-                            url: finalUrl,
-                            title: highlightedTitle,
-                            snippet: `...${highlightedSnippet}...`
-                        });
+                        results.push({ url: finalUrl, title: highlightedTitle, snippet: `...${highlightedSnippet}...` });
                         addedUrls.add(section.url);
                     }
                 });
@@ -381,55 +272,39 @@ document.addEventListener('DOMContentLoaded', () => {
             const priorityGroup = searchIndex.filter(s => s.url.includes('part3.html') && s.tag === 'h2');
             const otherGroup = searchIndex.filter(s => !(s.url.includes('part3.html') && s.tag === 'h2'));
 
-            const priorityResults = executeSearch(priorityGroup);
-            const otherResults = executeSearch(otherGroup);
-
-            return [...priorityResults, ...otherResults];
+            return [...executeSearch(priorityGroup), ...executeSearch(otherGroup)];
         };
 
-        // 検索結果をUIにレンダリング
         const renderResults = (results, resultContainer) => {
             const ul = resultContainer.querySelector('ul');
-            ul.innerHTML = '';
-
-            if (results.length === 0) {
-                ul.innerHTML = '<li class="no-results">検索結果が見つかりませんでした。</li>';
-                return;
-            }
-
-            results.slice(0, 10).forEach(result => { // 最大10件まで表示
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <a href="${result.url}">
-                        <div class="result-title">${result.title}</div>
-                        <div class="result-snippet">${result.snippet}</div>
-                    </a>
-                `;
-                ul.appendChild(li);
-            });
+            ul.innerHTML = results.length === 0
+                ? '<li class="no-results">検索結果が見つかりませんでした。</li>'
+                : results.slice(0, 10).map(result => `
+                    <li>
+                        <a href="${result.url}">
+                            <div class="result-title">${result.title}</div>
+                            <div class="result-snippet">${result.snippet}</div>
+                        </a>
+                    </li>
+                `).join('');
         };
 
-        // --- UI Element Hooks ---
         const searchContainer = document.querySelector('.search-container');
         const searchIconBtn = document.getElementById('search-icon-btn');
         const searchInput = document.getElementById('search-input');
         const searchCloseBtn = document.getElementById('search-close-btn');
         const searchResultsDropdown = document.getElementById('search-results-dropdown');
-        
-        const mobileSearchIconBtn = document.getElementById('mobile-search-icon-btn'); // モバイル専用検索アイコン
+        const mobileSearchIconBtn = document.getElementById('mobile-search-icon-btn');
         const mobileSearchOverlay = document.getElementById('mobile-search-overlay');
         const mobileSearchInput = document.getElementById('mobile-search-input');
         const mobileSearchCancelBtn = document.getElementById('mobile-search-cancel-btn');
         const mobileSearchResults = document.querySelector('.mobile-search-results');
 
-        // --- Event Listeners ---
         if (searchIconBtn) {
             searchIconBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 searchContainer.classList.toggle('active');
-                if (searchContainer.classList.contains('active')) {
-                    searchInput.focus();
-                }
+                if (searchContainer.classList.contains('active')) searchInput.focus();
             });
         }
         
@@ -457,32 +332,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        const handleSearchInput = (query, container) => {
-            const results = performSearch(query);
-            renderResults(results, container);
-        };
-
-        if (searchInput) {
-            searchInput.addEventListener('input', () => handleSearchInput(searchInput.value, searchResultsDropdown));
-        }
-
-        if (mobileSearchInput) {
-            mobileSearchInput.addEventListener('input', () => handleSearchInput(mobileSearchInput.value, mobileSearchResults));
-        }
-
+        const handleSearchInput = (query, container) => renderResults(performSearch(query), container);
+        if (searchInput) searchInput.addEventListener('input', () => handleSearchInput(searchInput.value, searchResultsDropdown));
+        if (mobileSearchInput) mobileSearchInput.addEventListener('input', () => handleSearchInput(mobileSearchInput.value, mobileSearchResults));
         document.addEventListener('click', (e) => {
-            if (searchContainer && !searchContainer.contains(e.target)) {
-                searchContainer.classList.remove('active');
-            }
+            if (searchContainer && !searchContainer.contains(e.target)) searchContainer.classList.remove('active');
         });
 
         createSearchIndex();
     };
 
-
-    /**
-     * 手動でのスムーズスクロール機能を初期化する
-     */
     const initializeManualSmoothScroll = () => {
         document.querySelectorAll('a[href*="#"]').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -490,23 +349,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const currentUrl = new URL(window.location.href);
                 const targetUrl = new URL(href, currentUrl.origin + currentUrl.pathname);
 
-                // リンクが現在のページ内のアンカーを指している場合のみ処理
                 if (targetUrl.pathname === currentUrl.pathname && targetUrl.hash) {
-                    e.preventDefault(); // ブラウザのデフォルトのジャンプ動作をキャンセル
-
+                    e.preventDefault();
                     const targetElement = document.querySelector(targetUrl.hash);
                     if (targetElement) {
                         const header = document.querySelector('.navbar');
                         const headerHeight = header ? header.offsetHeight : 0;
                         const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 10; // 10pxの追加マージン
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-
-                        // URLのハッシュを手動で更新
+                        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 10;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                         history.pushState(null, '', targetUrl.hash);
                     }
                 }
@@ -518,169 +369,194 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggleButton = document.getElementById('font-size-toggle');
         if (!toggleButton) return;
         const tooltip = toggleButton.querySelector('.tooltip');
-
-        // CSS変数から直接色を取得
         const rootStyles = getComputedStyle(document.documentElement);
         const defaultColor = rootStyles.getPropertyValue('--white').trim();
         const activeColor = rootStyles.getPropertyValue('--accent-color').trim();
-
-        // 状態をJS内で管理
         let isToggleActive = false;
-
-        // 初期状態を設定
         toggleButton.style.color = defaultColor;
         if (tooltip) tooltip.textContent = '文字を拡大';
-
-        // ボタンがクリックされたときの処理（スタイルを直接変更）
         toggleButton.addEventListener('click', () => {
-            isToggleActive = !isToggleActive; // 状態を反転
-
-            if (isToggleActive) {
-                toggleButton.style.color = activeColor;
-                if (tooltip) tooltip.textContent = '元に戻す';
-            } else {
-                toggleButton.style.color = defaultColor;
-                if (tooltip) tooltip.textContent = '文字を拡大';
-            }
+            isToggleActive = !isToggleActive;
+            toggleButton.style.color = isToggleActive ? activeColor : defaultColor;
+            if (tooltip) tooltip.textContent = isToggleActive ? '元に戻す' : '文字を拡大';
         });
     };
 
-    /**
-     * 文字サイズ変更機能を初期化する（アイコンの見た目とは完全に分離）
-     */
     const initializeFontSizeController = () => {
         const toggleButton = document.getElementById('font-size-toggle');
         if (!toggleButton) return;
-
         const FONT_SIZE_KEY = 'avantlit-font-size';
         const LARGE_CLASS = 'font-large';
-
-        // UI（本文のクラス）を更新する関数
-        const updateFontSize = (isLarge) => {
-            document.body.classList.toggle(LARGE_CLASS, isLarge);
-        };
-
-        // ページ読み込み時にlocalStorageから設定を復元
+        const updateFontSize = (isLarge) => document.body.classList.toggle(LARGE_CLASS, isLarge);
         try {
-            const currentSetting = localStorage.getItem(FONT_SIZE_KEY);
-            updateFontSize(currentSetting === 'large');
-        } catch (e) {
-            console.error('Failed to access localStorage:', e);
-        }
-
-        // ボタンクリック時の処理
+            updateFontSize(localStorage.getItem(FONT_SIZE_KEY) === 'large');
+        } catch (e) { console.error('Failed to access localStorage:', e); }
         toggleButton.addEventListener('click', () => {
-            const isCurrentlyLarge = document.body.classList.contains(LARGE_CLASS);
-            const newIsLarge = !isCurrentlyLarge;
-
+            const newIsLarge = !document.body.classList.contains(LARGE_CLASS);
             updateFontSize(newIsLarge);
-
-            // localStorageに設定を保存
             try {
-                if (newIsLarge) {
-                    localStorage.setItem(FONT_SIZE_KEY, 'large');
-                } else {
-                    localStorage.removeItem(FONT_SIZE_KEY);
-                }
-            } catch (e) {
-                console.error('Failed to access localStorage:', e);
-            }
+                if (newIsLarge) localStorage.setItem(FONT_SIZE_KEY, 'large');
+                else localStorage.removeItem(FONT_SIZE_KEY);
+            } catch (e) { console.error('Failed to access localStorage:', e); }
         });
     };
     
-    /**
-     * 購入リンクのインタラクションをセットアップする関数
-     */
     const setupBookstoreLinks = () => {
         const backdrop = document.getElementById('bottom-sheet-backdrop');
         const sheet = document.getElementById('bottom-sheet');
-
         if (!backdrop || !sheet) return;
 
         document.querySelectorAll('.book-list .book-item').forEach(item => {
             const title = item.querySelector('.book-title');
             if (!title) return;
-
             title.addEventListener('click', (e) => {
-                if (window.innerWidth > 768) return; // PCでは何もしない
-
+                if (window.innerWidth > 768) return;
                 e.preventDefault();
                 e.stopPropagation();
-
                 const links = item.querySelectorAll('.store-link');
-                const bookTitle = title.textContent;
-
                 let linksHTML = '';
-                links.forEach(link => {
-                    linksHTML += link.outerHTML;
-                });
-
+                links.forEach(link => { linksHTML += link.outerHTML; });
                 sheet.innerHTML = `
                     <div class="bottom-sheet-header">
-                        <span class="bottom-sheet-title">${bookTitle}</span>
+                        <span class="bottom-sheet-title">${title.textContent}</span>
                         <button id="bottom-sheet-close">&times;</button>
                     </div>
-                    <div class="bottom-sheet-content">
-                        ${linksHTML}
-                    </div>
+                    <div class="bottom-sheet-content">${linksHTML}</div>
                 `;
-
                 backdrop.classList.add('open');
                 sheet.classList.add('open');
-
                 document.getElementById('bottom-sheet-close').addEventListener('click', closeSheet);
             });
         });
-
         const closeSheet = () => {
             backdrop.classList.remove('open');
             sheet.classList.remove('open');
         };
-
         backdrop.addEventListener('click', closeSheet);
     };
 
-    /**
-     * ページの初期化処理を実行するエントリーポイント
-     */
     const bootstrap = () => {
         initializePage();
-
-        // ページのちらつき防止クラスを削除
         document.body.classList.remove('is-loading');
-
-        // 少し遅延させてから表示アニメーションを開始
         setTimeout(() => {
-            document.querySelectorAll('.content-wrapper, .hero').forEach(el => {
-                el.classList.add('is-visible');
-            });
-        }, 50); // 50msの遅延で描画の安定性を確保
+            document.querySelectorAll('.content-wrapper, .hero').forEach(el => el.classList.add('is-visible'));
+        }, 50);
     };
 
     bootstrap();
 
-    // Page Transition: Handle internal link clicks
     document.querySelectorAll('a').forEach(link => {
         const href = link.getAttribute('href');
-        // Skip if it's not a valid, navigable link
-        if (!href) {
-            return;
-        }
+        if (!href) return;
         const isExternal = (link.hostname !== window.location.hostname) && href.startsWith('http');
         const isAnchor = href.includes('#');
         const isNewTab = link.getAttribute('target') === '_blank';
-
-            const isDropdownToggle = link.classList.contains('dropdown-toggle');
+        const isDropdownToggle = link.classList.contains('dropdown-toggle');
         
-            if (!isExternal && !isNewTab && !isDropdownToggle && !isAnchor) { // isAnchorがtrueの場合はこのイベントリスナーをスキップ
-                link.addEventListener('click', e => {
-                    e.preventDefault();
-                    // Start fade-out animation for current page
-                    document.body.classList.add('is-leaving');
-                    // Wait for animation to finish, then navigate
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 400); // Must match body's CSS transition duration
+        if (!isExternal && !isNewTab && !isDropdownToggle && !isAnchor) {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                document.body.classList.add('is-leaving');
+                setTimeout(() => { window.location.href = href; }, 400);
+            });
+        }
+    });
+});
+
+// ========================================== 
+// 問題報告フォームのJavaScript
+// ========================================== 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const reportIssueBtn = document.getElementById('reportIssueBtn');
+    const issueReportModal = document.getElementById('issueReportModal');
+    const closeIssueModal = document.getElementById('closeIssueModal');
+    const issueReportForm = document.getElementById('issueReportForm');
+    const selectedTextarea = document.getElementById('selectedText');
+    const pageUrlInput = document.getElementById('pageUrl');
+    const formMessage = document.getElementById('formMessage');
+
+    // モーダルを開く関数
+    const openModal = () => {
+        issueReportModal.classList.add('active');
+        document.body.classList.add('no-scroll'); // 背景のスクロールを禁止
+        pageUrlInput.value = window.location.href; // 現在のURLをセット
+
+        // 選択中のテキストがあればフォームにセット
+        const selection = window.getSelection().toString().trim();
+        if (selection) {
+            selectedTextarea.value = selection;
+        } else {
+            selectedTextarea.value = '（テキスト選択なし）';
+        }
+    };
+
+    // モーダルを閉じる関数
+    const closeModal = () => {
+        issueReportModal.classList.remove('active');
+        document.body.classList.remove('no-scroll'); // 背景のスクロールを許可
+        issueReportForm.reset(); // フォームをリセット
+        formMessage.style.display = 'none'; // メッセージを非表示に
+    };
+
+    // ボタンクリックでモーダルを開く
+    if (reportIssueBtn) {
+        reportIssueBtn.addEventListener('click', openModal);
+    }
+
+    // 閉じるボタンでモーダルを閉じる
+    if (closeIssueModal) {
+        closeIssueModal.addEventListener('click', closeModal);
+    }
+
+    // モーダルの外側をクリックで閉じる
+    if (issueReportModal) {
+        issueReportModal.addEventListener('click', (e) => {
+            if (e.target === issueReportModal) {
+                closeModal();
+            }
+        });
+    }
+
+    // フォーム送信処理
+    if (issueReportForm) {
+        issueReportForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formMessage.style.display = 'none'; // メッセージをリセット
+
+            const formData = new FormData(issueReportForm);
+            const data = {
+                selectedText: formData.get('selectedText'),
+                correctionDetails: formData.get('correctionDetails'),
+                userName: formData.get('userName'),
+                pageUrl: formData.get('pageUrl'),
+            };
+
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbxnLIUYN-XaatN_YcNAzHwYO6HPGqdFhjMJS2joS-sOL2Zx6QLyguWaGSGeo7AQT5_zUg/exec', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
                 });
-            }    });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    formMessage.textContent = 'ご報告ありがとうございます！GitHub Issueが正常に作成されました。';
+                    formMessage.className = 'form-message success';
+                    issueReportForm.reset();
+                } else {
+                    formMessage.textContent = `送信に失敗しました: ${result.message || '不明なエラー'}`;
+                    formMessage.className = 'form-message error';
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                formMessage.textContent = '送信中にエラーが発生しました。ネットワーク接続をご確認ください。';
+                formMessage.className = 'form-message error';
+            }
+            formMessage.style.display = 'block';
+        });
+    }
 });
