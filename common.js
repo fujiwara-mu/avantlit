@@ -42,16 +42,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.stopPropagation();
                 const isVisible = document.body.classList.contains('menu-l1-visible') || document.body.classList.contains('menu-l2-visible');
                 const icon = menuToggle.querySelector('i');
+                const text = menuToggle.querySelector('.menu-toggle-text');
+
                 if (isVisible) {
                     updateMenuState(null);
                     menuToggle.classList.remove('active');
                     icon.classList.remove('fa-times');
                     icon.classList.add('fa-compass');
+                    if (text) text.textContent = 'メニュー';
                 } else {
                     updateMenuState('menu-l1-visible');
                     menuToggle.classList.add('active');
                     icon.classList.remove('fa-compass');
                     icon.classList.add('fa-times');
+                    if (text) text.textContent = '閉じる';
                 }
             });
         }
@@ -153,7 +157,328 @@ document.addEventListener('DOMContentLoaded', () => {
         setupFontSizeToggle(); // アイコンの色変更機能を呼び出し
         initializeFontSizeController(); // 文字サイズ変更機能を呼び出し
         initializeManualSmoothScroll(); // 手動スムーズスクロール機能を初期化
+        initializeSearch(); // 検索機能を初期化
+        highlightSearchTerm(); // 検索キーワードのハイライト処理を呼び出し
+        scrollToAnchorOnLoad(); // ★ 新しく追加：アンカーへのスクロール処理を呼び出し
     };
+
+    /**
+     * URLパラメータから検索キーワードを取得し、ページ内の該当箇所をハイライトする
+     */
+    const highlightSearchTerm = () => {
+        const params = new URLSearchParams(window.location.search);
+        const term = params.get('highlight');
+        if (!term) return;
+
+        const contentWrapper = document.querySelector('.content-wrapper');
+        if (!contentWrapper) return;
+
+        const regex = new RegExp(term, 'gi');
+        
+        // TreeWalkerを使って安全にテキストノードを探索
+        const walker = document.createTreeWalker(
+            contentWrapper,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        let node;
+        const nodesToReplace = [];
+        while (node = walker.nextNode()) {
+            // スクリプトやスタイルタグの中は無視
+            if (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE') {
+                continue;
+            }
+            if (regex.test(node.nodeValue)) {
+                nodesToReplace.push(node);
+            }
+        }
+
+        // マッチしたノードを<mark>タグを含むDOMフラグメントに置換
+        nodesToReplace.forEach(node => {
+            const parent = node.parentNode;
+            if (!parent) return;
+
+            const fragment = document.createDocumentFragment();
+            const parts = node.nodeValue.split(regex);
+            const matches = node.nodeValue.match(regex);
+
+            parts.forEach((part, index) => {
+                if (part) {
+                    fragment.appendChild(document.createTextNode(part));
+                }
+                if (matches && index < matches.length) {
+                    const mark = document.createElement('mark');
+                    mark.textContent = matches[index];
+                    fragment.appendChild(mark);
+                }
+            });
+            parent.replaceChild(fragment, node);
+        });
+    };
+
+    /**
+     * ページ読み込み時にURLのアンカー（ハッシュ）へスクロールする
+     */
+    const scrollToAnchorOnLoad = () => {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        // highlight処理によるDOM変更を待つために少し遅延させる
+        setTimeout(() => {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                const header = document.querySelector('.navbar');
+                const headerHeight = header ? header.offsetHeight : 0;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 10; // 10pxの追加マージン
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }, 100); // 100msの遅延でDOMの安定を待つ
+    };
+
+    /**
+     * 検索機能を初期化する
+     */
+    const initializeSearch = () => {
+        // 検索対象のページリスト
+        const pagesToIndex = [
+            'index.html',
+            'part1.html',
+            'part2.html',
+            'part3.html',
+            'part4.html',
+            'part5.html',
+            'part6.html',
+            'chronology.html',
+            'glossary.html',
+            'references.html'
+        ];
+
+        let searchIndex = [];
+        let isIndexReady = false;
+
+        // 検索インデックスを非同期で作成
+        const createSearchIndex = async () => {
+            try {
+                const fetchPromises = pagesToIndex.map(async (url) => {
+                    const response = await fetch(url);
+                    if (!response.ok) return [];
+                    const html = await response.text();
+                    const doc = new DOMParser().parseFromString(html, 'text/html');
+                    const contentWrapper = doc.querySelector('.content-wrapper');
+                    if (!contentWrapper) return [];
+
+                    const pageTitle = (doc.querySelector('title')?.textContent || '')
+                        .replace(/\| 前衛小説ガイドブック/g, '').replace(/前衛小説ガイドブック \|/g, '').trim();
+                    
+                    const sections = [];
+                    const headings = contentWrapper.querySelectorAll('h2, h3');
+
+                    headings.forEach((heading, index) => {
+                        const id = heading.id;
+                        if (!id) return; // idがない見出しはスキップ
+
+                        let content = ''; // 空の文字列から始める
+                        let nextElement = heading.nextElementSibling;
+
+                        while (nextElement && !nextElement.matches('h2, h3')) {
+                            content += ' ' + nextElement.textContent.trim();
+                            nextElement = nextElement.nextElementSibling;
+                        }
+
+                        // サブタイトル（<small>タグ）を除外したタイトルを取得
+                        const titleElement = heading.cloneNode(true);
+                        const smallTag = titleElement.querySelector('small');
+                        if (smallTag) {
+                            smallTag.remove();
+                        }
+                        const cleanTitle = titleElement.textContent.trim();
+
+                        sections.push({
+                            url: `${url}#${id}`,
+                            title: cleanTitle, // サブタイトルを除外したタイトルを使用
+                            content: content.trim(),
+                            tag: heading.tagName.toLowerCase()
+                        });
+                    });
+                    
+                    // ページ全体のコンテンツもインデックスに追加（見出しがないページや、見出し前のコンテンツ用）
+                    // ただし、タイトルはページタイトルのみとする
+                    sections.push({
+                        url: url,
+                        title: pageTitle,
+                        content: contentWrapper.textContent.trim(),
+                        tag: 'page' // ページ全体を示すタグ
+                    });
+
+                    return sections;
+                });
+
+                const results = await Promise.all(fetchPromises);
+                searchIndex = results.flat();
+                isIndexReady = true;
+            } catch (error) {
+                console.error('Failed to create search index:', error);
+            }
+        };
+
+        // 検索を実行して結果を返す
+        const performSearch = (query) => {
+            if (!isIndexReady || !query) {
+                return [];
+            }
+
+            const lowerCaseQuery = query.toLowerCase();
+            const queryRegex = new RegExp(query, 'gi');
+            const addedUrls = new Set();
+
+            const executeSearch = (sections) => {
+                const results = [];
+                sections.forEach(section => {
+                    if (addedUrls.has(section.url)) return;
+
+                    const titleIndex = section.title.toLowerCase().indexOf(lowerCaseQuery);
+                    const contentIndex = section.content.toLowerCase().indexOf(lowerCaseQuery);
+
+                    if (titleIndex > -1 || contentIndex > -1) {
+                        let snippet = '';
+                        const snippetLength = 100;
+                        let bestIndex = contentIndex > -1 ? contentIndex : section.content.toLowerCase().indexOf(section.title.toLowerCase());
+                        if (contentIndex > -1) { bestIndex = contentIndex; }
+                        
+                        const start = Math.max(0, bestIndex - snippetLength / 2);
+                        snippet = section.content.substring(start, start + snippetLength);
+
+                        const highlightedSnippet = snippet.replace(queryRegex, (match) => `<em>${match}</em>`);
+                        const highlightedTitle = section.title.replace(queryRegex, (match) => `<em>${match}</em>`);
+
+                        // URLにハイライト用の検索クエリを追加
+                        let finalUrl = section.url;
+                        const highlightParam = `?highlight=${encodeURIComponent(query)}`;
+                        if (finalUrl.includes('#')) {
+                            finalUrl = finalUrl.replace('#', `${highlightParam}#`);
+                        } else {
+                            finalUrl += highlightParam;
+                        }
+
+                        results.push({
+                            url: finalUrl,
+                            title: highlightedTitle,
+                            snippet: `...${highlightedSnippet}...`
+                        });
+                        addedUrls.add(section.url);
+                    }
+                });
+                return results;
+            };
+
+            const priorityGroup = searchIndex.filter(s => s.url.includes('part3.html') && s.tag === 'h2');
+            const otherGroup = searchIndex.filter(s => !(s.url.includes('part3.html') && s.tag === 'h2'));
+
+            const priorityResults = executeSearch(priorityGroup);
+            const otherResults = executeSearch(otherGroup);
+
+            return [...priorityResults, ...otherResults];
+        };
+
+        // 検索結果をUIにレンダリング
+        const renderResults = (results, resultContainer) => {
+            const ul = resultContainer.querySelector('ul');
+            ul.innerHTML = '';
+
+            if (results.length === 0) {
+                ul.innerHTML = '<li class="no-results">検索結果が見つかりませんでした。</li>';
+                return;
+            }
+
+            results.slice(0, 10).forEach(result => { // 最大10件まで表示
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <a href="${result.url}">
+                        <div class="result-title">${result.title}</div>
+                        <div class="result-snippet">${result.snippet}</div>
+                    </a>
+                `;
+                ul.appendChild(li);
+            });
+        };
+
+        // --- UI Element Hooks ---
+        const searchContainer = document.querySelector('.search-container');
+        const searchIconBtn = document.getElementById('search-icon-btn');
+        const searchInput = document.getElementById('search-input');
+        const searchCloseBtn = document.getElementById('search-close-btn');
+        const searchResultsDropdown = document.getElementById('search-results-dropdown');
+        
+        const mobileSearchIconBtn = document.getElementById('mobile-search-icon-btn'); // モバイル専用検索アイコン
+        const mobileSearchOverlay = document.getElementById('mobile-search-overlay');
+        const mobileSearchInput = document.getElementById('mobile-search-input');
+        const mobileSearchCancelBtn = document.getElementById('mobile-search-cancel-btn');
+        const mobileSearchResults = document.querySelector('.mobile-search-results');
+
+        // --- Event Listeners ---
+        if (searchIconBtn) {
+            searchIconBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                searchContainer.classList.toggle('active');
+                if (searchContainer.classList.contains('active')) {
+                    searchInput.focus();
+                }
+            });
+        }
+        
+        if(mobileSearchIconBtn) {
+            mobileSearchIconBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.body.classList.add('mobile-search-active');
+                mobileSearchInput.focus();
+            });
+        }
+
+        if (searchCloseBtn) {
+            searchCloseBtn.addEventListener('click', () => {
+                searchContainer.classList.remove('active');
+                searchInput.value = '';
+                renderResults([], searchResultsDropdown);
+            });
+        }
+
+        if (mobileSearchCancelBtn) {
+            mobileSearchCancelBtn.addEventListener('click', () => {
+                document.body.classList.remove('mobile-search-active');
+                mobileSearchInput.value = '';
+                renderResults([], mobileSearchResults);
+            });
+        }
+
+        const handleSearchInput = (query, container) => {
+            const results = performSearch(query);
+            renderResults(results, container);
+        };
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => handleSearchInput(searchInput.value, searchResultsDropdown));
+        }
+
+        if (mobileSearchInput) {
+            mobileSearchInput.addEventListener('input', () => handleSearchInput(mobileSearchInput.value, mobileSearchResults));
+        }
+
+        document.addEventListener('click', (e) => {
+            if (searchContainer && !searchContainer.contains(e.target)) {
+                searchContainer.classList.remove('active');
+            }
+        });
+
+        createSearchIndex();
+    };
+
 
     /**
      * 手動でのスムーズスクロール機能を初期化する
@@ -320,6 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const bootstrap = () => {
         initializePage();
+        initializeCorrectionFeature(); // ★ 新しく追加：修正提案機能を初期化
 
         // ページのちらつき防止クラスを削除
         document.body.classList.remove('is-loading');
@@ -359,3 +685,119 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }    });
 });
+
+    /**
+     * 修正提案機能を初期化する
+     */
+    const initializeCorrectionFeature = () => {
+        const suggestCorrectionBtn = document.getElementById('suggestCorrectionBtn');
+        const correctionModal = document.getElementById('correctionModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const selectedTextarea = document.getElementById('selectedText');
+        const correctionDetailsTextarea = document.getElementById('correctionDetails');
+        const userNameInput = document.getElementById('userName');
+        const submitCorrectionBtn = document.getElementById('submitCorrectionBtn');
+        const modalErrorMessage = document.getElementById('modalErrorMessage');
+
+        let selectedContent = ''; // ユーザーが選択したテキストを保持
+
+        // テキスト選択を監視し、ボタンの表示/非表示を切り替える
+        document.addEventListener('selectionchange', () => {
+            const selection = window.getSelection();
+            const contentWrapper = document.querySelector('.content-wrapper');
+
+            // 選択範囲がcontent-wrapper内にあるか、かつ空でないか
+            if (selection && selection.rangeCount > 0 && !selection.isCollapsed && contentWrapper && contentWrapper.contains(selection.anchorNode)) {
+                selectedContent = selection.toString().trim();
+                if (selectedContent.length > 0) {
+                    suggestCorrectionBtn.classList.add('show');
+                } else {
+                    suggestCorrectionBtn.classList.remove('show');
+                }心の
+            } else {
+                suggestCorrectionBtn.classList.remove('show');
+            }
+        });
+
+        // 修正提案ボタンクリックでモーダルを開く
+        if (suggestCorrectionBtn) {
+            suggestCorrectionBtn.addEventListener('click', () => {
+                selectedTextarea.value = selectedContent;
+                correctionDetailsTextarea.value = ''; // リセット
+                userNameInput.value = ''; // リセット
+                modalErrorMessage.textContent = ''; // エラーメッセージをクリア
+                modalErrorMessage.classList.remove('show');
+                correctionModal.classList.add('open');
+                document.body.classList.add('modal-open'); // 背景スクロール禁止
+                suggestCorrectionBtn.classList.remove('show'); // ボタンを非表示に
+            });
+        }
+
+        // モーダルを閉じる
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                correctionModal.classList.remove('open');
+                document.body.classList.remove('modal-open');
+            });
+        }
+
+        // モーダル外クリックで閉じる
+        if (correctionModal) {
+            correctionModal.addEventListener('click', (e) => {
+                if (e.target === correctionModal) {
+                    correctionModal.classList.remove('open');
+                    document.body.classList.remove('modal-open');
+                }
+            });
+        }
+
+        // 提案を送信
+        if (submitCorrectionBtn) {
+            submitCorrectionBtn.addEventListener('click', async () => {
+                const details = correctionDetailsTextarea.value.trim();
+                if (!details) {
+                    modalErrorMessage.textContent = '具体的な修正案・指摘内容は必須です。';
+                    modalErrorMessage.classList.add('show');
+                    return;
+                }
+                modalErrorMessage.classList.remove('show');
+                submitCorrectionBtn.disabled = true; // 二重送信防止
+                submitCorrectionBtn.textContent = '送信中...';
+
+                const payload = {
+                    selectedText: selectedTextarea.value,
+                    correctionDetails: details,
+                    userName: userNameInput.value || '匿名ユーザー',
+                    pageUrl: window.location.href
+                };
+
+                try {
+                    // Netlify Functionのエンドポイント
+                    const response = await fetch('/.netlify/functions/submit-issue', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+
+                    if (response.ok) {
+                        alert('修正提案を送信しました。ご協力ありがとうございます！');
+                        correctionModal.classList.remove('open');
+                        document.body.classList.remove('modal-open');
+                    } else {
+                        const errorData = await response.json();
+                        modalErrorMessage.textContent = `送信に失敗しました: ${errorData.message || response.statusText}`;
+                        modalErrorMessage.classList.add('show');
+                    }
+                } catch (error) {
+                    console.error('Error submitting correction:', error);
+                    modalErrorMessage.textContent = 'ネットワークエラーが発生しました。もう一度お試しください。';
+                    modalErrorMessage.classList.add('show');
+                } finally {
+                    submitCorrectionBtn.disabled = false;
+                    submitCorrectionBtn.textContent = '提案を送信';
+                }
+            });
+        }
+    };
