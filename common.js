@@ -61,8 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (navLink) {
                 navLink.addEventListener('click', (e) => {
                     if (window.innerWidth > 768) {
-                        e.preventDefault();
-                        // PC版ではhoverでドロップダウンが表示されるため、clickでの表示は不要
+                        // PC表示ではデフォルトのリンク遷移を許可するため、何もせずにreturnする
                         return;
                     }
                     e.preventDefault();
