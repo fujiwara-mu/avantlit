@@ -1353,6 +1353,18 @@ body.is-leaving .hero {
         visibility: visible;
     }
 
+    /* Hide floating buttons when mobile menu is active */
+    body.menu-l1-visible .scroll-top,
+    body.menu-l1-visible .report-issue-btn,
+    body.menu-l2-visible .scroll-top,
+    body.menu-l2-visible .report-issue-btn {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        transform: translateY(20px);
+    }
+
     .drilldown-header {
         display: flex; /* Use flexbox for easier alignment */
         align-items: center;
@@ -1407,6 +1419,10 @@ body.is-leaving .hero {
     .drilldown-content {
         height: calc(100% - 70px);
         overflow-y: auto;
+    }
+
+    .drilldown-content.no-scroll {
+        overflow-y: hidden;
     }
 
     .drilldown-content ul {

@@ -74,12 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                     }
 
+                    const isMastersMenu = title === '巨匠';
+                    const contentScrollClass = isMastersMenu ? '' : 'no-scroll';
+
                     drillDownPanel.innerHTML = `
                         <div class="drilldown-header">
                             <button class="drilldown-back"><i class="fas fa-arrow-left"></i> 戻る</button>
                             <a href="${titleLink}" class="drilldown-title">${iconHTML} ${title}</a>
                         </div>
-                        <div class="drilldown-content"><ul>${listItems}</ul></div>
+                        <div class="drilldown-content ${contentScrollClass}"><ul>${listItems}</ul></div>
                     `;
                     updateMenuState('menu-l2-visible');
                     
