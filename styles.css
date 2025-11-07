@@ -3112,8 +3112,15 @@ overflow-y: scroll;
     .report-issue-btn {
         bottom: 1rem;
         right: 4.5rem; /* スクロールトップボタンとの重複を避ける */
-        width: 45px;
-        height: 45px;
-        font-size: 1.3rem;
+        width: auto; /* 幅を自動調整 */
+        height: auto; /* 高さを自動調整 */
+        padding: 0.6rem 1rem; /* パディングを調整 */
+        font-size: 0.9rem; /* フォントサイズを調整 */
+        white-space: nowrap; /* テキストの折り返しを許可 */
+        gap: 0.3rem; /* アイコンとテキストの間隔を調整 */
+    }
+
+    .report-issue-btn span {
+        display: inline; /* テキストをインライン表示 */
     }
 }

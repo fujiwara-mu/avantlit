@@ -49,7 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const navLink = item.querySelector('.nav-link.dropdown-toggle');
             if (navLink) {
                 navLink.addEventListener('click', (e) => {
-                    if (window.innerWidth > 768) return;
+                    if (window.innerWidth > 768) {
+                        e.preventDefault();
+                        // PC版ではhoverでドロップダウンが表示されるため、clickでの表示は不要
+                        return;
+                    }
                     e.preventDefault();
                     e.stopPropagation();
 
