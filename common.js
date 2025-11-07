@@ -1,4 +1,4 @@
-// 前衛小説報告書 - 共通JavaScript (v17.1 - Final Stable)
+// 前衛小説報告書 - 共通JavaScript (v17.2 - Fix)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Scroll Management ---
@@ -53,12 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.preventDefault();
                     e.stopPropagation();
 
-                    // クリックされたリンクの隣の要素(.dropdown-menu)を直接取得
                     const submenu = navLink.nextElementSibling;
-
-                    // 対応するドロップダウンがなければ何もしない
                     if (!submenu || !submenu.classList.contains('dropdown-menu')) {
-                        window.location.href = navLink.href; // 通常のリンクとして遷移
+                        window.location.href = navLink.href;
                         return;
                     }
 
@@ -67,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const iconHTML = navLink.querySelector('i')?.outerHTML || '';
                     
                     let listItems = '';
-                    // submenuが存在し、それが.dropdown-menuであることを確認
                     if (submenu && submenu.classList.contains('dropdown-menu')) {
                         submenu.querySelectorAll('a.dropdown-item').forEach(link => {
                             listItems += `<li><a href="${link.href}" class="drilldown-item">${link.innerHTML}</a></li>`;
@@ -88,14 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Close menu on any main content click
         document.querySelector('main').addEventListener('click', () => {
             if (document.body.classList.contains('menu-l1-visible') || document.body.classList.contains('menu-l2-visible')) {
                 updateMenuState(null);
             }
         });
 
-        // Close menu on anchor link click inside drilldown
         drillDownPanel.addEventListener('click', (e) => {
             if (e.target.closest('a[href*="#"]')) {
                 updateMenuState(null);
@@ -442,13 +436,119 @@ document.addEventListener('DOMContentLoaded', () => {
         backdrop.addEventListener('click', closeSheet);
     };
 
+    // --- 問題報告フォームのロジック ---
+    const reportIssueBtn = document.getElementById('reportIssueBtn');
+    const issueReportModal = document.getElementById('issueReportModal');
+    const closeIssueModal = document.getElementById('closeIssueModal');
+    const issueReportForm = document.getElementById('issueReportForm');
+    const selectedTextarea = document.getElementById('selectedText');
+    const pageUrlInput = document.getElementById('pageUrl');
+    const formMessage = document.getElementById('formMessage');
+
+    const initializeReportIssueButton = () => {
+        if (!reportIssueBtn) return;
+        reportIssueBtn.innerHTML = '<i class="fas fa-exclamation-triangle no-margin"></i> <span>文章の問題を報告</span><span class="tooltip">お気づきの点があれば、ここからお知らせください</span>';
+        const HAS_VISITED_KEY = 'avantlit-first-visit';
+        if (!localStorage.getItem(HAS_VISITED_KEY)) {
+            reportIssueBtn.classList.add('guide-active');
+            setTimeout(() => {
+                reportIssueBtn.classList.remove('guide-active');
+                localStorage.setItem(HAS_VISITED_KEY, 'true');
+            }, 8000);
+        }
+    };
+
+    const openModal = () => {
+        if (!issueReportModal) return;
+        issueReportModal.classList.add('active');
+        document.body.classList.add('no-scroll');
+        pageUrlInput.value = window.location.href;
+        const selection = window.getSelection().toString().trim();
+        selectedTextarea.value = selection ? selection : '（テキスト選択なし）';
+    };
+
+    const closeModal = () => {
+        if (!issueReportModal) return;
+        issueReportModal.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        issueReportForm.reset();
+        formMessage.style.display = 'none';
+    };
+
+    if (reportIssueBtn) {
+        reportIssueBtn.addEventListener('click', openModal);
+    }
+    if (closeIssueModal) {
+        closeIssueModal.addEventListener('click', closeModal);
+    }
+    if (issueReportModal) {
+        issueReportModal.addEventListener('click', (e) => {
+            if (e.target === issueReportModal) {
+                closeModal();
+            }
+        });
+    }
+
+    if (issueReportForm) {
+        issueReportForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const formMessage = e.target.querySelector('.form-message');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+            formMessage.style.display = 'none';
+
+            const data = {
+                selectedText: document.getElementById('selectedText').value,
+                correctionDetails: document.getElementById('correctionDetails').value,
+                userName: document.getElementById('userName').value || '匿名',
+                pageUrl: window.location.href,
+            };
+
+            try {
+                const response = await fetch('https://eocq6rlyhmbt2bq.m.pipedream.net', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    formMessage.textContent = '修正提案が正常に送信されました。ご協力ありがとうございます！';
+                    formMessage.className = 'form-message success';
+                    issueReportForm.reset();
+                    document.getElementById('selectedText').value = '';
+                    setTimeout(closeModal, 3000);
+                } else {
+                    try {
+                        const errorData = await response.json();
+                        formMessage.textContent = `エラーが発生しました: ${errorData.message || 'サーバーからの応答が不正です。'}`;
+                    } catch (e) {
+                        formMessage.textContent = `サーバーエラーが発生しました (ステータス: ${response.status})。`;
+                    }
+                    formMessage.className = 'form-message error';
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                formMessage.textContent = '送信中にエラーが発生しました。ネットワーク接続をご確認ください。';
+                formMessage.className = 'form-message error';
+            } finally {
+                formMessage.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 送信';
+            }
+        });
+    }
+
+    // --- ページの初期化 ---
     const bootstrap = () => {
         initializePage();
         document.body.classList.remove('is-loading');
         setTimeout(() => {
             document.querySelectorAll('.content-wrapper, .hero').forEach(el => el.classList.add('is-visible'));
         }, 50);
-        initializeReportIssueButton(); // 新しい関数を呼び出す
+        initializeReportIssueButton();
     };
 
     bootstrap();
@@ -469,136 +569,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-});
-
-// ========================================== 
-// 問題報告フォームのJavaScript
-// ========================================== 
-
-document.addEventListener('DOMContentLoaded', () => {
-    const reportIssueBtn = document.getElementById('reportIssueBtn');
-    const issueReportModal = document.getElementById('issueReportModal');
-    const closeIssueModal = document.getElementById('closeIssueModal');
-    const issueReportForm = document.getElementById('issueReportForm');
-    const selectedTextarea = document.getElementById('selectedText');
-    const pageUrlInput = document.getElementById('pageUrl');
-    const formMessage = document.getElementById('formMessage');
-
-    // 問題報告ボタンの初期化と初回訪問時のガイド表示
-    const initializeReportIssueButton = () => {
-        if (!reportIssueBtn) return;
-
-        // ボタンにテキストラベルを追加
-        reportIssueBtn.innerHTML = '<i class="fas fa-exclamation-triangle no-margin"></i> <span>文章の問題を報告</span><span class="tooltip">お気づきの点があれば、ここからお知らせください</span>';
-
-        const HAS_VISITED_KEY = 'avantlit-first-visit';
-        if (!localStorage.getItem(HAS_VISITED_KEY)) {
-            // 初回訪問時のみガイドを表示
-            reportIssueBtn.classList.add('guide-active');
-            setTimeout(() => {
-                reportIssueBtn.classList.remove('guide-active');
-                localStorage.setItem(HAS_VISITED_KEY, 'true');
-            }, 8000); // 8秒後にガイドを非表示にする
-        }
-    };
-
-    // モーダルを開く関数
-    const openModal = () => {
-        issueReportModal.classList.add('active');
-        document.body.classList.add('no-scroll'); // 背景のスクロールを禁止
-        pageUrlInput.value = window.location.href; // 現在のURLをセット
-
-        // 選択中のテキストがあればフォームにセット
-        const selection = window.getSelection().toString().trim();
-        if (selection) {
-            selectedTextarea.value = selection;
-        } else {
-            selectedTextarea.value = '（テキスト選択なし）';
-        }
-    };
-
-    // モーダルを閉じる関数
-    const closeModal = () => {
-        issueReportModal.classList.remove('active');
-        document.body.classList.remove('no-scroll'); // 背景のスクロールを許可
-        issueReportForm.reset(); // フォームをリセット
-        formMessage.style.display = 'none'; // メッセージを非表示に
-    };
-
-    // ボタンクリックでモーダルを開く
-    if (reportIssueBtn) {
-        reportIssueBtn.addEventListener('click', openModal);
-    }
-
-    // 閉じるボタンでモーダルを閉じる
-    if (closeIssueModal) {
-        closeIssueModal.addEventListener('click', closeModal);
-    }
-
-    // モーダルの外側をクリックで閉じる
-    if (issueReportModal) {
-        issueReportModal.addEventListener('click', (e) => {
-            if (e.target === issueReportModal) {
-                closeModal();
-            }
-        });
-    }
-
-    // フォーム送信処理
-    if (issueReportForm) {
-            issueReportForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const submitBtn = e.target.querySelector('.submit-btn');
-                const formMessage = e.target.querySelector('.form-message');
-
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
-                formMessage.style.display = 'none';
-
-                const data = {
-                    selectedText: document.getElementById('selectedText').value,
-                    correctionDetails: document.getElementById('correctionDetails').value,
-                    userName: document.getElementById('userName').value || '匿名',
-                    pageUrl: window.location.href,
-                };
-
-                try {
-                const response = await fetch('https://eocq6rlyhmbt2bq.m.pipedream.net', {
-                    method: 'POST',
-                    mode: 'cors', // CORSモードを明示的に指定
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
-
-                    if (response.ok) { // ステータスコードが200-299の範囲なら成功とみなす
-                        formMessage.textContent = '修正提案が正常に送信されました。ご協力ありがとうございます！';
-                        formMessage.className = 'form-message success';
-                        issueReportForm.reset();
-                        document.getElementById('selectedText').value = ''; // 隠しフィールドもリセット
-                        setTimeout(() => {
-                            issueReportModal.classList.remove('active');
-                        }, 3000);
-                    } else {
-                        // エラーレスポンスがJSON形式の場合、そのメッセージを優先的に表示
-                        try {
-                            const errorData = await response.json();
-                            formMessage.textContent = `エラーが発生しました: ${errorData.message || 'サーバーからの応答が不正です。'}`;
-                        } catch (e) {
-                            formMessage.textContent = `サーバーエラーが発生しました (ステータス: ${response.status})。`;
-                        }
-                        formMessage.className = 'form-message error';
-                    }
-                } catch (error) {
-                    console.error('Error submitting form:', error);
-                    formMessage.textContent = '送信中にエラーが発生しました。ネットワーク接続をご確認ください。';
-                    formMessage.className = 'form-message error';
-                } finally {
-                    formMessage.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-check"></i> 送信';
-                }
-            });
-    }
 });
