@@ -1024,6 +1024,11 @@ tr:hover {
 
 }
 
+.scroll-top.near-bottom,
+.report-issue-btn.near-bottom {
+    bottom: 8rem; /* フッターの高さ分、上に移動 */
+}
+
 /* ========================================== 
 
    フッター
@@ -1260,9 +1265,10 @@ body.is-leaving .hero {
     }
 
     /* Disable body scroll when menu is active */
-    body.no-scroll {
-        overflow: hidden;
-    }
+html.no-scroll, body.no-scroll {
+    overflow: hidden;
+    height: 100%;
+}
 
     /* --- The Unified Explorer (Definitive Fix) --- */
 

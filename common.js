@@ -105,14 +105,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const scrollTop = document.getElementById('scrollTop');
         const progressBar = document.getElementById('progressBar');
+        const reportIssueBtn = document.getElementById('reportIssueBtn'); // ボタンを取得
+
         if (scrollTop && progressBar) {
             window.addEventListener('scroll', () => {
+                // ボタン表示/非表示
                 scrollTop.classList.toggle('show', window.pageYOffset > 300);
+
+                // プログレスバー更新
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
                 if (docHeight > 0) {
                     const progress = (window.pageYOffset / docHeight) * 100;
                     progressBar.style.width = progress + '%';
                 }
+
+                // フッター付近でのボタン位置調整
+                const nearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 150; // 150px手前から検知
+                if (scrollTop) scrollTop.classList.toggle('near-bottom', nearBottom);
+                if (reportIssueBtn) reportIssueBtn.classList.toggle('near-bottom', nearBottom);
             });
             scrollTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
         }
