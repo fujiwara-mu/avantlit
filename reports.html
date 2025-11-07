@@ -301,7 +301,12 @@
                 const pullRequests = await response.json();
                 
                 // マージされたPRのみをフィルタリング
-                const mergedPrs = pullRequests.filter(pr => pr.merged_at);
+                let mergedPrs = pullRequests.filter(pr => pr.merged_at);
+
+                // "ignore" ラベルを持つPRを除外
+                mergedPrs = mergedPrs.filter(pr => 
+                    !pr.labels.some(label => label.name === 'ignore')
+                );
 
                 if (mergedPrs.length === 0) {
                     reportsList.innerHTML = '<p style="text-align:center;">現在、承認された指摘はありません。</p>';
