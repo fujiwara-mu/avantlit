@@ -20,10 +20,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Menu State Machine ---
         function updateMenuState(state) {
-            document.body.classList.remove('menu-l1-visible', 'menu-l2-visible', 'no-scroll');
+            const html = document.documentElement;
+            const body = document.body;
+
+            // Remove all state classes first
+            body.classList.remove('menu-l1-visible', 'menu-l2-visible');
+            html.classList.remove('no-scroll');
+            body.classList.remove('no-scroll');
+
+            // Add new state classes if a state exists
             if (state) {
-                document.body.classList.add(state, 'no-scroll');
+                body.classList.add(state);
+                html.classList.add('no-scroll');
+                body.classList.add('no-scroll');
             }
+
             // Toggle button state
             const isVisible = !!state;
             const icon = menuToggle.querySelector('i');
