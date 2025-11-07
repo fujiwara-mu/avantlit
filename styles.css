@@ -1481,7 +1481,7 @@ html.no-scroll, body.no-scroll {
 
     /* --- Resetting other styles --- */
 
-    .container { max-width: 100%; margin: 0 auto; padding: 0 1rem; }
+    .container { max-width: 100%; margin: 0 auto; padding: 0 0.5rem; }
 
     .content-wrapper { padding: 1.5rem 1rem; border-radius: 0; box-shadow: none; width: 100%; }
 
