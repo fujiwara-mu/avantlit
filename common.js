@@ -448,6 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             document.querySelectorAll('.content-wrapper, .hero').forEach(el => el.classList.add('is-visible'));
         }, 50);
+        initializeReportIssueButton(); // 新しい関数を呼び出す
     };
 
     bootstrap();
@@ -482,6 +483,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedTextarea = document.getElementById('selectedText');
     const pageUrlInput = document.getElementById('pageUrl');
     const formMessage = document.getElementById('formMessage');
+
+    // 問題報告ボタンの初期化と初回訪問時のガイド表示
+    const initializeReportIssueButton = () => {
+        if (!reportIssueBtn) return;
+
+        // ボタンにテキストラベルを追加
+        reportIssueBtn.innerHTML = '<i class="fas fa-exclamation-triangle no-margin"></i> <span>文章の問題を報告</span><span class="tooltip">お気づきの点があれば、ここからお知らせください</span>';
+
+        const HAS_VISITED_KEY = 'avantlit-first-visit';
+        if (!localStorage.getItem(HAS_VISITED_KEY)) {
+            // 初回訪問時のみガイドを表示
+            reportIssueBtn.classList.add('guide-active');
+            setTimeout(() => {
+                reportIssueBtn.classList.remove('guide-active');
+                localStorage.setItem(HAS_VISITED_KEY, 'true');
+            }, 8000); // 8秒後にガイドを非表示にする
+        }
+    };
 
     // モーダルを開く関数
     const openModal = () => {

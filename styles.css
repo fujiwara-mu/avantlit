@@ -2877,19 +2877,22 @@ overflow-y: scroll;
     right: 6rem; /* スクロールトップボタンとの重複を避ける */
     background: var(--highlight);
     color: var(--white);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    /* widthとheightをautoにしてテキストが収まるように調整 */
+    width: auto;
+    height: auto;
+    padding: 0.75rem 1.2rem; /* テキストとアイコンのためのパディング */
+    border-radius: 50px; /* 角丸を大きくしてボタンらしい形に */
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center; /* アイコンを中央揃え */
-    font-size: 1.5rem;
+    justify-content: center; /* アイコンとテキストを中央揃え */
+    font-size: 1rem; /* テキストのフォントサイズ */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
     z-index: 1000;
     animation: shake-animation 1s 2s cubic-bezier(.36,.07,.19,.97) both;
+    gap: 0.5rem; /* アイコンとテキストの間隔 */
 }
 
 .report-issue-btn .no-margin {
@@ -2937,6 +2940,20 @@ overflow-y: scroll;
     background: var(--primary-color);
     transform: translateY(-3px);
 }
+
+/* 初回訪問時のガイド用ツールチップ */
+.report-issue-btn.guide-active .tooltip {
+    opacity: 1;
+    visibility: visible;
+    animation: pulse-tooltip 1.5s infinite; /* アニメーションを追加 */
+}
+
+@keyframes pulse-tooltip {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    50% { transform: translateX(-50%) scale(1.05); opacity: 0.9; }
+    100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
 
 .issue-report-modal {
     position: fixed;
