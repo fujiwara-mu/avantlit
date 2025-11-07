@@ -98,7 +98,7 @@
         }
     </style>
 </head>
-<body>
+<body id="page-reports">
     <!-- 進捗インジケーター -->
     <div class="progress-indicator">
         <div class="progress-bar" id="progressBar"></div>
@@ -284,84 +284,5 @@
     </footer>
 
     <script src="common.js?v=19"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const repoPath = 'fujiwara-mu/avantlit'; // あなたのリポジトリパス
-            const reportsList = document.getElementById('reports-list');
-            const loadingIndicator = document.getElementById('loading-indicator');
-            const errorMessage = document.getElementById('error-message');
-
-            try {
-                // GitHub APIを叩いて、マージ済みのPRを取得
-                const response = await fetch(`https://api.github.com/repos/${repoPath}/pulls?state=closed&sort=updated&direction=desc`);
-                
-                if (!response.ok) {
-                    throw new Error(`GitHub APIからの応答エラー: ${response.status}`);
-                }
-
-                const pullRequests = await response.json();
-                
-                // マージされたPRのみをフィルタリング
-                let mergedPrs = pullRequests.filter(pr => pr.merged_at);
-
-                // "ignore" ラベルを持つPRを除外
-                mergedPrs = mergedPrs.filter(pr => 
-                    !pr.labels.some(label => label.name === 'ignore')
-                );
-
-                if (mergedPrs.length === 0) {
-                    reportsList.innerHTML = '<p style="text-align:center;">現在、承認された指摘はありません。</p>';
-                    return;
-                }
-
-                // PRの本文から情報を抽出してHTMLを生成
-                mergedPrs.forEach(pr => {
-                    const body = pr.body;
-                    const prUrl = pr.html_url;
-                    const mergedDate = new Date(pr.merged_at).toLocaleDateString('ja-JP');
-
-                    // 正規表現を使って各セクションを抽出
-                    const nameMatch = body.match(/\*\*お名前:\*\*\s*([\s\S]*?)\n/);
-                    const problemMatch = body.match(/\*\*問題箇所:\*\*\s*```\n([\s\S]*?)\n```/);
-                    const suggestionMatch = body.match(/\*\*指摘:\*\*\s*```\n([\s\S]*?)\n```/);
-
-                    const name = nameMatch ? nameMatch[1].trim() : '取得失敗';
-                    const problem = problemMatch ? problemMatch[1].trim() : '取得失敗';
-                    const suggestion = suggestionMatch ? suggestionMatch[1].trim() : '取得失敗';
-
-                    const reportElement = document.createElement('div');
-                    reportElement.className = 'report-item';
-                    reportElement.innerHTML = `
-                        <div>
-                            <span class="report-header">お名前</span>
-                            <div class="report-content お名前">${name}</div>
-                        </div>
-                        <div style="margin-top: 1rem;">
-                            <span class="report-header">問題箇所</span>
-                            <div class="report-content 問題箇所">${problem}</div>
-                        </div>
-                        <div style="margin-top: 1rem;">
-                            <span class="report-header">指摘</span>
-                            <div class="report-content 指摘">${suggestion}</div>
-                        </div>
-                        <div class="report-meta">
-                            <span>承認日: ${mergedDate}</span>
-                            <a href="${prUrl}" target="_blank" rel="noopener noreferrer">
-                                詳細を見る <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    `;
-                    reportsList.appendChild(reportElement);
-                });
-
-            } catch (error) {
-                console.error('Error fetching reports:', error);
-                errorMessage.textContent = '一覧の読み込み中にエラーが発生しました。しばらくしてから再度お試しください。';
-                errorMessage.style.display = 'block';
-            } finally {
-                loadingIndicator.style.display = 'none';
-            }
-        });
-    </script>
 </body>
 </html>

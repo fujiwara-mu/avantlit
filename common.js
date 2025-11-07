@@ -569,6 +569,77 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- reports.html専用のロジック ---
+    const initializeReportsPage = async () => {
+        const repoPath = 'fujiwara-mu/avantlit';
+        const reportsList = document.getElementById('reports-list');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const errorMessage = document.getElementById('error-message');
+
+        if (!reportsList) return; // reports.html以外のページでは何もしない
+
+        try {
+            const response = await fetch(`https://api.github.com/repos/${repoPath}/pulls?state=closed&sort=updated&direction=desc`);
+            if (!response.ok) {
+                throw new Error(`GitHub APIからの応答エラー: ${response.status}`);
+            }
+            const pullRequests = await response.json();
+            
+            let mergedPrs = pullRequests.filter(pr => pr.merged_at);
+            mergedPrs = mergedPrs.filter(pr => !pr.labels.some(label => label.name === 'ignore'));
+
+            if (mergedPrs.length === 0) {
+                reportsList.innerHTML = '<p style="text-align:center;">現在、承認された指摘はありません。</p>';
+                return;
+            }
+
+            mergedPrs.forEach(pr => {
+                const body = pr.body;
+                const prUrl = pr.html_url;
+                const mergedDate = new Date(pr.merged_at).toLocaleDateString('ja-JP');
+
+                const nameMatch = body.match(/\*\*お名前:\*\*\s*([\s\S]*?)\n/);
+                const problemMatch = body.match(/\*\*問題箇所:\*\*\s*```\n([\s\S]*?)\n```/);
+                const suggestionMatch = body.match(/\*\*指摘:\*\*\s*```\n([\s\S]*?)\n```/);
+
+                const name = nameMatch ? nameMatch[1].trim() : '取得失敗';
+                const problem = problemMatch ? problemMatch[1].trim() : '取得失敗';
+                const suggestion = suggestionMatch ? suggestionMatch[1].trim() : '取得失敗';
+
+                const reportElement = document.createElement('div');
+                reportElement.className = 'report-item';
+                reportElement.innerHTML = `
+                    <div>
+                        <span class="report-header">お名前</span>
+                        <div class="report-content お名前">${name}</div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <span class="report-header">問題箇所</span>
+                        <div class="report-content 問題箇所">${problem}</div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <span class="report-header">指摘</span>
+                        <div class="report-content 指摘">${suggestion}</div>
+                    </div>
+                    <div class="report-meta">
+                        <span>承認日: ${mergedDate}</span>
+                        <a href="${prUrl}" target="_blank" rel="noopener noreferrer">
+                            詳細を見る <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                `;
+                reportsList.appendChild(reportElement);
+            });
+
+        } catch (error) {
+            console.error('Error fetching reports:', error);
+            errorMessage.textContent = '一覧の読み込み中にエラーが発生しました。しばらくしてから再度お試しください。';
+            errorMessage.style.display = 'block';
+        } finally {
+            if(loadingIndicator) loadingIndicator.style.display = 'none';
+        }
+    };
+
     // --- ページの初期化 ---
     const bootstrap = () => {
         initializePage();
@@ -577,6 +648,11 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.content-wrapper, .hero').forEach(el => el.classList.add('is-visible'));
         }, 50);
         initializeReportIssueButton();
+
+        // reports.htmlの場合のみ、専用の初期化処理を呼び出す
+        if (document.body.id === 'page-reports') {
+            initializeReportsPage();
+        }
     };
 
     bootstrap();
