@@ -414,7 +414,7 @@ p, h1, h2, h3, h4, h5, h6, li, dt, dd, a, span, button, input, textarea {
 }
 
 .hero h1 {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 10vw, 3.5rem);
     margin-bottom: 1rem;
     font-weight: 700;
     letter-spacing: 1px;
@@ -491,7 +491,7 @@ p, h1, h2, h3, h4, h5, h6, li, dt, dd, a, span, button, input, textarea {
 }
 
 .page-title {
-    font-size: 2.5rem; /* 第○部のフォントサイズを現在のページタイトルくらいに */
+    font-size: clamp(1.8rem, 7vw, 2.5rem); /* 第○部のフォントサイズを現在のページタイトルくらいに */
     color: var(--primary-color);
     margin-bottom: 1rem;
     padding-bottom: 1rem;
@@ -1225,10 +1225,10 @@ body.is-leaving .hero {
         }
 
     .hero h1 {
-        font-size: 2rem; /* モバイルでのフォントサイズを調整 */
-        white-space: nowrap; /* 強制的に改行させない */
-        overflow: hidden; /* はみ出した部分を隠す */
-        text-overflow: ellipsis; /* はみ出した場合に三点リーダーを表示 */
+        /* font-sizeはclamp()で対応済みのため削除 */
+        white-space: normal; /* 折り返しを許可 */
+        overflow: visible; /* はみ出し表示を許可 */
+        text-overflow: clip; /* 三点リーダーを無効化 */
     }
 
     .hero .subtitle { font-size: 1.2rem; }
