@@ -6,7 +6,8 @@
     <title>読者からのご指摘 | 前衛小説ガイドブック</title>
     <link rel="stylesheet" href="styles.css?v=19">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3e%3cpath%20fill='%232c3e50'%20d='M410.3%20231l11.3-11.3-33.9-33.9-62.1-62.1L291.7%2089.8l-11.3%2011.3-22.6%2022.6L58.6%20322.9c-10.4%2010.4-18%2023.3-22.2%2037.4L1%20480.7c-2.5%208.4-.2%2017.5%206.1%2023.7s15.3%208.5%2023.7%206.1l120.3-35.4c14.1-4.2%2027-11.8%2037.4-22.2L387.7%20253.7%20410.3%20231zM160%20399.4l-9.1%2022.7c-4%203.1-8.5%205.4-13.3%206.9L59.4%20452l23-78.1c1.4-4.9%203.8-9.4%206.9-13.3l22.7-9.1v32c0%208.8%207.2%2016%2016%2016h32zM362.7%2018.7L348.3%2033.2%20325.7%2055.8%20314.3%2067.1l33.9%2033.9%2062.1%2062.1%2033.9%2033.9%2011.3-11.3%2022.6-22.6L494.9%2052.6c11.3-11.3%2011.3-29.5%200-40.8L403.5%201.2c-11.3-11.3-29.5-11.3-40.8%200z'/%3e%3c/svg%3e">
+    <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)">
+    <link rel="icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3e%3cpath%20fill='%232c3e50'%20d='M410.3%20231l11.3-11.3-33.9-33.9-62.1-62.1L291.7%2089.8l-11.3%2011.3-22.6%22.6L58.6%20322.9c-10.4%2010.4-18%2023.3-22.2%2037.4L1%20480.7c-2.5%208.4-.2%2017.5%206.1%2023.7s15.3%208.5%2023.7%206.1l120.3-35.4c14.1-4.2%2027-11.8%2037.4-22.2L387.7%20253.7%20410.3%20231zM160%20399.4l-9.1%2022.7c-4%203.1-8.5%205.4-13.3%206.9L59.4%20452l23-78.1c1.4-4.9%203.8-9.4%206.9-13.3l22.7-9.1v32c0%208.8%207.2%2016%2016%2016h32zM362.7%2018.7L348.3%2033.2%20325.7%2055.8%20314.3%2067.1l33.9%2033.9%2062.1%2062.1%2033.9%2033.9%2011.3-11.3%2022.6-22.6L494.9%2052.6c11.3-11.3%2011.3-29.5%200-40.8L403.5%201.2c-11.3-11.3-29.5-11.3-40.8%200z'/%3e%3c/svg%3e">
     <style>
         /* reports.html固有のスタイル */
         .reports-container {
@@ -79,19 +80,21 @@
 
         #loading-indicator {
             text-align: center;
-            padding: 3rem;
+            padding: 1rem;
             font-size: 1.2rem;
             color: var(--text-color-light);
+            display: none; /* 初期状態では非表示 */
         }
 
         #error-message {
             text-align: center;
-            padding: 2rem;
+            padding: 1rem;
             background: #ffe6e6;
             color: #e74c3c;
             border: 1px solid #e74c3c;
             border-radius: 8px;
             display: none; /* 初期状態では非表示 */
+            margin-top: 1rem; /* エラーメッセージの上に少し余白 */
         }
     </style>
 </head>
@@ -270,6 +273,11 @@
             </div>
             <div id="error-message"></div>
         </div>
+        <div class="pagination">
+            <a href="references.html" class="prev"><i class="fas fa-angle-double-left"></i> <span>参考文献</span></a>
+            <div class="page-info">指摘</div>
+            <a href="#" class="next empty-link"></a>
+        </div>
     </main>
 
     <footer class="site-footer">
@@ -281,5 +289,6 @@
     </footer>
 
     <script src="common.js?v=19"></script>
+    <script src="https://cdn.jsdelivr.net/npm/body-scroll-lock@3.1.5/lib/bodyScrollLock.min.js"></script>
 </body>
 </html>

@@ -20,19 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Menu State Machine ---
         function updateMenuState(state) {
-            const html = document.documentElement;
             const body = document.body;
-
-            // Remove all state classes first
             body.classList.remove('menu-l1-visible', 'menu-l2-visible');
-            html.classList.remove('no-scroll');
-            body.classList.remove('no-scroll');
 
-            // Add new state classes if a state exists
+            // Always clear all locks before setting a new state.
+            bodyScrollLock.clearAllBodyScrollLocks();
+
             if (state) {
                 body.classList.add(state);
-                html.classList.add('no-scroll');
-                body.classList.add('no-scroll');
+                // Lock scroll based on which panel is visible, targeting the ACTUAL scrolling element.
+                if (state === 'menu-l1-visible') {
+                    // .nav-menu is the scrolling element for the main menu.
+                    bodyScrollLock.disableBodyScroll(navMenu);
+                } else if (state === 'menu-l2-visible') {
+                    // .drilldown-content is the scrolling element for the sub-menu.
+                    const drilldownContent = drillDownPanel.querySelector('.drilldown-content');
+                    if (drilldownContent) {
+                        bodyScrollLock.disableBodyScroll(drilldownContent);
+                    }
+                }
             }
 
             // Toggle button state
@@ -488,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openModal = () => {
         if (!issueReportModal) return;
         issueReportModal.classList.add('active');
-        document.body.classList.add('no-scroll');
+        bodyScrollLock.disableBodyScroll(issueReportModal); // Use library to disable scroll
         pageUrlInput.value = window.location.href;
         const selection = window.getSelection().toString().trim();
         selectedTextarea.value = selection ? selection : '（テキスト選択なし）';
@@ -497,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModal = () => {
         if (!issueReportModal) return;
         issueReportModal.classList.remove('active');
-        document.body.classList.remove('no-scroll');
+        bodyScrollLock.enableBodyScroll(issueReportModal); // Use library to enable scroll
         issueReportForm.reset();
         formMessage.style.display = 'none';
     };
@@ -577,6 +583,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!reportsList) return; // reports.html以外のページでは何もしない
 
+        if (loadingIndicator) loadingIndicator.style.display = 'block'; // 読み込み開始時に表示
+        if (errorMessage) errorMessage.style.display = 'none'; // エラーメッセージを非表示にリセット
+
         try {
             const response = await fetch(`https://api.github.com/repos/${repoPath}/pulls?state=closed&sort=updated&direction=desc`);
             if (!response.ok) {
@@ -632,10 +641,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Error fetching reports:', error);
-            errorMessage.textContent = '一覧の読み込み中にエラーが発生しました。しばらくしてから再度お試しください。';
-            errorMessage.style.display = 'block';
+            if (errorMessage) {
+                errorMessage.textContent = '一覧の読み込み中にエラーが発生しました。しばらくしてから再度お試しください。';
+                errorMessage.style.display = 'block';
+            }
         } finally {
-            if(loadingIndicator) loadingIndicator.style.display = 'none';
+            if(loadingIndicator) loadingIndicator.style.display = 'none'; // 読み込み完了後またはエラー発生時に非表示
         }
     };
 
